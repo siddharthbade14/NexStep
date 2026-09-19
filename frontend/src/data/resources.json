@@ -1,0 +1,217 @@
+{
+  "skill-git": {
+    "skill_id": "skill-git",
+    "title": "Git & GitHub for Production Teams",
+    "order": 1,
+    "provider": "freeCodeCamp & GitHub Guides",
+    "url": "https://www.freecodecamp.org/news/git-and-github-for-beginners/",
+    "duration_hours": "3 hours",
+    "level": "Beginner",
+    "prerequisites": [],
+    "summary": "Hands-on guide to distributed version control, branching strategies (Gitflow), cherry-picking, pull request etiquette, and conflict resolution.",
+    "quiz": [
+      {
+        "id": "q1",
+        "question": "Which command allows you to integrate changes from 'main' into your feature branch while maintaining a linear commit history?",
+        "options": ["git merge main", "git rebase main", "git commit --amend", "git pull --force"],
+        "correct_index": 1,
+        "explanation": "git rebase replays your branch commits on top of the tip of main, keeping history clean and linear."
+      },
+      {
+        "id": "q2",
+        "question": "What is the primary purpose of a `.gitignore` file?",
+        "options": [
+          "To delete untracked files automatically from disk",
+          "To specify intentionally untracked files (build artifacts, secrets, virtualenvs) that Git should ignore",
+          "To encrypt sensitive passwords before pushing to GitHub",
+          "To prevent teammates from pushing to the main branch"
+        ],
+        "correct_index": 1,
+        "explanation": ".gitignore prevents environment files (.env), node_modules, and binary artifacts from being committed."
+      },
+      {
+        "id": "q3",
+        "question": "If you need to apply a single specific commit from another branch into your current branch, which command do you use?",
+        "options": ["git cherry-pick <commit-hash>", "git clone <commit-hash>", "git reset --hard", "git stash pop"],
+        "correct_index": 0,
+        "explanation": "git cherry-pick applies the changes introduced by one or more existing commits to your active HEAD."
+      }
+    ]
+  },
+  "skill-rest-apis": {
+    "skill_id": "skill-rest-apis",
+    "title": "FastAPI & RESTful API Architecture",
+    "order": 2,
+    "provider": "Official FastAPI Documentation",
+    "url": "https://fastapi.tiangolo.com/tutorial/",
+    "duration_hours": "5 hours",
+    "level": "Intermediate",
+    "prerequisites": ["skill-git"],
+    "summary": "Master modern Python web backend development using FastAPI, Pydantic type safety, asynchronous route handlers, CORS, and dependency injection.",
+    "quiz": [
+      {
+        "id": "q1",
+        "question": "Which HTTP status code should a REST API return when a client successfully creates a new resource?",
+        "options": ["200 OK", "201 Created", "204 No Content", "301 Moved Permanently"],
+        "correct_index": 1,
+        "explanation": "HTTP 201 Created signifies that the request succeeded and a new resource has been created."
+      },
+      {
+        "id": "q2",
+        "question": "What role does Pydantic play in FastAPI?",
+        "options": [
+          "Database connection pooling and migration",
+          "Data validation, schema declaration, and automatic JSON serialization/deserialization",
+          "CSS layout rendering for web templates",
+          "Load balancing between worker threads"
+        ],
+        "correct_index": 1,
+        "explanation": "Pydantic enforces Python type hints at runtime to validate request payloads and generate OpenAPI documentation."
+      },
+      {
+        "id": "q3",
+        "question": "What is the difference between HTTP PUT and HTTP PATCH?",
+        "options": [
+          "PUT creates a resource, PATCH deletes it",
+          "PUT replaces the entire entity representation, whereas PATCH applies partial modifications",
+          "PUT is idempotent, PATCH cannot be sent over HTTPS",
+          "There is no functional difference in modern REST"
+        ],
+        "correct_index": 1,
+        "explanation": "PUT is an idempotent full update, while PATCH modifies specific fields without replacing the entire entity."
+      }
+    ]
+  },
+  "skill-docker": {
+    "skill_id": "skill-docker",
+    "title": "Docker for Developers: From Basics to Containerization",
+    "order": 3,
+    "provider": "Docker Official Docs & Roadmap.sh",
+    "url": "https://docs.docker.com/get-started/",
+    "duration_hours": "4 hours",
+    "level": "Intermediate",
+    "prerequisites": ["skill-rest-apis"],
+    "summary": "Learn to write optimized Dockerfiles, manage images and volumes, orchestrate multi-container apps with docker-compose, and deploy isolated microservices.",
+    "quiz": [
+      {
+        "id": "q1",
+        "question": "Why should `COPY requirements.txt .` and `RUN pip install` appear before `COPY . .` in a Dockerfile?",
+        "options": [
+          "Docker requires Python packages to be installed before files can exist",
+          "To leverage Docker's build cache so dependencies aren't re-downloaded every time application code changes",
+          "To reduce root user privileges inside the container",
+          "It is required by the Linux kernel"
+        ],
+        "correct_index": 1,
+        "explanation": "Docker caches layer by layer. If source code changes, only layers after COPY . . are rebuilt, preserving the heavy pip install cache."
+      },
+      {
+        "id": "q2",
+        "question": "What is the difference between a Docker Image and a Docker Container?",
+        "options": [
+          "An Image is a running instance; a Container is the static binary blueprint",
+          "An Image is the immutable snapshot/blueprint; a Container is a live, running instance of an image",
+          "Images are for Linux; Containers are for Windows",
+          "An Image holds the database; a Container holds the frontend"
+        ],
+        "correct_index": 1,
+        "explanation": "An image is a read-only template with instructions; a container is a runnable instance with an isolated filesystem and process space."
+      },
+      {
+        "id": "q3",
+        "question": "Which command runs a container in detached (background) mode and maps host port 8080 to container port 80?",
+        "options": [
+          "docker run -p 8080:80 -d <image_name>",
+          "docker start -port 80:8080 <image_name>",
+          "docker compose up --silent",
+          "docker build -t 8080:80 <image_name>"
+        ],
+        "correct_index": 0,
+        "explanation": "-d runs the container detached, and -p host_port:container_port forwards inbound traffic."
+      }
+    ]
+  },
+  "skill-pandas": {
+    "skill_id": "skill-pandas",
+    "title": "Python for Data Analysis (Pandas & NumPy Deep Dive)",
+    "order": 1,
+    "provider": "W3Schools & Pandas Official Tutorial",
+    "url": "https://pandas.pydata.org/docs/user_guide/10min.html",
+    "duration_hours": "6 hours",
+    "level": "Intermediate",
+    "prerequisites": [],
+    "summary": "Master data manipulation: handling missing values, multi-level indexing, GroupBy aggregation, merging datasets, and time-series resampling.",
+    "quiz": [
+      {
+        "id": "q1",
+        "question": "Which method in Pandas computes summary statistics (count, mean, std, min, percentiles, max) for numeric columns?",
+        "options": ["df.summary()", "df.describe()", "df.info()", "df.metrics()"],
+        "correct_index": 1,
+        "explanation": "df.describe() generates comprehensive descriptive statistics for all numerical columns in a DataFrame."
+      },
+      {
+        "id": "q2",
+        "question": "What is the most efficient way to perform computations across millions of rows in Pandas?",
+        "options": [
+          "Iterating with a standard Python `for index, row in df.iterrows():` loop",
+          "Using vectorized operations or NumPy broadcasting",
+          "Converting the DataFrame to a list of dictionaries",
+          "Using recursion"
+        ],
+        "correct_index": 1,
+        "explanation": "Vectorized operations execute in compiled C routines (NumPy/BLAS), running 50x to 100x faster than Python row-by-row iteration."
+      },
+      {
+        "id": "q3",
+        "question": "Which function is used to pivot and aggregate long-format data into a multi-dimensional summary table?",
+        "options": ["df.pivot_table()", "df.unmelt()", "df.reshape_wide()", "df.flatten()"],
+        "correct_index": 0,
+        "explanation": "df.pivot_table() creates a spreadsheet-style pivot table with custom aggregation functions (sum, mean, count)."
+      }
+    ]
+  },
+  "skill-embedded-c": {
+    "skill_id": "skill-embedded-c",
+    "title": "Embedded C Programming & Memory Architecture",
+    "order": 1,
+    "provider": "GeeksforGeeks Embedded & Embedded Artistry",
+    "url": "https://www.geeksforgeeks.org/embedded-c-programming-with-examples/",
+    "duration_hours": "5 hours",
+    "level": "Intermediate",
+    "prerequisites": [],
+    "summary": "Deep dive into volatile pointers, memory-mapped registers, bitwise manipulation, interrupt service routines, and linker scripts.",
+    "quiz": [
+      {
+        "id": "q1",
+        "question": "Why is the `volatile` keyword essential when declaring pointers to hardware peripheral registers?",
+        "options": [
+          "To allocate the pointer inside Flash ROM instead of SRAM",
+          "To instruct the compiler NOT to optimize away reads/writes, because the hardware register value can change asynchronously outside program flow",
+          "To make the variable thread-safe automatically without mutexes",
+          "To enable floating-point math support on 8-bit microcontrollers"
+        ],
+        "correct_index": 1,
+        "explanation": "Without volatile, optimizing compilers will cache register reads into CPU registers, missing real-time hardware status changes."
+      },
+      {
+        "id": "q2",
+        "question": "How do you set bit 4 of an 8-bit register `REG` to 1 without altering any other bits?",
+        "options": ["REG = 1 << 4;", "REG |= (1 << 4);", "REG &= ~(1 << 4);", "REG ^= 0x04;"],
+        "correct_index": 1,
+        "explanation": "Bitwise OR with (1 << 4) sets bit 4 to 1 while leaving all other bits untouched."
+      },
+      {
+        "id": "q3",
+        "question": "Why should Interrupt Service Routines (ISRs) be designed to be as short and fast as possible?",
+        "options": [
+          "Because microcontrollers shut down if an ISR takes more than 1 millisecond",
+          "To avoid blocking lower-priority interrupts and prevent timing jitter in real-time deadlines",
+          "Because ISRs cannot access global variables",
+          "To conserve battery charge in sleep mode"
+        ],
+        "correct_index": 1,
+        "explanation": "Long ISRs delay critical system events and degrade real-time responsiveness. Heavy work should be deferred to task queues."
+      }
+    ]
+  }
+}
