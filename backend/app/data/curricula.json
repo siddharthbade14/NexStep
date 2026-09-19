@@ -1,0 +1,30 @@
+{
+  "B.Tech CSE": {
+    "name": "B.Tech Computer Science & Engineering",
+    "total_semesters": 8,
+    "semesters": {
+      "1": ["Engineering Mathematics I", "Engineering Physics", "Basics of Electrical Engineering", "Problem Solving using C"],
+      "2": ["Engineering Mathematics II", "Engineering Chemistry", "Digital Logic Design", "Object-Oriented Programming with C++"],
+      "3": ["Data Structures and Algorithms", "Discrete Mathematical Structures", "Computer Organization and Architecture", "Object Oriented Programming in Java"],
+      "4": ["Database Management Systems (DBMS)", "Operating Systems", "Design and Analysis of Algorithms", "Theory of Computation"],
+      "5": ["Computer Networks", "Software Engineering", "Web Technologies (HTML/CSS/JS basics)", "Microprocessors and Interfacing"],
+      "6": ["Compiler Design", "Cloud Computing Fundamentals", "Information and Cyber Security", "Elective I - Artificial Intelligence"],
+      "7": ["Distributed Systems", "Machine Learning Basics", "Elective II - Big Data Analytics", "Major Project Phase 1"],
+      "8": ["Professional Ethics & Intellectual Property", "Elective III - Mobile Computing", "Major Project Phase 2", "Comprehensive Seminar"]
+    }
+  },
+  "B.Tech ECE": {
+    "name": "B.Tech Electronics & Communication Engineering",
+    "total_semesters": 8,
+    "semesters": {
+      "1": ["Engineering Mathematics I", "Engineering Physics", "Basic Civil & Mechanical Engineering", "Computer Programming in C"],
+      "2": ["Engineering Mathematics II", "Engineering Chemistry", "Network Analysis & Synthesis", "Electronic Devices and Components"],
+      "3": ["Electronic Circuits I (Analog Circuits)", "Signals and Systems", "Digital Circuit Design", "Electromagnetic Fields"],
+      "4": ["Analog Communication", "Electronic Circuits II", "Linear Integrated Circuits (Op-Amps)", "Microprocessor 8085 & 8086"],
+      "5": ["Microcontrollers (8051 & ARM)", "Digital Signal Processing (DSP)", "Digital Communication", "Control Systems Engineering"],
+      "6": ["VLSI Design (Verilog HDL)", "Antenna and Microwave Engineering", "Embedded System Concepts", "Wireless Communication"],
+      "7": ["Optical Fiber Communication", "IoT and Sensor Networks", "Elective I - Satellite Communication", "Project Phase 1"],
+      "8": ["Radar & Navigational Aids", "Elective II - Biomedical Instrumentation", "Project Phase 2", "Viva Voce"]
+    }
+  }
+}

@@ -1,0 +1,412 @@
+{
+  "skill-rest-apis": {
+    "skill_id": "skill-rest-apis",
+    "title": "REST API Response Transformer & Paginated Aggregator",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "In production backend microservices, endpoints receive raw record dictionaries and must format them into standardized API responses with calculated summary statistics and clean pagination.\n\nWrite a function `build_api_response(records, page, page_size)` that accepts:\n- `records`: List of dicts `{'id': int, 'user': str, 'amount': float, 'status': str}`\n- `page`: 1-indexed page integer\n- `page_size`: Number of records per page\n\nFilter only records where `'status' == 'completed'`.\nReturn a dictionary with:\n- `'status'`: `'success'` if valid page, otherwise `'error'`\n- `'data'`: The sliced list of completed records for this page\n- `'meta'`: `{'total_completed': int, 'current_page': int, 'total_pages': int, 'total_amount': float (rounded to 2 decimal places)}`",
+    "starter_code": "def build_api_response(records, page, page_size):\n    # Filter only completed transactions and compute pagination\n    # Return {'status': '...', 'data': [...], 'meta': {...}}\n    pass\n",
+    "test_cases": [
+      {
+        "input": "records=[{'id':1,'user':'Aarav','amount':150.5,'status':'completed'},{'id':2,'user':'Diya','amount':80.0,'status':'pending'},{'id':3,'user':'Vihaan','amount':220.0,'status':'completed'}], page=1, page_size=2",
+        "expected": "{'status': 'success', 'data': [{'id': 1, 'user': 'Aarav', 'amount': 150.5, 'status': 'completed'}, {'id': 3, 'user': 'Vihaan', 'amount': 220.0, 'status': 'completed'}], 'meta': {'total_completed': 2, 'current_page': 1, 'total_pages': 1, 'total_amount': 370.5}}",
+        "test_call": "build_api_response([{'id':1,'user':'Aarav','amount':150.5,'status':'completed'},{'id':2,'user':'Diya','amount':80.0,'status':'pending'},{'id':3,'user':'Vihaan','amount':220.0,'status':'completed'}], 1, 2)"
+      },
+      {
+        "input": "records=[], page=1, page_size=5",
+        "expected": "{'status': 'success', 'data': [], 'meta': {'total_completed': 0, 'current_page': 1, 'total_pages': 1, 'total_amount': 0.0}}",
+        "test_call": "build_api_response([], 1, 5)"
+      },
+      {
+        "input": "records=[{'id':i,'user':f'user_{i}','amount':100.0,'status':'completed'} for i in range(1, 6)], page=2, page_size=2",
+        "expected": "{'status': 'success', 'data': [{'id': 3, 'user': 'user_3', 'amount': 100.0, 'status': 'completed'}, {'id': 4, 'user': 'user_4', 'amount': 100.0, 'status': 'completed'}], 'meta': {'total_completed': 5, 'current_page': 2, 'total_pages': 3, 'total_amount': 500.0}}",
+        "test_call": "build_api_response([{'id':i,'user':f'user_{i}','amount':100.0,'status':'completed'} for i in range(1, 6)], 2, 2)"
+      }
+    ],
+    "solution_template": "import math\n\ndef build_api_response(records, page, page_size):\n    completed = [r for r in records if r.get('status') == 'completed']\n    total_completed = len(completed)\n    total_amount = round(sum(r.get('amount', 0.0) for r in completed), 2)\n    total_pages = max(1, math.ceil(total_completed / page_size)) if page_size > 0 else 1\n    \n    if page < 1 or (page > total_pages and total_completed > 0):\n        return {'status': 'error', 'data': [], 'meta': {'total_completed': total_completed, 'current_page': page, 'total_pages': total_pages, 'total_amount': total_amount}}\n        \n    start_idx = (page - 1) * page_size\n    end_idx = start_idx + page_size\n    page_data = completed[start_idx:end_idx]\n    \n    return {\n        'status': 'success',\n        'data': page_data,\n        'meta': {\n            'total_completed': total_completed,\n            'current_page': page,\n            'total_pages': total_pages,\n            'total_amount': total_amount\n        }\n    }\n"
+  },
+  "skill-docker": {
+    "skill_id": "skill-docker",
+    "title": "Dockerfile Syntax & Layer Cache Optimizer",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Docker best practices dictate separating dependency installation from application code changes to maximize build cache hits, running as non-root users, and avoiding bloat.\n\nWrite a function `validate_dockerfile(instructions)` that inspects a list of Dockerfile command strings and returns a validation summary dictionary:\n- `instructions`: List of strings, e.g. `['FROM python:3.11-slim', 'WORKDIR /app', 'COPY requirements.txt .', 'RUN pip install -r requirements.txt', 'COPY . .', 'USER appuser', 'CMD [\"python\", \"main.py\"]']`\n\nReturn:\n- `'has_base_image'`: bool (True if starts with 'FROM ')\n- `'is_cached_efficiently'`: bool (True if 'requirements' or 'package.json' is copied and installed BEFORE 'COPY . .')\n- `'has_non_root_user'`: bool (True if 'USER ' directive is present)\n- `'is_production_ready'`: bool (True if all three above are True)",
+    "starter_code": "def validate_dockerfile(instructions):\n    # TODO: Parse Dockerfile directives and check caching and security patterns\n    pass\n",
+    "test_cases": [
+      {
+        "input": "Optimal multi-stage pattern with non-root user",
+        "expected": "{'has_base_image': True, 'is_cached_efficiently': True, 'has_non_root_user': True, 'is_production_ready': True}",
+        "test_call": "validate_dockerfile(['FROM python:3.11-slim', 'WORKDIR /app', 'COPY requirements.txt .', 'RUN pip install -r requirements.txt', 'COPY . .', 'USER 1001', 'CMD [\"uvicorn\", \"app.main:app\"]'])"
+      },
+      {
+        "input": "Suboptimal pattern: COPY . . before pip install",
+        "expected": "{'has_base_image': True, 'is_cached_efficiently': False, 'has_non_root_user': False, 'is_production_ready': False}",
+        "test_call": "validate_dockerfile(['FROM python:3.11-slim', 'COPY . /app', 'RUN pip install -r /app/requirements.txt'])"
+      },
+      {
+        "input": "Missing base image instruction",
+        "expected": "{'has_base_image': False, 'is_cached_efficiently': False, 'has_non_root_user': False, 'is_production_ready': False}",
+        "test_call": "validate_dockerfile(['RUN apt-get update', 'COPY . .'])"
+      }
+    ],
+    "solution_template": "def validate_dockerfile(instructions):\n    clean = [i.strip() for i in instructions if i.strip()]\n    has_base = len(clean) > 0 and clean[0].startswith('FROM ')\n    has_user = any(i.startswith('USER ') for i in clean)\n    \n    dep_copy_idx = -1\n    all_copy_idx = -1\n    for idx, inst in enumerate(clean):\n        if inst.startswith('COPY ') and ('requirements' in inst or 'package.json' in inst):\n            dep_copy_idx = idx\n        elif inst.startswith('COPY .') or inst.startswith('COPY /.'):\n            all_copy_idx = idx\n            \n    cached = dep_copy_idx != -1 and all_copy_idx != -1 and dep_copy_idx < all_copy_idx\n    \n    return {\n        'has_base_image': has_base,\n        'is_cached_efficiently': cached,\n        'has_non_root_user': has_user,\n        'is_production_ready': has_base and cached and has_user\n    }\n"
+  },
+  "skill-react": {
+    "skill_id": "skill-react",
+    "title": "React Component State & Hook Reducer",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Frontend state management requires pure state transitions without mutating original state.\n\nWrite a reducer function `cart_reducer(state, action)` where:\n- `state`: `{'items': [{'id': int, 'name': str, 'price': float, 'qty': int}], 'discount': float}`\n- `action`: dict with `'type'` and payload fields:\n  - `'ADD_ITEM'`: `{'item': {'id': int, 'name': str, 'price': float}}` -> if item exists, increment qty by 1, else add with qty=1.\n  - `'REMOVE_ITEM'`: `{'id': int}` -> decrement qty by 1; if qty reaches 0, remove item.\n  - `'APPLY_DISCOUNT'`: `{'percent': float}` -> set discount to percent.\n\nReturn new state with recalculated `'total'`: `round(sum(item['price'] * item['qty'] for item in items) * (1 - discount/100), 2)`.",
+    "starter_code": "def cart_reducer(state, action):\n    # Pure state transition handler\n    pass\n",
+    "test_cases": [
+      {
+        "input": "ADD_ITEM new product",
+        "expected": "{'items': [{'id': 1, 'name': 'MacBook', 'price': 1000.0, 'qty': 1}], 'discount': 0.0, 'total': 1000.0}",
+        "test_call": "cart_reducer({'items': [], 'discount': 0.0}, {'type': 'ADD_ITEM', 'item': {'id': 1, 'name': 'MacBook', 'price': 1000.0}})"
+      },
+      {
+        "input": "ADD_ITEM existing increments qty",
+        "expected": "{'items': [{'id': 1, 'name': 'MacBook', 'price': 1000.0, 'qty': 2}], 'discount': 10.0, 'total': 1800.0}",
+        "test_call": "cart_reducer({'items': [{'id': 1, 'name': 'MacBook', 'price': 1000.0, 'qty': 1}], 'discount': 10.0}, {'type': 'ADD_ITEM', 'item': {'id': 1, 'name': 'MacBook', 'price': 1000.0}})"
+      },
+      {
+        "input": "REMOVE_ITEM decrements and removes when qty reaches 0",
+        "expected": "{'items': [], 'discount': 0.0, 'total': 0.0}",
+        "test_call": "cart_reducer({'items': [{'id': 2, 'name': 'Mouse', 'price': 50.0, 'qty': 1}], 'discount': 0.0}, {'type': 'REMOVE_ITEM', 'id': 2})"
+      }
+    ],
+    "solution_template": "def cart_reducer(state, action):\n    import copy\n    new_state = copy.deepcopy(state)\n    items = new_state.get('items', [])\n    discount = new_state.get('discount', 0.0)\n    \n    act_type = action.get('type')\n    if act_type == 'ADD_ITEM':\n        item = action['item']\n        found = False\n        for it in items:\n            if it['id'] == item['id']:\n                it['qty'] += 1\n                found = True\n                break\n        if not found:\n            new_item = dict(item)\n            new_item['qty'] = 1\n            items.append(new_item)\n    elif act_type == 'REMOVE_ITEM':\n        target_id = action['id']\n        for it in list(items):\n            if it['id'] == target_id:\n                it['qty'] -= 1\n                if it['qty'] <= 0:\n                    items.remove(it)\n                break\n    elif act_type == 'APPLY_DISCOUNT':\n        discount = action.get('percent', 0.0)\n        \n    raw_total = sum(i['price'] * i['qty'] for i in items)\n    final_total = round(raw_total * (1.0 - discount / 100.0), 2)\n    \n    return {\n        'items': items,\n        'discount': discount,\n        'total': final_total\n    }\n"
+  },
+  "skill-git": {
+    "skill_id": "skill-git",
+    "title": "Git Commit Graph & Linear History Validator",
+    "language": "python",
+    "difficulty": "Beginner",
+    "description": "Engineering teams maintain clean repository history by checking whether branches have branched off main cleanly and detecting merge conflicts.\n\nWrite a function `inspect_git_branch(commits, base_branch)`:\n`commits` is a list of commit dicts: `[{'hash': str, 'parent': str, 'branch': str, 'files_changed': list}]`\n`base_branch` is the target branch (e.g. `'main'`).\n\nReturn a summary dict:\n- `'total_branch_commits'`: number of commits on this branch\n- `'has_direct_merge_conflict'`: True if any file changed on this branch was also changed in recent `base_branch` commits, else False\n- `'ready_for_fast_forward'`: True if parent of the earliest branch commit matches the head commit of `base_branch` and there are no conflicts.",
+    "starter_code": "def inspect_git_branch(commits, base_branch):\n    # TODO: Check branch commits against base branch commits for fast-forward and conflicts\n    pass\n",
+    "test_cases": [
+      {
+        "input": "Branch with clean fast-forward commit",
+        "expected": "{'total_branch_commits': 1, 'has_direct_merge_conflict': False, 'ready_for_fast_forward': True}",
+        "test_call": "inspect_git_branch([{'hash': 'c1', 'parent': 'm1', 'branch': 'main', 'files_changed': ['app.py']}, {'hash': 'c2', 'parent': 'c1', 'branch': 'feature', 'files_changed': ['utils.py']}], 'main')"
+      },
+      {
+        "input": "Branch with merge conflict on app.py",
+        "expected": "{'total_branch_commits': 1, 'has_direct_merge_conflict': True, 'ready_for_fast_forward': False}",
+        "test_call": "inspect_git_branch([{'hash': 'c1', 'parent': 'm0', 'branch': 'main', 'files_changed': ['app.py']}, {'hash': 'c2', 'parent': 'c1', 'branch': 'main', 'files_changed': ['app.py']}, {'hash': 'f1', 'parent': 'c1', 'branch': 'feature', 'files_changed': ['app.py']}], 'main')"
+      }
+    ],
+    "solution_template": "def inspect_git_branch(commits, base_branch):\n    main_commits = [c for c in commits if c.get('branch') == base_branch]\n    feature_commits = [c for c in commits if c.get('branch') != base_branch]\n    \n    if not feature_commits:\n        return {'total_branch_commits': 0, 'has_direct_merge_conflict': False, 'ready_for_fast_forward': True}\n        \n    main_files = set()\n    for c in main_commits:\n        main_files.update(c.get('files_changed', []))\n        \n    feature_files = set()\n    for c in feature_commits:\n        feature_files.update(c.get('files_changed', []))\n        \n    conflict = bool(main_files.intersection(feature_files))\n    \n    head_main = main_commits[-1]['hash'] if main_commits else None\n    first_feature_parent = feature_commits[0].get('parent')\n    ready_ff = (first_feature_parent == head_main) and (not conflict)\n    \n    return {\n        'total_branch_commits': len(feature_commits),\n        'has_direct_merge_conflict': conflict,\n        'ready_for_fast_forward': ready_ff\n    }\n"
+  },
+  "skill-dsa": {
+    "skill_id": "skill-dsa",
+    "title": "Data Structures & Optimal Two-Sum HashMap",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to target.\n\nFunction signature: `two_sum(nums, target)`\nReturn a tuple `(index1, index2)` where `index1 < index2`, or `None` if no pair exists.",
+    "starter_code": "def two_sum(nums, target):\n    # O(N) HashMap solution\n    pass\n",
+    "test_cases": [
+      {
+        "input": "nums=[2, 7, 11, 15], target=9",
+        "expected": "(0, 1)",
+        "test_call": "two_sum([2, 7, 11, 15], 9)"
+      },
+      {
+        "input": "nums=[3, 2, 4], target=6",
+        "expected": "(1, 2)",
+        "test_call": "two_sum([3, 2, 4], 6)"
+      },
+      {
+        "input": "nums=[3, 3], target=7",
+        "expected": "None",
+        "test_call": "two_sum([3, 3], 7)"
+      }
+    ],
+    "solution_template": "def two_sum(nums, target):\n    seen = {}\n    for idx, n in enumerate(nums):\n        complement = target - n\n        if complement in seen:\n            return (seen[complement], idx)\n        seen[n] = idx\n    return None\n"
+  },
+  "skill-sql-adv": {
+    "skill_id": "skill-sql-adv",
+    "title": "Database Relational Query & Join Simulator",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Simulate a relational SQL INNER JOIN between `users` (`[{'user_id': int, 'name': str}]`) and `orders` (`[{'order_id': int, 'user_id': int, 'total': float}]`).\n\nFunction: `simulate_sql_join(users, orders)`\nReturn list of dicts: `[{'user_id': int, 'name': str, 'order_count': int, 'spent_total': float}]` sorted by `spent_total` descending.",
+    "starter_code": "def simulate_sql_join(users, orders):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "users=[{'user_id': 1, 'name': 'Aarav'}], orders=[{'order_id': 101, 'user_id': 1, 'total': 250.0}]",
+        "expected": "[{'user_id': 1, 'name': 'Aarav', 'order_count': 1, 'spent_total': 250.0}]",
+        "test_call": "simulate_sql_join([{'user_id': 1, 'name': 'Aarav'}], [{'order_id': 101, 'user_id': 1, 'total': 250.0}])"
+      },
+      {
+        "input": "multiple users with aggregations",
+        "expected": "[{'user_id': 1, 'name': 'Aarav', 'order_count': 2, 'spent_total': 300.0}, {'user_id': 2, 'name': 'Diya', 'order_count': 1, 'spent_total': 100.0}]",
+        "test_call": "simulate_sql_join([{'user_id': 1, 'name': 'Aarav'}, {'user_id': 2, 'name': 'Diya'}], [{'order_id': 1, 'user_id': 1, 'total': 100.0}, {'order_id': 2, 'user_id': 1, 'total': 200.0}, {'order_id': 3, 'user_id': 2, 'total': 100.0}])"
+      }
+    ],
+    "solution_template": "def simulate_sql_join(users, orders):\n    user_map = {u['user_id']: u['name'] for u in users}\n    agg = {}\n    for o in orders:\n        uid = o['user_id']\n        if uid in user_map:\n            if uid not in agg:\n                agg[uid] = {'count': 0, 'total': 0.0}\n            agg[uid]['count'] += 1\n            agg[uid]['total'] += o['total']\n    res = []\n    for uid, data in agg.items():\n        res.append({'user_id': uid, 'name': user_map[uid], 'order_count': data['count'], 'spent_total': round(data['total'], 2)})\n    res.sort(key=lambda x: x['spent_total'], reverse=True)\n    return res\n"
+  },
+  "skill-sys-design": {
+    "skill_id": "skill-sys-design",
+    "title": "Token Bucket Rate Limiter Algorithm",
+    "language": "python",
+    "difficulty": "Advanced",
+    "description": "Implement the classic Token Bucket algorithm for API rate limiting.\n\nFunction: `is_request_allowed(current_tokens, refill_rate, capacity, elapsed_seconds)`\n1. Tokens are refilled by `elapsed_seconds * refill_rate` (cannot exceed `capacity`).\n2. If tokens >= 1, consume 1 token and return `{'allowed': True, 'remaining_tokens': round(tokens - 1, 2)}`.\n3. Else return `{'allowed': False, 'remaining_tokens': round(tokens, 2)}`.",
+    "starter_code": "def is_request_allowed(current_tokens, refill_rate, capacity, elapsed_seconds):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "current=0, refill=5/s, cap=10, elapsed=2s",
+        "expected": "{'allowed': True, 'remaining_tokens': 9.0}",
+        "test_call": "is_request_allowed(0, 5, 10, 2)"
+      },
+      {
+        "input": "current=0.5, refill=1/s, cap=5, elapsed=0s -> disallowed",
+        "expected": "{'allowed': False, 'remaining_tokens': 0.5}",
+        "test_call": "is_request_allowed(0.5, 1, 5, 0)"
+      }
+    ],
+    "solution_template": "def is_request_allowed(current_tokens, refill_rate, capacity, elapsed_seconds):\n    tokens = min(capacity, current_tokens + (elapsed_seconds * refill_rate))\n    if tokens >= 1.0:\n        return {'allowed': True, 'remaining_tokens': round(tokens - 1.0, 2)}\n    else:\n        return {'allowed': False, 'remaining_tokens': round(tokens, 2)}\n"
+  },
+  "skill-cicd": {
+    "skill_id": "skill-cicd",
+    "title": "CI/CD Test Suite & Coverage Evaluator",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Analyze test runs in a GitHub Actions pipeline.\n\nFunction: `evaluate_ci_pipeline(test_runs, min_coverage)`\n`test_runs`: `[{'suite': str, 'passed': int, 'failed': int, 'coverage_pct': float}]`\nReturn:\n- `'status'`: `'PASS'` if 0 failures and average coverage >= `min_coverage`, else `'FAIL'`\n- `'total_tests'`: sum of passed and failed\n- `'avg_coverage'`: average coverage rounded to 1 decimal place",
+    "starter_code": "def evaluate_ci_pipeline(test_runs, min_coverage):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "all pass with 85% avg coverage",
+        "expected": "{'status': 'PASS', 'total_tests': 30, 'avg_coverage': 85.0}",
+        "test_call": "evaluate_ci_pipeline([{'suite': 'unit', 'passed': 20, 'failed': 0, 'coverage_pct': 90.0}, {'suite': 'integration', 'passed': 10, 'failed': 0, 'coverage_pct': 80.0}], 80.0)"
+      },
+      {
+        "input": "1 failed test causes pipeline FAIL",
+        "expected": "{'status': 'FAIL', 'total_tests': 15, 'avg_coverage': 92.0}",
+        "test_call": "evaluate_ci_pipeline([{'suite': 'e2e', 'passed': 14, 'failed': 1, 'coverage_pct': 92.0}], 80.0)"
+      }
+    ],
+    "solution_template": "def evaluate_ci_pipeline(test_runs, min_coverage):\n    tot_tests = sum(r['passed'] + r['failed'] for r in test_runs)\n    tot_failed = sum(r['failed'] for r in test_runs)\n    avg_cov = round(sum(r['coverage_pct'] for r in test_runs) / len(test_runs), 1) if test_runs else 0.0\n    status = 'PASS' if tot_failed == 0 and avg_cov >= min_coverage else 'FAIL'\n    return {'status': status, 'total_tests': tot_tests, 'avg_coverage': avg_cov}\n"
+  },
+  "skill-sql-da": {
+    "skill_id": "skill-sql-da",
+    "title": "SQL Window Function: Dense Rank & Running Totals",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Simulate SQL `DENSE_RANK() OVER (ORDER BY revenue DESC)` and cumulative `SUM(revenue)`.\n\nFunction: `calculate_window_metrics(sales_rows)`\n`sales_rows`: `[{'rep': str, 'revenue': float}]`\nReturn sorted list by revenue descending with `'dense_rank'` (1-based, no gaps on ties) and `'running_total'`.",
+    "starter_code": "def calculate_window_metrics(sales_rows):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "3 sales reps",
+        "expected": "[{'rep': 'Rohan', 'revenue': 500.0, 'dense_rank': 1, 'running_total': 500.0}, {'rep': 'Ananya', 'revenue': 300.0, 'dense_rank': 2, 'running_total': 800.0}]",
+        "test_call": "calculate_window_metrics([{'rep': 'Ananya', 'revenue': 300.0}, {'rep': 'Rohan', 'revenue': 500.0}])"
+      }
+    ],
+    "solution_template": "def calculate_window_metrics(sales_rows):\n    sorted_rows = sorted(sales_rows, key=lambda x: x['revenue'], reverse=True)\n    rank = 1\n    prev_rev = None\n    run_tot = 0.0\n    res = []\n    for row in sorted_rows:\n        rev = row['revenue']\n        if prev_rev is not None and rev < prev_rev:\n            rank += 1\n        run_tot += rev\n        res.append({'rep': row['rep'], 'revenue': rev, 'dense_rank': rank, 'running_total': round(run_tot, 2)})\n        prev_rev = rev\n    return res\n"
+  },
+  "skill-pandas": {
+    "skill_id": "skill-pandas",
+    "title": "Data Aggregation & Cohort Metrics Engine",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Data Analysts frequently calculate user conversion and transaction summary statistics across categories.\n\nWrite a function `analyze_transactions(orders)` that processes a list of order records:\nEach order is a dict: `{'customer_id': int, 'category': str, 'amount': float, 'discount_pct': float}`\n\nCalculate:\n1. Net spent per transaction = `amount * (1.0 - discount_pct / 100.0)`\n2. Group by category and calculate:\n   - `'total_net_revenue'`: sum of net spent rounded to 2 decimal places\n   - `'order_count'`: number of orders in this category\n   - `'unique_customers'`: count of unique customer_ids in this category\n   - `'avg_order_value'`: total net revenue divided by order count, rounded to 2 decimal places\n\nReturn a dictionary where keys are category names and values are the metrics dict above.",
+    "starter_code": "def analyze_transactions(orders):\n    # TODO: Group orders by category and compute net revenue, counts, and AOV\n    pass\n",
+    "test_cases": [
+      {
+        "input": "3 orders in Electronics and Apparel",
+        "expected": "{'Electronics': {'total_net_revenue': 180.0, 'order_count': 2, 'unique_customers': 2, 'avg_order_value': 90.0}, 'Apparel': {'total_net_revenue': 45.0, 'order_count': 1, 'unique_customers': 1, 'avg_order_value': 45.0}}",
+        "test_call": "analyze_transactions([{'customer_id': 101, 'category': 'Electronics', 'amount': 100.0, 'discount_pct': 10.0}, {'customer_id': 102, 'category': 'Electronics', 'amount': 100.0, 'discount_pct': 10.0}, {'customer_id': 101, 'category': 'Apparel', 'amount': 50.0, 'discount_pct': 10.0}])"
+      },
+      {
+        "input": "Empty orders list",
+        "expected": "{}",
+        "test_call": "analyze_transactions([])"
+      },
+      {
+        "input": "Multiple orders with zero discount",
+        "expected": "{'Books': {'total_net_revenue': 300.0, 'order_count': 2, 'unique_customers': 1, 'avg_order_value': 150.0}}",
+        "test_call": "analyze_transactions([{'customer_id': 200, 'category': 'Books', 'amount': 150.0, 'discount_pct': 0.0}, {'customer_id': 200, 'category': 'Books', 'amount': 150.0, 'discount_pct': 0.0}])"
+      }
+    ],
+    "solution_template": "def analyze_transactions(orders):\n    categories = {}\n    for o in orders:\n        cat = o['category']\n        if cat not in categories:\n            categories[cat] = {'orders': [], 'customers': set()}\n        net = o['amount'] * (1.0 - o.get('discount_pct', 0.0) / 100.0)\n        categories[cat]['orders'].append(net)\n        categories[cat]['customers'].add(o['customer_id'])\n        \n    results = {}\n    for cat, data in categories.items():\n        tot = round(sum(data['orders']), 2)\n        cnt = len(data['orders'])\n        results[cat] = {\n            'total_net_revenue': tot,\n            'order_count': cnt,\n            'unique_customers': len(data['customers']),\n            'avg_order_value': round(tot / cnt, 2) if cnt > 0 else 0.0\n        }\n    return results\n"
+  },
+  "skill-bi-dashboards": {
+    "skill_id": "skill-bi-dashboards",
+    "title": "BI KPI Summary & Target Variance Formatter",
+    "language": "python",
+    "difficulty": "Beginner",
+    "description": "Calculate dashboard KPI card status and target variance.\n\nFunction: `compute_kpi_summary(actual, target)`\nReturn:\n- `'actual'`: float\n- `'target'`: float\n- `'variance_pct'`: round(((actual - target) / target) * 100, 1)\n- `'status'`: `'ON_TRACK'` if variance >= 0, else `'NEEDS_ATTENTION'`",
+    "starter_code": "def compute_kpi_summary(actual, target):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "actual=120, target=100",
+        "expected": "{'actual': 120.0, 'target': 100.0, 'variance_pct': 20.0, 'status': 'ON_TRACK'}",
+        "test_call": "compute_kpi_summary(120.0, 100.0)"
+      },
+      {
+        "input": "actual=80, target=100",
+        "expected": "{'actual': 80.0, 'target': 100.0, 'variance_pct': -20.0, 'status': 'NEEDS_ATTENTION'}",
+        "test_call": "compute_kpi_summary(80.0, 100.0)"
+      }
+    ],
+    "solution_template": "def compute_kpi_summary(actual, target):\n    var = round(((actual - target) / target) * 100.0, 1) if target != 0 else 0.0\n    return {'actual': float(actual), 'target': float(target), 'variance_pct': var, 'status': 'ON_TRACK' if var >= 0 else 'NEEDS_ATTENTION'}\n"
+  },
+  "skill-stats": {
+    "skill_id": "skill-stats",
+    "title": "A/B Test Statistical Significance & Conversion Lift",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Evaluate conversion rate lift between Control and Variant groups.\n\nFunction: `calculate_ab_test(control_conv, control_total, variant_conv, variant_total)`\nReturn dict:\n- `'control_rate'`: round(control_conv / control_total, 4)\n- `'variant_rate'`: round(variant_conv / variant_total, 4)\n- `'relative_lift_pct'`: round(((variant_rate - control_rate) / control_rate) * 100, 2)\n- `'is_winner'`: bool (True if lift >= 10.0)",
+    "starter_code": "def calculate_ab_test(control_conv, control_total, variant_conv, variant_total):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "control 100/1000, variant 120/1000",
+        "expected": "{'control_rate': 0.1, 'variant_rate': 0.12, 'relative_lift_pct': 20.0, 'is_winner': True}",
+        "test_call": "calculate_ab_test(100, 1000, 120, 1000)"
+      }
+    ],
+    "solution_template": "def calculate_ab_test(control_conv, control_total, variant_conv, variant_total):\n    c_rate = round(control_conv / control_total, 4)\n    v_rate = round(variant_conv / variant_total, 4)\n    lift = round(((v_rate - c_rate) / c_rate) * 100, 2)\n    return {'control_rate': c_rate, 'variant_rate': v_rate, 'relative_lift_pct': lift, 'is_winner': lift >= 10.0}\n"
+  },
+  "skill-eda": {
+    "skill_id": "skill-eda",
+    "title": "Outlier Detection via Interquartile Range (IQR)",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Detect data points lying beyond 1.5x the Interquartile Range (IQR).\n\nFunction: `detect_iqr_outliers(values)`\nGiven sorted or unsorted numerical values, return sorted list of outliers outside `[Q1 - 1.5*IQR, Q3 + 1.5*IQR]`.",
+    "starter_code": "def detect_iqr_outliers(values):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "values=[10, 12, 12, 13, 12, 14, 100]",
+        "expected": "[100]",
+        "test_call": "detect_iqr_outliers([10, 12, 12, 13, 12, 14, 100])"
+      }
+    ],
+    "solution_template": "def detect_iqr_outliers(values):\n    if len(values) < 4: return []\n    s = sorted(values)\n    n = len(s)\n    q1 = s[n // 4]\n    q3 = s[(3 * n) // 4]\n    iqr = q3 - q1\n    lower = q1 - 1.5 * iqr\n    upper = q3 + 1.5 * iqr\n    return sorted([x for x in values if x < lower or x > upper])\n"
+  },
+  "skill-business-metrics": {
+    "skill_id": "skill-business-metrics",
+    "title": "SaaS Unit Economics & Churn Rate Engine",
+    "language": "python",
+    "difficulty": "Beginner",
+    "description": "Calculate SaaS MRR growth and customer churn rate.\n\nFunction: `compute_saas_metrics(start_mrr, added_mrr, churned_mrr, total_customers, churned_customers)`\nReturn dict:\n- `'net_mrr'`: start_mrr + added_mrr - churned_mrr\n- `'churn_rate_pct'`: round((churned_customers / total_customers) * 100, 2)\n- `'is_healthy'`: True if churn_rate_pct <= 5.0",
+    "starter_code": "def compute_saas_metrics(start_mrr, added_mrr, churned_mrr, total_customers, churned_customers):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "healthy SaaS metrics",
+        "expected": "{'net_mrr': 11500.0, 'churn_rate_pct': 2.0, 'is_healthy': True}",
+        "test_call": "compute_saas_metrics(10000.0, 2000.0, 500.0, 100, 2)"
+      }
+    ],
+    "solution_template": "def compute_saas_metrics(start_mrr, added_mrr, churned_mrr, total_customers, churned_customers):\n    net = start_mrr + added_mrr - churned_mrr\n    churn = round((churned_customers / total_customers) * 100, 2) if total_customers > 0 else 0.0\n    return {'net_mrr': net, 'churn_rate_pct': churn, 'is_healthy': churn <= 5.0}\n"
+  },
+  "skill-embedded-c": {
+    "skill_id": "skill-embedded-c",
+    "title": "Microcontroller Register Bitmask & Peripheral Config",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "In embedded systems programming, microcontrollers use memory-mapped control registers where individual bit positions enable peripherals, set clock dividers, and configure interrupt triggers.\n\nWrite a function `configure_control_register(initial_val, enable_peripheral, clock_div, interrupt_mode)` that models hardware register bit-packing:\n- Register width is 16 bits (values 0 to 65535, `0xFFFF`).\n- Bit 0: Peripheral Enable flag (1 = Enabled, 0 = Disabled)\n- Bits 1-3 (3 bits): Clock Divider (0 to 7)\n- Bits 4-5 (2 bits): Interrupt Mode (0 = None, 1 = Rising, 2 = Falling, 3 = Both)\n- Bits 6-15: Preserved from `initial_val`!\n\nReturn the resulting 16-bit integer formatted as `{'hex': '0x...', 'value': int}`.",
+    "starter_code": "def configure_control_register(initial_val, enable_peripheral, clock_div, interrupt_mode):\n    # TODO: Clear lower 6 bits and pack the new configuration bits\n    pass\n",
+    "test_cases": [
+      {
+        "input": "initial_val=0x0000, enable=True, clock_div=4, interrupt_mode=2",
+        "expected": "{'hex': '0x0029', 'value': 41}",
+        "test_call": "configure_control_register(0x0000, True, 4, 2)"
+      },
+      {
+        "input": "Preserve upper bits: initial_val=0xFF00, enable=False, clock_div=0, interrupt_mode=0",
+        "expected": "{'hex': '0xff00', 'value': 65280}",
+        "test_call": "configure_control_register(0xFF00, False, 0, 0)"
+      },
+      {
+        "input": "Full configuration: initial_val=0x1200, enable=True, clock_div=7, interrupt_mode=3",
+        "expected": "{'hex': '0x123f', 'value': 4671}",
+        "test_call": "configure_control_register(0x1200, True, 7, 3)"
+      }
+    ],
+    "solution_template": "def configure_control_register(initial_val, enable_peripheral, clock_div, interrupt_mode):\n    preserved = (initial_val & 0xFFC0) & 0xFFFF\n    bit_en = 1 if enable_peripheral else 0\n    bit_clk = (clock_div & 0x07) << 1\n    bit_irq = (interrupt_mode & 0x03) << 4\n    result = preserved | bit_en | bit_clk | bit_irq\n    return {'hex': f'0x{result:04x}', 'value': result}\n"
+  },
+  "skill-protocols": {
+    "skill_id": "skill-protocols",
+    "title": "I2C & UART Packet Frame Checksum Validator",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Hardware communication frames transmit byte payloads followed by an XOR checksum.\n\nFunction: `validate_packet(address, register, data_bytes, checksum)`\nCalculate expected checksum = `address ^ register ^ (XOR of all data_bytes)`. Return True if matches given checksum else False.",
+    "starter_code": "def validate_packet(address, register, data_bytes, checksum):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "valid I2C packet",
+        "expected": "True",
+        "test_call": "validate_packet(0x3C, 0x00, [0xAF, 0x14], 0x3C ^ 0x00 ^ 0xAF ^ 0x14)"
+      },
+      {
+        "input": "corrupted packet checksum",
+        "expected": "False",
+        "test_call": "validate_packet(0x3C, 0x00, [0xAF, 0x14], 0xFF)"
+      }
+    ],
+    "solution_template": "def validate_packet(address, register, data_bytes, checksum):\n    calc = address ^ register\n    for b in data_bytes:\n        calc ^= b\n    return calc == checksum\n"
+  },
+  "skill-arm-cortex": {
+    "skill_id": "skill-arm-cortex",
+    "title": "ARM NVIC Interrupt Priority Arbiter",
+    "language": "python",
+    "difficulty": "Advanced",
+    "description": "ARM Cortex-M prioritizes interrupts with LOWER numerical priority values (0 = highest priority).\n\nFunction: `schedule_nvic_interrupts(pending_irqs)`\n`pending_irqs`: `[{'irq_id': int, 'name': str, 'priority': int}]`\nReturn list of `irq_id`s sorted by priority ascending (lowest number first). On tie, preserve arrival order.",
+    "starter_code": "def schedule_nvic_interrupts(pending_irqs):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "3 pending IRQs with priorities 3, 0, 1",
+        "expected": "[2, 3, 1]",
+        "test_call": "schedule_nvic_interrupts([{'irq_id': 1, 'name': 'UART', 'priority': 3}, {'irq_id': 2, 'name': 'HARD_FAULT', 'priority': 0}, {'irq_id': 3, 'name': 'TIMER', 'priority': 1}])"
+      }
+    ],
+    "solution_template": "def schedule_nvic_interrupts(pending_irqs):\n    sorted_irqs = sorted(pending_irqs, key=lambda x: x['priority'])\n    return [x['irq_id'] for x in sorted_irqs]\n"
+  },
+  "skill-rtos": {
+    "skill_id": "skill-rtos",
+    "title": "FreeRTOS Priority Preemptive Scheduler",
+    "language": "python",
+    "difficulty": "Advanced",
+    "description": "In FreeRTOS, the scheduler selects the READY task with the HIGHEST numerical priority (higher number = higher priority).\n\nFunction: `select_next_task(ready_tasks)`\n`ready_tasks`: `[{'task_id': str, 'priority': int, 'state': str}]`\nFilter tasks where `state == 'READY'`. Return the `'task_id'` with the highest priority (or None if empty).",
+    "starter_code": "def select_next_task(ready_tasks):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "tasks with priorities 1, 4 (blocked), 3 (ready)",
+        "expected": "'task_telemetry'",
+        "test_call": "select_next_task([{'task_id': 'task_idle', 'priority': 0, 'state': 'READY'}, {'task_id': 'task_sensor', 'priority': 4, 'state': 'BLOCKED'}, {'task_id': 'task_telemetry', 'priority': 3, 'state': 'READY'}])"
+      }
+    ],
+    "solution_template": "def select_next_task(ready_tasks):\n    ready = [t for t in ready_tasks if t.get('state') == 'READY']\n    if not ready: return None\n    return max(ready, key=lambda x: x['priority'])['task_id']\n"
+  },
+  "skill-hw-debug": {
+    "skill_id": "skill-hw-debug",
+    "title": "Logic Analyzer Timing Frequency Decoder",
+    "language": "python",
+    "difficulty": "Intermediate",
+    "description": "Determine clock frequency in kHz from consecutive rising edge timestamps (in microseconds).\n\nFunction: `calculate_clock_freq_khz(edge_timestamps_us)`\nGiven at least 2 timestamps, calculate average period `T = (last - first) / (count - 1)`.\nFrequency in kHz = `1000.0 / T`. Return rounded to 1 decimal place.",
+    "starter_code": "def calculate_clock_freq_khz(edge_timestamps_us):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "timestamps=[0.0, 10.0, 20.0, 30.0]",
+        "expected": "100.0",
+        "test_call": "calculate_clock_freq_khz([0.0, 10.0, 20.0, 30.0])"
+      }
+    ],
+    "solution_template": "def calculate_clock_freq_khz(edge_timestamps_us):\n    if len(edge_timestamps_us) < 2: return 0.0\n    period = (edge_timestamps_us[-1] - edge_timestamps_us[0]) / (len(edge_timestamps_us) - 1)\n    return round(1000.0 / period, 1) if period > 0 else 0.0\n"
+  },
+  "skill-pcb-basics": {
+    "skill_id": "skill-pcb-basics",
+    "title": "PCB Trace Current & Temperature Estimator",
+    "language": "python",
+    "difficulty": "Beginner",
+    "description": "Estimate minimum PCB trace width (in mils) using IPC-2221 formula: `Width = (Current / (k * (TempRise^0.44)))^(1 / 0.725)`.\nSimplified linear model for external traces: `width_mils = round((current_amps * 30.0) / (temp_rise_c ** 0.3), 1)`.\n\nFunction: `estimate_trace_mils(current_amps, temp_rise_c)`\nReturn estimated width in mils rounded to 1 decimal place.",
+    "starter_code": "def estimate_trace_mils(current_amps, temp_rise_c):\n    pass\n",
+    "test_cases": [
+      {
+        "input": "2A current with 10C temperature rise",
+        "expected": "30.1",
+        "test_call": "estimate_trace_mils(2.0, 10.0)"
+      }
+    ],
+    "solution_template": "def estimate_trace_mils(current_amps, temp_rise_c):\n    return round((current_amps * 30.0) / (temp_rise_c ** 0.3), 1)\n"
+  }
+}

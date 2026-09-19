@@ -1,0 +1,189 @@
+{
+  "Software Developer": {
+    "role_id": "swe",
+    "title": "Software Developer",
+    "department": "Engineering",
+    "average_salary_lpa": "8.5 - 18 LPA",
+    "overview": "Build scalable backends, user interfaces, microservices, and distributed applications for modern software products.",
+    "skills": [
+      {
+        "id": "skill-dsa",
+        "name": "Data Structures & System Algorithms",
+        "category": "Core CS",
+        "industry_relevance": "Essential for algorithmic problem solving, code efficiency, and technical whiteboard interviews.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Mastery of HashMaps, Balanced Trees, Graphs (BFS/DFS), Dynamic Programming, and Space-Time Complexity."
+      },
+      {
+        "id": "skill-git",
+        "name": "Git & GitHub Collaboration Workflows",
+        "category": "Tooling",
+        "industry_relevance": "Industry software development is 100% team-based; branching, rebasing, pull requests, and merge conflict resolution are day-one essentials.",
+        "difficulty": "Beginner",
+        "expected_depth": "Feature branching, cherry-picking, interactive rebasing, writing clean commit messages, PR reviews."
+      },
+      {
+        "id": "skill-rest-apis",
+        "name": "RESTful API Design & Implementation",
+        "category": "Backend",
+        "industry_relevance": "Crucial for connecting frontends to backend services, handling JSON payloads, status codes, authentication, and pagination.",
+        "difficulty": "Intermediate",
+        "expected_depth": "HTTP verbs, REST conventions, route validation, token authentication (JWT), error handling in FastAPI/Express."
+      },
+      {
+        "id": "skill-docker",
+        "name": "Docker & Containerization",
+        "category": "DevOps",
+        "industry_relevance": "Modern cloud applications run in lightweight containers to ensure consistency between development, staging, and production.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Writing Dockerfiles, multi-stage builds, docker-compose orchestration, volume management, container networking."
+      },
+      {
+        "id": "skill-react",
+        "name": "Modern Frontend (React & Tailwind CSS)",
+        "category": "Frontend",
+        "industry_relevance": "Full-stack developers must build responsive, dynamic, component-driven client interfaces.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Component lifecycle, React hooks (useState, useEffect, useContext), responsive layouts with Tailwind, client-side routing."
+      },
+      {
+        "id": "skill-sql-adv",
+        "name": "Production Database Engineering (PostgreSQL/SQL)",
+        "category": "Database",
+        "industry_relevance": "University covers basic relational theory, but industry requires indexing, query optimization, migrations, and ORMs.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Joins, transactions, indexing strategies, ACID compliance, ORMs (SQLAlchemy/Prisma), query profiling."
+      },
+      {
+        "id": "skill-sys-design",
+        "name": "System Design & Scalable Architecture",
+        "category": "Architecture",
+        "industry_relevance": "Designing systems that scale to millions of users with caching (Redis), message queues (Kafka), and load balancers.",
+        "difficulty": "Advanced",
+        "expected_depth": "Horizontal vs vertical scaling, caching patterns, CAP theorem, database sharding, microservices communication."
+      },
+      {
+        "id": "skill-cicd",
+        "name": "CI/CD Pipelines & Automated Unit Testing",
+        "category": "DevOps & QA",
+        "industry_relevance": "Automated test suites (PyTest/Jest) and deployment workflows (GitHub Actions) prevent regressions in production code.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Unit and integration tests, mock objects, writing GitHub Actions workflows for linting, testing, and artifact deployment."
+      }
+    ]
+  },
+  "Data Analyst": {
+    "role_id": "da",
+    "title": "Data Analyst",
+    "department": "Analytics & Business Intelligence",
+    "average_salary_lpa": "6.5 - 14 LPA",
+    "overview": "Transform raw business datasets into actionable decisions through statistical modeling, SQL transformations, and BI dashboards.",
+    "skills": [
+      {
+        "id": "skill-sql-da",
+        "name": "Advanced SQL (Window Functions & Aggregations)",
+        "category": "Data Transformation",
+        "industry_relevance": "The #1 tested skill in Data Analyst interviews: calculating running totals, rankings, cohort retention, and multi-table joins.",
+        "difficulty": "Intermediate",
+        "expected_depth": "ROW_NUMBER, RANK, DENSE_RANK, LEAD/LAG, CTEs, self-joins, conditional aggregation (CASE WHEN)."
+      },
+      {
+        "id": "skill-pandas",
+        "name": "Python for Data Analysis (Pandas & NumPy)",
+        "category": "Data Wrangling",
+        "industry_relevance": "Cleaning messy real-world datasets, handling missing values, reshaping schemas, and vectorized computations.",
+        "difficulty": "Intermediate",
+        "expected_depth": "DataFrames, groupby operations, pivot tables, handling NaNs, datetime manipulation, vectorization with NumPy."
+      },
+      {
+        "id": "skill-bi-dashboards",
+        "name": "BI Dashboarding (Power BI / Tableau / Metabase)",
+        "category": "Visualization",
+        "industry_relevance": "Communicating insights to executive leadership and non-technical stakeholders through interactive visual metrics.",
+        "difficulty": "Beginner",
+        "expected_depth": "DAX calculations, interactive filters, drill-through reports, executive KPI dashboards, storytelling with charts."
+      },
+      {
+        "id": "skill-stats",
+        "name": "Applied Statistics & A/B Hypothesis Testing",
+        "category": "Quantitative Analytics",
+        "industry_relevance": "Validating whether a product experiment or marketing campaign produced a statistically significant lift.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Null hypothesis testing, p-values, t-tests, chi-square, confidence intervals, sample size estimation, distributions."
+      },
+      {
+        "id": "skill-eda",
+        "name": "Exploratory Data Analysis & Feature Insights",
+        "category": "Data Science",
+        "industry_relevance": "Detecting anomalies, understanding correlation vs causation, and surfacing unexpected patterns in large datasets.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Outlier detection, distribution skewness, Matplotlib/Seaborn visualization, correlation heatmaps."
+      },
+      {
+        "id": "skill-business-metrics",
+        "name": "Business & Product Analytics (CAC, LTV, Retention)",
+        "category": "Business Context",
+        "industry_relevance": "Indian startups and enterprises value analysts who understand how data ties to revenue, churn, and unit economics.",
+        "difficulty": "Beginner",
+        "expected_depth": "Cohort retention curves, Customer Acquisition Cost, Customer Lifetime Value, MRR/ARR, conversion funnels."
+      }
+    ]
+  },
+  "Embedded Systems Engineer": {
+    "role_id": "embedded",
+    "title": "Embedded Systems Engineer",
+    "department": "Hardware & Firmware Engineering",
+    "average_salary_lpa": "7.0 - 16 LPA",
+    "overview": "Develop firmware, device drivers, and real-time operating system applications for microcontrollers, automotive, and IoT hardware.",
+    "skills": [
+      {
+        "id": "skill-embedded-c",
+        "name": "Embedded C & Bitwise Manipulation",
+        "category": "Firmware Core",
+        "industry_relevance": "Writing resource-constrained, high-performance C code with direct register manipulation and pointer arithmetic.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Bitmasks, bit shifts, volatile qualifier, memory-mapped I/O, interrupt service routines (ISRs), stack vs heap."
+      },
+      {
+        "id": "skill-protocols",
+        "name": "Communication Protocols (UART, SPI, I2C, CAN)",
+        "category": "Hardware Interfacing",
+        "industry_relevance": "Interfacing microcontrollers with sensors, memory chips, wireless transceivers, and automotive ECUs.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Timing diagrams, master-slave configurations, baud rate calculations, ACK/NACK signaling, packet framing, CAN bus IDs."
+      },
+      {
+        "id": "skill-arm-cortex",
+        "name": "ARM Cortex-M Architecture & Peripherals",
+        "category": "Hardware Platform",
+        "industry_relevance": "The dominant architecture for commercial IoT, drones, and consumer electronics worldwide (STM32, NXP).",
+        "difficulty": "Advanced",
+        "expected_depth": "NVIC interrupt priorities, Timers/PWM, ADC/DAC conversions, DMA channels, power sleep modes."
+      },
+      {
+        "id": "skill-rtos",
+        "name": "Real-Time Operating Systems (FreeRTOS)",
+        "category": "Operating Systems",
+        "industry_relevance": "Managing deterministic multi-tasking, task priorities, and inter-task communication in safety-critical devices.",
+        "difficulty": "Advanced",
+        "expected_depth": "Tasks, scheduler ticks, semaphores, mutexes, message queues, race condition prevention, priority inversion."
+      },
+      {
+        "id": "skill-hw-debug",
+        "name": "Hardware Debugging (Oscilloscope & Logic Analyzer)",
+        "category": "Laboratory & Validation",
+        "industry_relevance": "Diagnosing real hardware signal ringing, protocol timing errors, and electrical noise on circuit boards.",
+        "difficulty": "Intermediate",
+        "expected_depth": "Trigger modes, decoding I2C/SPI packets on logic analyzers, multimeter continuity/voltage verification, JTAG/SWD debugging."
+      },
+      {
+        "id": "skill-pcb-basics",
+        "name": "Schematic Interpretation & PCB Design Basics",
+        "category": "Hardware Design",
+        "industry_relevance": "Engineers must read component schematics, understand decoupling capacitors, pull-up resistors, and board layout rules.",
+        "difficulty": "Beginner",
+        "expected_depth": "KiCAD schematic capture, footprint selection, power plane decoupling, ground loops, design rule checks (DRC)."
+      }
+    ]
+  }
+}

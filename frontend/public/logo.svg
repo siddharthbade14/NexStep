@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1F4E5F" />
+      <stop offset="100%" stop-color="#2C6E8F" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F4B942" />
+      <stop offset="100%" stop-color="#EFA92E" />
+    </linearGradient>
+  </defs>
+  <!-- Background rounded hexagon or shield -->
+  <rect width="48" height="48" rx="12" fill="url(#brandGrad)" />
+  <!-- Ascending stairs / roadmap steps -->
+  <path d="M12 34H18V28H24V22H30V16H36" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Target star / milestone in gold -->
+  <circle cx="36" cy="16" r="4.5" fill="url(#goldGrad)" />
+  <path d="M14 26L20 20L25 24L34 14" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+</svg>
