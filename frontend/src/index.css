@@ -269,3 +269,25 @@
   background: #94A3B8;
 }
 
+/* Premium Glass & Glow Utilities */
+.glass-card-premium {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
+}
+
+.glow-ring-teal {
+  box-shadow: 0 0 25px -5px rgba(44, 110, 143, 0.35);
+}
+
+.glow-ring-amber {
+  box-shadow: 0 0 25px -5px rgba(244, 185, 66, 0.45);
+}
+
+.glow-ring-emerald {
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.35);
+}
+
+
