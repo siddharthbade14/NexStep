@@ -211,6 +211,27 @@
   }
 }
 
+@keyframes float-drift {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) translateX(6px) rotate(1.5deg);
+  }
+  66% {
+    transform: translateY(6px) translateX(-6px) rotate(-1deg);
+  }
+}
+
+@keyframes float-diagonal {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-12px) translateX(-8px) scale(1.03);
+  }
+}
+
 @keyframes pulse-glow {
   0%, 100% {
     opacity: 0.6;
@@ -237,6 +258,55 @@
 
 .animate-float-reverse {
   animation: float-reverse 6s ease-in-out infinite;
+}
+
+.animate-float-drift {
+  animation: float-drift 7s ease-in-out infinite;
+}
+
+.animate-float-diagonal {
+  animation: float-diagonal 8.5s ease-in-out infinite;
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.5deg);
+  }
+}
+
+@keyframes float-bounce {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes radar-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 4.5s ease-in-out infinite;
+}
+
+.animate-float-bounce {
+  animation: float-bounce 3.8s ease-in-out infinite;
+}
+
+.animate-radar-ring {
+  animation: radar-ring 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
 }
 
 .animate-pulse-glow {
