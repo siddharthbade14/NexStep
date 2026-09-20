@@ -196,15 +196,15 @@ export const OpportunitiesPage = () => {
             return (
               <div
                 key={item.id}
-                className={`p-6 rounded-3xl flex flex-col justify-between transition-all duration-300 relative overflow-hidden bg-white border ${
+                className={`p-6 rounded-3xl flex flex-col justify-between transition-all duration-300 relative overflow-hidden ${
                   item.is_qualified
-                    ? 'border-teal-300/80 hover:border-teal-500 shadow-md hover:shadow-xl ring-1 ring-teal-500/10 hover:-translate-y-1'
-                    : 'border-slate-200/90 hover:border-slate-300 shadow-sm hover:shadow-md hover:-translate-y-0.5'
+                    ? 'glass-card-premium border-teal-300/80 hover:border-teal-500 shadow-md hover:shadow-2xl ring-1 ring-teal-500/20 hover:-translate-y-1.5 glow-ring-teal'
+                    : 'bg-white/90 border border-slate-200/90 hover:border-slate-300 shadow-sm hover:shadow-md hover:-translate-y-0.5'
                 }`}
               >
                 {/* Specular highlight on qualified cards */}
                 {item.is_qualified && (
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-400 via-[#F4B942] to-teal-400"></div>
+                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-teal-400 via-[#F4B942] to-emerald-400"></div>
                 )}
 
                 <div className="space-y-4 pt-1">

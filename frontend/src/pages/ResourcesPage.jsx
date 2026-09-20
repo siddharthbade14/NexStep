@@ -107,8 +107,11 @@ export const ResourcesPage = () => {
         </p>
       </div>
 
-      {/* SEQUENCED RESOURCE CARDS */}
-      <div className="space-y-5">
+      {/* SEQUENCED RESOURCE CARDS WITH CONNECTING TIMELINE */}
+      <div className="relative space-y-6">
+        {/* Subtle vertical connecting guideline behind milestones */}
+        <div className="hidden md:block absolute left-12 top-8 bottom-8 w-0.5 bg-gradient-to-b from-teal-500 via-amber-400 to-slate-200 opacity-30 -z-0" />
+
         {resources.map((res, idx) => {
           const isCompleted = student.completed_quizzes?.includes(res.skill_id) || res.is_completed;
           const isUnlocked = res.is_unlocked || isCompleted;
@@ -116,24 +119,24 @@ export const ResourcesPage = () => {
           return (
             <div
               key={res.skill_id}
-              className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 border relative overflow-hidden bg-white ${
+              className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 border relative overflow-hidden bg-white/95 backdrop-blur-md ${
                 isCompleted
                   ? 'border-teal-200 shadow-sm hover:shadow-md hover:border-teal-300'
                   : isUnlocked
-                  ? 'border-slate-200/90 shadow-md hover:shadow-xl ring-1 ring-[#1F4E5F]/10 hover:-translate-y-1'
-                  : 'border-slate-200/60 bg-slate-50/60 opacity-65'
+                  ? 'border-slate-200/90 shadow-lg hover:shadow-2xl ring-1 ring-[#1F4E5F]/15 hover:-translate-y-1 glow-ring-teal'
+                  : 'border-slate-200/60 bg-slate-50/70 opacity-65 backdrop-blur-xs'
               }`}
             >
               {/* Specular top highlight for unlocked */}
               {isUnlocked && !isCompleted && (
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1F4E5F] via-[#F4B942] to-teal-400"></div>
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#1F4E5F] via-[#F4B942] to-teal-400"></div>
               )}
               {isCompleted && (
-                <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-500"></div>
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-emerald-500"></div>
               )}
 
               {/* Order Watermark */}
-              <div className="absolute right-6 top-5 text-6xl font-black text-slate-100/80 select-none pointer-events-none font-mono">
+              <div className="absolute right-6 top-5 text-6xl font-black text-slate-100/90 select-none pointer-events-none font-mono">
                 #{res.order}
               </div>
 

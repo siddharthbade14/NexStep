@@ -13,11 +13,12 @@ import {
   X,
   Sparkles,
   ChevronRight,
-  GraduationCap,
-  ArrowRight,
   ShieldCheck,
   Code2,
-  UserCheck
+  Cpu,
+  ArrowRight,
+  Activity,
+  Award
 } from 'lucide-react';
 import { Badge } from './Badge';
 import { Modal } from './Modal';
@@ -61,13 +62,13 @@ export const Navbar = () => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   const navItems = [
-    { id: 'landing', label: 'Home', icon: Compass },
-    { id: 'onboarding', label: 'Onboard', icon: Layers },
-    { id: 'gap-analysis', label: 'Gap Analysis', icon: Sparkles, highlight: true },
-    { id: 'verification', label: 'Verify Skills', icon: CheckCircle },
-    { id: 'resources', label: 'Resources', icon: BookOpen },
-    { id: 'roadmap', label: 'Roadmap', icon: MapPin },
-    { id: 'opportunities', label: 'Internships', icon: Briefcase }
+    { id: 'landing', label: 'Home', icon: Compass, tag: null },
+    { id: 'onboarding', label: 'Onboarding', icon: Layers, tag: 'Setup' },
+    { id: 'gap-analysis', label: 'Gap Analysis', icon: Sparkles, tag: 'AI Core', highlight: true },
+    { id: 'verification', label: 'Verify Skills', icon: CheckCircle, badgeCount: student.verified_skills?.length || 0 },
+    { id: 'resources', label: 'Resources', icon: BookOpen, tag: 'Guides' },
+    { id: 'roadmap', label: 'Milestone Roadmap', icon: MapPin, tag: 'Path' },
+    { id: 'opportunities', label: 'Internships', icon: Briefcase, tag: '12 Live', badgeColor: 'bg-amber-100 text-amber-800' }
   ];
 
   const handleNavClick = (id) => {
@@ -78,12 +79,12 @@ export const Navbar = () => {
 
   const verifiedCount = student.verified_skills?.length || 0;
 
-  return (
-    <>
-      <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        
-        {/* Brand Logo */}
+  // Render the core sidebar navigation content (shared between desktop sidebar and mobile drawer)
+  const renderSidebarContent = () => (
+    <div className="flex flex-col h-full bg-white text-slate-800">
+      
+      {/* 1. BRAND HEADER */}
+      <div className="p-5 pb-4 border-b border-slate-100/90 flex items-center justify-between">
         <div 
           onClick={() => handleNavClick('landing')}
           className="flex items-center gap-3 cursor-pointer group"
@@ -96,173 +97,231 @@ export const Navbar = () => {
               <span className="text-xl font-black tracking-tight text-[#1F4E5F]">
                 Nex<span className="text-[#F4B942]">Step</span>
               </span>
-              <span className="text-[10px] font-bold uppercase bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded border border-teal-200/60 tracking-wider">
-                Beta
+              <span className="text-[9px] font-extrabold uppercase bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded border border-teal-200/60 tracking-wider">
+                AI v2.4
               </span>
             </div>
-            <p className="text-[10px] text-slate-500 font-medium hidden sm:block -mt-0.5">
-              AI Career Mapping for Bharat
+            <p className="text-[10px] text-slate-400 font-medium -mt-0.5">
+              Career Engine for Bharat
             </p>
           </div>
         </div>
+      </div>
 
-        {/* Desktop Nav Items */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 shrink-0">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handleNavClick(item.id)}
-                className={`flex items-center gap-1.5 xl:gap-2 px-2.5 xl:px-3.5 py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-medium transition-all duration-200 shrink-0 ${
-                  isActive
-                    ? 'bg-[#1F4E5F] text-white shadow-xs font-semibold'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
-                }`}
-              >
-                <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 shrink-0 ${isActive ? 'text-[#F4B942]' : item.highlight ? 'text-amber-600' : 'text-slate-400'}`} />
-                <span className="whitespace-nowrap">{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* Right Student Profile Indicator & Actions (Desktop only >= lg) */}
-        <div className="hidden lg:flex items-center gap-2.5 shrink-0">
-          {/* Active Student Status Pill -> Opens Profile & Credential Passport Modal */}
-          <button 
-            type="button"
-            onClick={() => setProfileModalOpen(true)}
-            title="Click to view Student Profile & Skill Passport"
-            className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100/90 border border-slate-200/90 cursor-pointer transition-all hover:shadow-xs hover:border-teal-500/40 group select-none shrink-0"
-          >
-            <div className="w-7 h-7 rounded-lg bg-teal-600/10 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+      {/* 2. STUDENT CREDENTIAL PASSPORT CARD */}
+      <div className="p-4 pb-3">
+        <div 
+          onClick={() => setProfileModalOpen(true)}
+          className="p-3 rounded-2xl bg-gradient-to-br from-slate-50 to-teal-50/40 border border-slate-200/80 hover:border-teal-400/70 hover:shadow-sm cursor-pointer transition-all duration-200 group"
+          title="Click to view Student Skill Passport"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-teal-600/10 text-teal-900 font-black text-sm flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
               {student?.name?.charAt(0) || 'A'}
             </div>
-            <div className="text-left leading-tight shrink-0">
-              <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                <span className="truncate max-w-[85px] xl:max-w-[120px]">
-                  {student?.name ? student.name.split(' ')[0] : 'Aarav'}
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-slate-900 truncate">
+                  {student?.name || 'Aarav Sharma'}
                 </span>
                 <span className="relative flex h-2 w-2 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
               </div>
-              <div className="text-[10px] text-slate-500 font-medium truncate max-w-[85px] xl:max-w-[120px]">
+              <p className="text-[11px] text-slate-500 font-medium truncate">
                 {student?.dream_role || 'Software Developer'}
-              </div>
+              </p>
             </div>
-            <div className="shrink-0 flex items-center pl-0.5">
-              <Badge variant="verified" size="sm" icon={false} className="whitespace-nowrap shrink-0 font-semibold px-2 py-0.5">
-                {verifiedCount} Verified
-              </Badge>
-            </div>
-          </button>
+          </div>
 
-          {/* Quick Demo Reset */}
-          <button
-            type="button"
-            onClick={resetStudentState}
-            title="Reset Demo Data to Initial State"
-            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors shrink-0"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
+          <div className="mt-2.5 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px]">
+            <span className="text-slate-500 font-semibold flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
+              Passport Status
+            </span>
+            <span className="font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/80">
+              {verifiedCount} Verified
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. VERTICAL NAVIGATION LINKS */}
+      <div className="flex-1 px-3 py-2 space-y-1 overflow-y-auto sidebar-scroll">
+        <div className="px-3 pb-1 pt-1">
+          <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+            Navigation Menu
+          </span>
         </div>
 
-        {/* Mobile / Tablet Controls (< lg) */}
-        <div className="flex items-center gap-2 lg:hidden">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => handleNavClick(item.id)}
+              className={`w-full group flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                isActive
+                  ? 'bg-gradient-to-r from-[#1F4E5F] to-[#2C6E8F] text-white shadow-brand shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 hover:translate-x-1'
+              }`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${
+                  isActive 
+                    ? 'bg-white/15 text-[#F4B942]' 
+                    : item.highlight 
+                      ? 'bg-amber-50 text-amber-600' 
+                      : 'bg-slate-100 text-slate-500'
+                }`}>
+                  <Icon className="w-4 h-4" />
+                </div>
+                <span className="truncate">{item.label}</span>
+              </div>
+
+              <div className="flex items-center gap-1.5 shrink-0">
+                {item.tag && !isActive && (
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                    item.badgeColor || (item.highlight ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-500')
+                  }`}>
+                    {item.tag}
+                  </span>
+                )}
+                {item.badgeCount !== undefined && (
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    isActive ? 'bg-[#F4B942] text-slate-950 font-black' : 'bg-teal-50 text-teal-800 border border-teal-200'
+                  }`}>
+                    {item.badgeCount}
+                  </span>
+                )}
+                {isActive && (
+                  <ChevronRight className="w-4 h-4 text-teal-200" />
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 4. SIDEBAR FOOTER: TELEMETRY & CONTROLS */}
+      <div className="p-3 border-t border-slate-100/90 space-y-2 bg-slate-50/50">
+        {/* Real-time AI Telemetry Pill */}
+        <div className="p-2.5 rounded-xl bg-white border border-slate-200/80 text-[10px] space-y-1">
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-slate-700 flex items-center gap-1.5">
+              <Cpu className="w-3.5 h-3.5 text-teal-600" />
+              AI Inference Engine
+            </span>
+            <span className="flex items-center gap-1 text-emerald-600 font-bold">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Online
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-slate-400 font-medium">
+            <span>all-MiniLM-L6-v2</span>
+            <span>22ms latency</span>
+          </div>
+        </div>
+
+        {/* Demo Reset Button */}
+        <button
+          type="button"
+          onClick={() => {
+            if (window.confirm('Reset student profile & verified credentials back to initial DTU state?')) {
+              resetStudentState();
+            }
+          }}
+          className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors border border-dashed border-slate-200 hover:border-rose-300"
+          title="Reset demo data"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+          <span>Reset Demo Profile</span>
+        </button>
+      </div>
+
+    </div>
+  );
+
+  return (
+    <>
+      {/* ========================================================================= */}
+      {/* DESKTOP VERTICAL SIDEBAR (Persistent Left-Docked on lg: and above)         */}
+      {/* ========================================================================= */}
+      <aside className="hidden lg:flex flex-col w-68 xl:w-72 h-screen sticky top-0 bg-white border-r border-slate-200/90 shadow-sm z-30 shrink-0 select-none overflow-hidden">
+        {renderSidebarContent()}
+      </aside>
+
+      {/* ========================================================================= */}
+      {/* MOBILE / TABLET TOP BAR (< lg)                                            */}
+      {/* ========================================================================= */}
+      <div className="lg:hidden sticky top-0 z-40 w-full h-15 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 flex items-center justify-between shadow-xs">
+        
+        {/* Brand */}
+        <div 
+          onClick={() => handleNavClick('landing')}
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <div className="w-8 h-8 rounded-lg bg-brand-gradient flex items-center justify-center p-1.5">
+            <img src="/logo.svg" alt="NexStep Logo" className="w-full h-full" />
+          </div>
+          <span className="text-lg font-black tracking-tight text-[#1F4E5F]">
+            Nex<span className="text-[#F4B942]">Step</span>
+          </span>
+        </div>
+
+        {/* Right Actions */}
+        <div className="flex items-center gap-2">
           <button 
             type="button"
             onClick={() => setProfileModalOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-teal-50 text-teal-800 text-xs font-semibold hover:bg-teal-100 active:scale-95 transition-all shrink-0 border border-teal-200/60"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-teal-50 text-teal-800 text-xs font-semibold border border-teal-200/60"
           >
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-600"></span>
-            </span>
-            <span className="whitespace-nowrap">{student?.name ? student.name.split(' ')[0] : 'Student'}</span>
-            <span className="text-teal-400">•</span>
-            <span className="whitespace-nowrap font-bold text-teal-700">{verifiedCount} Verified</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="font-bold">{verifiedCount} Verified</span>
           </button>
 
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100"
-            aria-label="Toggle Navigation Menu"
+            className="p-2 text-slate-700 hover:bg-slate-100 rounded-xl"
+            aria-label="Toggle Menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
-
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* ========================================================================= */}
+      {/* MOBILE / TABLET OFF-CANVAS DRAWER (< lg)                                 */}
+      {/* ========================================================================= */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-1.5 shadow-lg animate-in slide-in-from-top duration-200">
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          {/* Backdrop */}
           <div 
-            onClick={() => {
-              setMobileMenuOpen(false);
-              setProfileModalOpen(true);
-            }}
-            className="p-3 mb-2 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between cursor-pointer hover:bg-slate-100 transition-colors"
-          >
-            <div>
-              <div className="flex items-center gap-1.5">
-                <p className="text-xs font-bold text-slate-900">{student.name}</p>
-                <span className="text-[10px] bg-teal-100 text-teal-800 px-1.5 py-0.2 rounded font-semibold">View Passport</span>
-              </div>
-              <p className="text-[11px] text-slate-500">{student.course} • Sem {student.semester}</p>
-            </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                resetStudentState();
-              }}
-              className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 bg-white px-2 py-1 rounded-md border border-slate-200"
-            >
-              <RotateCcw className="w-3 h-3" />
-              <span>Reset</span>
-            </button>
-          </div>
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-200"
+            onClick={() => setMobileMenuOpen(false)}
+          />
 
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'bg-[#1F4E5F] text-white font-semibold'
-                    : 'text-slate-700 hover:bg-slate-100'
-                }`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#F4B942]' : 'text-slate-500'}`} />
-                  <span>{item.label}</span>
-                </div>
-                <ChevronRight className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-              </button>
-            );
-          })}
+          {/* Drawer Panel */}
+          <div className="relative w-72 max-w-[85vw] h-full bg-white shadow-2xl z-10 flex flex-col animate-in slide-in-from-left duration-200">
+            {renderSidebarContent()}
+          </div>
         </div>
       )}
-    </header>
 
-    {/* Student Profile & Skill Passport Modal */}
-    <Modal
-      isOpen={profileModalOpen}
-      onClose={() => setProfileModalOpen(false)}
-      title="Student Profile & Skill Passport"
-      subtitle="Verified academic credentials & career readiness on NexStep"
-      maxWidth="max-w-xl"
-    >
+      {/* ========================================================================= */}
+      {/* STUDENT PROFILE & SKILL PASSPORT MODAL                                    */}
+      {/* ========================================================================= */}
+      <Modal
+        isOpen={profileModalOpen}
+        onClose={() => setProfileModalOpen(false)}
+        title="Student Profile & Skill Passport"
+        subtitle="Verified academic credentials & career readiness on NexStep"
+        maxWidth="max-w-xl"
+      >
         <div className="space-y-4 pt-1">
           {/* Student Profile Banner */}
           <div className="p-4 rounded-xl bg-gradient-to-r from-[#1F4E5F]/10 via-[#2C6E8F]/5 to-amber-500/5 border border-teal-900/10 flex items-center gap-3.5">
@@ -440,3 +499,4 @@ export const Navbar = () => {
   );
 };
 
+export default Navbar;

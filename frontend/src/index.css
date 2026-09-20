@@ -290,4 +290,20 @@
   box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.35);
 }
 
+.code-glow-ide {
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.4), 0 0 20px -5px rgba(44, 110, 143, 0.25);
+}
+
+.sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(203, 213, 225, 0.6) transparent;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.6);
+  border-radius: 9999px;
+}
+
 

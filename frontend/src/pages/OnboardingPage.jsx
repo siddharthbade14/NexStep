@@ -160,24 +160,52 @@ export const OnboardingPage = () => {
         </p>
       </div>
 
-      {/* Progress Bar Header */}
-      <div className="p-4 sm:p-5 bg-white border border-slate-200/90 rounded-2xl shadow-sm space-y-2.5">
-        <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
-          <span className="font-bold text-slate-700">Step {currentStep} of {totalSteps}</span>
-          <span className="text-[#1F4E5F] font-black tracking-tight">
-            {currentStep === 1 && 'College & Degree'}
-            {currentStep === 2 && 'Semester & Known Skills'}
-            {currentStep === 3 && 'Target Dream Role'}
-            {currentStep === 4 && 'Language & Profile Review'}
-          </span>
+      {/* Modern 4-Step Stepper Header */}
+      <div className="glass-card-premium p-4 sm:p-6 rounded-3xl border border-slate-200/90 shadow-sm relative overflow-hidden">
+        <div className="flex items-center justify-between relative z-10">
+          {[
+            { num: 1, label: 'College' },
+            { num: 2, label: 'Term & Skills' },
+            { num: 3, label: 'Target Role' },
+            { num: 4, label: 'Confirmation' }
+          ].map((s, idx) => {
+            const isDone = currentStep > s.num;
+            const isCurrent = currentStep === s.num;
+            return (
+              <React.Fragment key={s.num}>
+                <div className="flex flex-col items-center gap-1.5 z-10">
+                  <div
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center font-black text-xs sm:text-sm transition-all duration-300 ${
+                      isDone
+                        ? 'bg-emerald-500 text-white shadow-xs'
+                        : isCurrent
+                        ? 'bg-gradient-to-r from-[#1F4E5F] to-[#2C6E8F] text-white shadow-brand scale-110 glow-ring-teal'
+                        : 'bg-slate-100 text-slate-400 border border-slate-200'
+                    }`}
+                  >
+                    {isDone ? <Check className="w-4 h-4 text-white" /> : s.num}
+                  </div>
+                  <span className={`text-[10px] sm:text-xs font-bold tracking-tight ${
+                    isCurrent ? 'text-[#1F4E5F]' : isDone ? 'text-emerald-700' : 'text-slate-400'
+                  }`}>
+                    {s.label}
+                  </span>
+                </div>
+
+                {idx < 3 && (
+                  <div className="flex-1 h-1 mx-2 sm:mx-4 rounded-full bg-slate-100 overflow-hidden relative -top-3">
+                    <div 
+                      className={`h-full transition-all duration-500 ease-out ${
+                        currentStep > idx + 1 ? 'bg-emerald-500' : currentStep === idx + 1 ? 'bg-gradient-to-r from-[#1F4E5F] to-amber-400 w-1/2' : 'w-0'
+                      }`}
+                      style={{ width: currentStep > idx + 1 ? '100%' : currentStep === idx + 1 ? '50%' : '0%' }}
+                    />
+                  </div>
+                )}
+              </React.Fragment>
+            );
+          })}
         </div>
-        <ProgressBar
-          value={currentStep}
-          max={totalSteps}
-          size="sm"
-          showLabel={false}
-          variant="primary"
-        />
       </div>
 
       {/* STEP 1: College & Course */}

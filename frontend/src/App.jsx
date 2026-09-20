@@ -43,14 +43,16 @@ const AppContent = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-900 bg-grid-pattern selection:bg-[#1F4E5F] selection:text-white">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[#F8FAFC] text-slate-900 bg-grid-pattern selection:bg-[#1F4E5F] selection:text-white">
       <Navbar />
-      <div className="flex-1">
-        <PageContainer>
-          {renderActiveScreen()}
-        </PageContainer>
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-x-hidden">
+        <div className="flex-1">
+          <PageContainer>
+            {renderActiveScreen()}
+          </PageContainer>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };

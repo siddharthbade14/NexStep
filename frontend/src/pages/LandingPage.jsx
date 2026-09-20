@@ -198,9 +198,11 @@ export const LandingPage = () => {
 
         </div>
 
-        {/* HERO INTERACTIVE PREVIEW CARD WITH SPECULAR DEPTH */}
-        <div className="max-w-4xl mx-auto mt-14">
-          <Card variant="elevated" hover className="overflow-hidden border-2 border-slate-200/90 shadow-2xl hover:border-teal-500/40">
+        {/* HERO INTERACTIVE PREVIEW CARD WITH SPECULAR DEPTH & GLOW */}
+        <div className="max-w-4xl mx-auto mt-14 relative">
+          <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-teal-500/20 via-[#F4B942]/20 to-emerald-500/20 blur-xl -z-10 opacity-70" />
+          
+          <div className="glass-card-premium rounded-3xl overflow-hidden border-2 border-slate-200/90 shadow-2xl hover:border-teal-500/40 glow-ring-teal transition-all duration-300">
             <div className="bg-slate-900 px-6 py-4 flex items-center justify-between border-b border-slate-800">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-rose-500/90 shadow-xs shadow-rose-500/50" />
@@ -210,18 +212,18 @@ export const LandingPage = () => {
                   nexstep-engine // sem-5-cse-to-software-developer
                 </span>
               </div>
-              <Badge variant="verified" size="sm">Live Gap Engine</Badge>
+              <Badge variant="verified" size="sm" className="shadow-xs">Live Gap Engine</Badge>
             </div>
-            <div className="p-6 sm:p-8 bg-gradient-to-b from-white via-slate-50/50 to-slate-50/90">
+            <div className="p-6 sm:p-8 bg-gradient-to-b from-white/95 via-slate-50/70 to-slate-50/95 backdrop-blur-md">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                 
                 {/* Col 1: College Syllabus */}
-                <div className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-xs space-y-2 hover:border-teal-400 transition-colors">
+                <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-2 hover:border-teal-400 transition-all hover:shadow-md">
                   <div className="text-xs font-bold uppercase text-slate-500 tracking-wider flex items-center justify-between">
                     <span>Step 1: Syllabus</span>
-                    <span className="w-2 h-2 rounded-full bg-teal-500" />
+                    <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
                   </div>
-                  <div className="text-sm font-bold text-slate-900">B.Tech CSE (Sem 5)</div>
+                  <div className="text-sm font-black text-slate-900">B.Tech CSE (Sem 5)</div>
                   <div className="text-xs text-slate-600 space-y-1.5 pt-1">
                     <p className="flex items-center gap-1.5 text-teal-800 font-medium">
                       <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" /> Data Structures (Sem 3)
@@ -237,7 +239,7 @@ export const LandingPage = () => {
 
                 {/* Col 2: Arrow & AI Transformation with 3D Pulse */}
                 <div className="flex flex-col items-center justify-center text-center p-2">
-                  <div className="icon-3d icon-3d-navy w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg mb-2">
+                  <div className="icon-3d icon-3d-navy w-13 h-13 rounded-2xl flex items-center justify-center shadow-lg mb-2 group hover:scale-105 transition-transform">
                     <Zap className="w-6 h-6 text-[#F4B942]" />
                   </div>
                   <span className="text-xs font-bold text-slate-900">
@@ -246,13 +248,13 @@ export const LandingPage = () => {
                   <span className="text-[11px] text-slate-500 mt-0.5">
                     Detects 7 Industry Gaps
                   </span>
-                  <div className="mt-2 text-[10px] font-mono font-bold bg-amber-100 text-amber-950 px-2 py-0.5 rounded-full border border-amber-300/80 shadow-2xs">
+                  <div className="mt-2 text-[10px] font-mono font-bold bg-amber-100 text-amber-950 px-2.5 py-0.5 rounded-full border border-amber-300/80 shadow-2xs">
                     Similarity &lt; 0.60
                   </div>
                 </div>
 
                 {/* Col 3: Industry Gap & Verification */}
-                <div className="p-4 rounded-xl bg-white border border-rose-200/90 shadow-xs space-y-3 hover:border-rose-400 transition-colors">
+                <div className="p-4 rounded-2xl bg-white border border-rose-200/90 shadow-sm space-y-3 hover:border-rose-400 transition-all hover:shadow-md">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold uppercase text-rose-800 tracking-wider">
                       Identified Gap Skill
@@ -260,7 +262,7 @@ export const LandingPage = () => {
                     <Badge variant="gap" size="sm">Critical Gap</Badge>
                   </div>
                   <div>
-                    <div className="text-sm font-bold text-slate-900">
+                    <div className="text-sm font-black text-slate-900">
                       RESTful APIs & FastAPI
                     </div>
                     <div className="text-xs text-slate-500 mt-0.5">
@@ -270,7 +272,7 @@ export const LandingPage = () => {
                   <Button
                     variant="accent"
                     size="sm"
-                    className="w-full text-xs font-bold"
+                    className="w-full text-xs font-bold shadow-accent hover:scale-[1.02] active:scale-[0.98]"
                     onClick={handleExploreDashboard}
                     iconRight={ChevronRight}
                   >
@@ -280,7 +282,7 @@ export const LandingPage = () => {
 
               </div>
             </div>
-          </Card>
+          </div>
         </div>
 
       </section>
@@ -319,35 +321,43 @@ export const LandingPage = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((item, idx) => {
-            const Icon = item.icon;
-            const iconThemes = ['icon-3d-navy', 'icon-3d-purple', 'icon-3d-emerald', 'icon-3d-amber'];
-            return (
-              <Card key={idx} hover variant="elevated" className="p-6 relative flex flex-col justify-between border-slate-200/90 group">
-                <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className={`icon-3d ${iconThemes[idx % 4]} w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-7 h-7" />
+        <div className="relative">
+          {/* Connecting gradient pipeline bar behind stage cards */}
+          <div className="hidden lg:block absolute top-12 left-12 right-12 h-1 bg-gradient-to-r from-teal-500 via-[#F4B942] to-emerald-500 opacity-30 -z-0" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+            {steps.map((item, idx) => {
+              const Icon = item.icon;
+              const iconThemes = ['icon-3d-navy', 'icon-3d-purple', 'icon-3d-emerald', 'icon-3d-amber'];
+              return (
+                <div 
+                  key={idx} 
+                  className="glass-card-premium p-6 rounded-3xl relative flex flex-col justify-between border border-slate-200/90 group hover:-translate-y-1.5 hover:shadow-xl hover:border-teal-400/80 transition-all duration-300"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <div className={`icon-3d ${iconThemes[idx % 4]} w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                        <Icon className="w-7 h-7" />
+                      </div>
+                      <span className="text-3xl font-black text-slate-300/80 group-hover:text-teal-600 transition-colors font-mono">
+                        {item.step}
+                      </span>
                     </div>
-                    <span className="text-3xl font-black text-slate-200 group-hover:text-teal-600/30 transition-colors">
-                      {item.step}
-                    </span>
+                    <h3 className="text-base font-black text-slate-900 mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal">
+                      {item.description}
+                    </p>
                   </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                    {item.description}
-                  </p>
+                  <div className="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F4E5F] group-hover:text-teal-700">
+                    <span className="bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200/60">Stage {item.step}</span>
+                    <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </div>
                 </div>
-                <div className="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#1F4E5F] group-hover:text-teal-700">
-                  <span>Stage {item.step}</span>
-                  <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </div>
-              </Card>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
 

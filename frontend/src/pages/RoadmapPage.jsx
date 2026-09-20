@@ -298,9 +298,9 @@ export const RoadmapPage = ({ onSelectSkillToVerify }) => {
         </div>
 
         {/* RIGHT: Active Milestone Deep-Dive Inspection Card (5 cols sticky) */}
-        <div className="lg:col-span-5 sticky top-24">
+        <div className="lg:col-span-5 sticky top-8">
           {activeNodeDetail ? (
-            <Card variant="elevated" className="p-6 sm:p-8 space-y-6 bg-white border-slate-200/90 shadow-xl">
+            <div className="glass-card-premium p-6 sm:p-8 space-y-6 rounded-3xl border border-slate-200/90 shadow-xl">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div className="flex items-center gap-2.5">
                   <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
@@ -394,7 +394,7 @@ export const RoadmapPage = ({ onSelectSkillToVerify }) => {
                   </Button>
                 )}
               </div>
-            </Card>
+            </div>
           ) : (
             <Card variant="default" className="p-8 text-center text-slate-500 text-xs bg-slate-50">
               Select any roadmap milestone to inspect requirements and learning pathways.
