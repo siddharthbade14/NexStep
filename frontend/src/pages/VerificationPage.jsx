@@ -478,16 +478,13 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
         
         {/* LEFT COLUMN: Problem Description & Requirements (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
-          <Card variant="default" className="p-5 sm:p-6 space-y-4 bg-white border border-slate-200/80 shadow-sm relative overflow-hidden">
-            {/* Top decorative accent bar */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1F4E5F] to-teal-400"></div>
-
+          <div className="p-5 sm:p-6 space-y-4 bg-white rounded-3xl border-sharp card-sheen-teal shadow-brand relative">
             <div className="flex items-center justify-between pt-1">
               <div className="flex items-center gap-2">
-                <div className="icon-3d icon-3d-navy w-7 h-7 rounded-lg flex items-center justify-center">
-                  <Layers className="w-3.5 h-3.5 text-teal-300" />
+                <div className="icon-3d icon-3d-navy w-8 h-8 rounded-xl flex items-center justify-center shadow-xs">
+                  <Layers className="w-4 h-4 text-teal-300" />
                 </div>
-                <span className="text-xs font-black text-slate-700 uppercase tracking-wider">
+                <span className="text-xs font-black text-slate-800 uppercase tracking-wider">
                   Challenge Spec
                 </span>
               </div>
@@ -496,25 +493,25 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
               </Badge>
             </div>
 
-            <div className="text-xs text-slate-700 whitespace-pre-line leading-relaxed font-sans bg-slate-50/60 p-3.5 rounded-xl border border-slate-100">
+            <div className="text-xs text-slate-700 whitespace-pre-line leading-relaxed font-sans bg-slate-50/80 p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
               {challenge?.description || 'Loading challenge description...'}
             </div>
 
             {/* Test Cases Preview */}
-            <div className="pt-3 border-t border-slate-100 space-y-2.5">
-              <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+            <div className="pt-3 border-t border-slate-200/80 space-y-2.5">
+              <span className="text-xs font-black text-slate-800 flex items-center gap-1.5">
                 <Terminal className="w-3.5 h-3.5 text-teal-600" />
                 Target Test Case Expectations:
               </span>
               <div className="space-y-2">
                 {challenge?.test_cases?.map((tc, idx) => (
-                  <div key={idx} className="p-3 rounded-xl bg-slate-50/90 border border-slate-200/70 text-[11px] font-mono hover:border-teal-300 transition-colors">
-                    <div className="flex items-center justify-between text-slate-500 mb-1">
-                      <span className="font-semibold text-slate-700">Case {idx + 1}</span>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-200/60 text-slate-600 font-sans">Required</span>
+                  <div key={idx} className="p-3.5 rounded-2xl bg-slate-50/90 border border-slate-200/90 text-[11px] font-mono hover:border-teal-400 transition-colors shadow-2xs">
+                    <div className="flex items-center justify-between text-slate-500 mb-1.5">
+                      <span className="font-bold text-slate-800">Assertion #{idx + 1}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-md bg-white text-slate-700 font-sans font-bold border border-slate-200">Required</span>
                     </div>
                     <span className="text-slate-600 block truncate">Input: {tc.input}</span>
-                    <span className="text-teal-700 font-semibold block mt-1">
+                    <span className="text-teal-700 font-bold block mt-1">
                       &rarr; Expected: {tc.expected}
                     </span>
                   </div>
@@ -523,16 +520,16 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
             </div>
 
             {/* Strict Sandboxed Test Assertion Banner */}
-            <div className="p-3.5 rounded-xl bg-gradient-to-r from-teal-50/80 to-emerald-50/80 border border-teal-200/80 text-[11px] text-teal-900 space-y-1 shadow-xs">
-              <div className="font-bold flex items-center gap-1.5">
+            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 text-[11px] text-teal-900 space-y-1 shadow-2xs">
+              <div className="font-black flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-teal-700" />
                 <span>Automated Test Assertion Engine</span>
               </div>
-              <p className="text-teal-800 leading-relaxed text-[11px]">
+              <p className="text-teal-800 leading-relaxed text-[11px] font-medium">
                 Submissions are executed in an isolated Python 3 sandbox. All assertions must evaluate strictly to verify your skill.
               </p>
             </div>
-          </Card>
+          </div>
         </div>
 
         {/* RIGHT COLUMN: Code Editor & Output Console (7 cols) */}
@@ -632,71 +629,71 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
 
           {/* EXECUTION RESULTS / TEST CASES PANEL */}
           {executionResult && (
-            <Card variant="default" className="p-5 bg-white border border-slate-200/90 shadow-lg space-y-3 animate-in fade-in duration-200 rounded-2xl">
+            <div className={`p-6 bg-white border-sharp ${executionResult.all_passed ? 'card-sheen-emerald border-teal-300' : 'card-sheen-amber border-rose-300'} shadow-xl space-y-4 animate-in fade-in duration-200 rounded-3xl`}>
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-2.5">
-                  <div className={`icon-3d ${executionResult.all_passed ? 'icon-3d-emerald' : 'icon-3d-rose'} w-8 h-8 rounded-xl flex items-center justify-center`}>
-                    <Terminal className="w-4 h-4 text-white" />
+                <div className="flex items-center gap-3">
+                  <div className={`icon-3d ${executionResult.all_passed ? 'icon-3d-emerald' : 'icon-3d-rose'} w-9 h-9 rounded-xl flex items-center justify-center shadow-xs`}>
+                    <Terminal className="w-4.5 h-4.5 text-white" />
                   </div>
                   <div>
-                    <span className="text-xs font-black text-slate-900 block">
-                      Evaluation Output
+                    <span className="text-xs font-black text-slate-900 block tracking-tight">
+                      Evaluation Output & Assertions
                     </span>
-                    <span className="text-[10px] text-slate-500">
+                    <span className="text-[10px] text-slate-500 font-medium">
                       {executionResult.passed_count} of {executionResult.total_count} test cases passed
                     </span>
                   </div>
                 </div>
                 {executionResult.all_passed ? (
-                  <Badge variant="verified" size="sm">
+                  <Badge variant="verified" size="sm" className="shadow-xs">
                     Passed (All Cases Succeeded)
                   </Badge>
                 ) : (
-                  <Badge variant="gap" size="sm">
+                  <Badge variant="gap" size="sm" className="shadow-xs">
                     Failed (Assertion Mismatch)
                   </Badge>
                 )}
               </div>
 
-              <div className={`p-3.5 rounded-xl text-xs font-medium border ${
+              <div className={`p-3.5 rounded-2xl text-xs font-semibold border ${
                 executionResult.all_passed
-                  ? 'bg-teal-50/80 border-teal-200 text-teal-900'
-                  : 'bg-rose-50/80 border-rose-200 text-rose-900'
+                  ? 'bg-emerald-50/90 border-emerald-200/90 text-emerald-950 shadow-2xs'
+                  : 'bg-rose-50/90 border-rose-200/90 text-rose-950 shadow-2xs'
               }`}>
                 {executionResult.message}
               </div>
 
               {/* Individual Test Cases List */}
-              <div className="space-y-2 pt-1">
+              <div className="space-y-2.5 pt-1">
                 {executionResult.results?.map((res, idx) => (
                   <div
                     key={idx}
-                    className={`p-3 rounded-xl border text-xs font-mono transition-all hover:shadow-xs ${
+                    className={`p-3.5 rounded-2xl border-2 text-xs font-mono transition-all hover:shadow-xs ${
                       res.passed
-                        ? 'bg-teal-50/40 border-teal-200/80 text-teal-900'
-                        : 'bg-rose-50/40 border-rose-200/80 text-rose-900'
+                        ? 'bg-emerald-50/40 border-emerald-300/80 text-emerald-950'
+                        : 'bg-rose-50/40 border-rose-300/80 text-rose-950'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 font-bold">
+                      <div className="flex items-center gap-2 font-bold">
                         {res.passed ? (
-                          <CheckCircle2 className="w-4 h-4 text-teal-600" />
+                          <CheckCircle2 className="w-4.5 h-4.5 text-emerald-600 shrink-0" />
                         ) : (
-                          <XCircle className="w-4 h-4 text-rose-600" />
+                          <XCircle className="w-4.5 h-4.5 text-rose-600 shrink-0" />
                         )}
-                        <span>Test Case {res.test_case_index}</span>
+                        <span className="font-black">Test Case {res.test_case_index}</span>
                       </div>
-                      <span className="text-[10px] text-slate-500 font-sans px-2 py-0.5 rounded bg-white/70 border border-slate-200">
-                        {res.execution_time_ms} ms
+                      <span className="text-[10px] text-slate-600 font-sans font-bold px-2 py-0.5 rounded-lg bg-white border border-slate-200 shadow-2xs">
+                        ⚡ {res.execution_time_ms} ms
                       </span>
                     </div>
 
-                    <div className="mt-2 text-[11px] space-y-1">
+                    <div className="mt-2.5 text-[11px] space-y-1 bg-white/70 p-2.5 rounded-xl border border-slate-200/60">
                       <div className="text-slate-600 truncate">Input: {res.input_str}</div>
-                      <div>Expected: <span className="font-semibold text-slate-800">{res.expected_str}</span></div>
-                      <div>Actual: <span className={res.passed ? 'font-semibold text-teal-700' : 'font-semibold text-rose-700'}>{res.actual_str}</span></div>
+                      <div>Expected: <span className="font-bold text-slate-900">{res.expected_str}</span></div>
+                      <div>Actual: <span className={res.passed ? 'font-bold text-emerald-700' : 'font-bold text-rose-700'}>{res.actual_str}</span></div>
                       {res.error_message && (
-                        <div className="text-rose-600 font-sans mt-1 text-[11px] font-semibold bg-rose-100/60 p-2 rounded-lg">
+                        <div className="text-rose-700 font-sans mt-1.5 text-[11px] font-semibold bg-rose-100/80 p-2 rounded-lg border border-rose-200">
                           Assertion: {res.error_message}
                         </div>
                       )}
@@ -704,7 +701,7 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
           )}
 
         </div>

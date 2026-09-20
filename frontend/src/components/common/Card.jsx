@@ -13,13 +13,15 @@ export const Card = ({
   const baseStyles = "relative rounded-2xl transition-all duration-300 ease-[var(--spring-smooth)]";
 
   const variantStyles = {
-    default: "bg-white border border-slate-200/90 shadow-xs",
-    elevated: "bg-white border border-slate-200/80 shadow-brand",
-    glass: "glass-card shadow-xs",
+    default: "bg-white border-sharp",
+    elevated: "bg-white border border-slate-200/90 shadow-brand ring-1 ring-slate-900/5",
+    glass: "glass-card-premium",
     panel: "glass-panel",
-    gradient: "bg-brand-gradient text-white shadow-brand border border-white/15",
-    accent: "bg-gradient-to-br from-amber-50/80 to-orange-50/80 border border-amber-200/90 shadow-xs",
-    dark: "bg-brand-dark-gradient text-white shadow-xl border border-slate-800/80"
+    gradient: "bg-brand-gradient text-white shadow-brand border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]",
+    accent: "bg-gradient-to-br from-amber-50/90 to-orange-50/70 border border-amber-300/80 shadow-xs",
+    dark: "bg-brand-dark-gradient text-white shadow-xl border border-slate-700/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]",
+    sheenTeal: "bg-white border-sharp card-sheen-teal shadow-brand",
+    sheenAmber: "bg-white border-sharp card-sheen-amber shadow-xs"
   };
 
   const hoverStyles = isHoverable

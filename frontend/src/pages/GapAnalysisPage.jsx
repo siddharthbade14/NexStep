@@ -575,21 +575,21 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
             return (
               <div
                 key={skill.id}
-                className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 border relative overflow-hidden bg-white hover:-translate-y-0.5 ${
+                className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 relative overflow-hidden bg-white hover:-translate-y-0.5 ${
                   isVerified
-                    ? 'border-teal-300/90 shadow-xs hover:border-teal-500/70 hover:shadow-md'
+                    ? 'border-sharp-teal shadow-md hover:border-teal-500 hover:shadow-xl'
                     : isGap
-                    ? 'border-amber-300/80 shadow-xs hover:border-amber-400 hover:shadow-md'
-                    : 'border-slate-200/90 shadow-2xs hover:border-slate-300'
+                    ? 'border-sharp-amber shadow-sm hover:border-amber-400 hover:shadow-lg'
+                    : 'border-sharp shadow-xs hover:border-slate-300'
                 }`}
               >
                 {/* Specular top sheen line */}
                 {isVerified ? (
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-500" />
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500" />
                 ) : isGap ? (
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-[#F4B942] to-amber-500" />
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-[#F4B942] to-orange-400" />
                 ) : (
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-teal-500" />
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1F4E5F] to-teal-500" />
                 )}
 
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -632,7 +632,7 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
                         </span>
 
                         {skill.similarity_score && (
-                          <span className="text-[11px] font-mono font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-lg border border-teal-200">
+                          <span className="text-[11px] font-mono font-bold text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-200 shadow-2xs">
                             {Math.round(skill.similarity_score * 100)}% Cosine Match
                           </span>
                         )}
@@ -649,15 +649,26 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
                         </p>
                       </div>
 
-                      {/* Explicit Contrast Box: University Theory vs Industry Depth */}
-                      <div className="p-3.5 rounded-2xl bg-gradient-to-r from-slate-50 to-slate-100/50 border border-slate-200/80 text-xs space-y-1.5">
-                        <div className="flex items-start gap-2">
-                          <span className="text-slate-400 font-bold shrink-0 text-[11px] uppercase tracking-wider">🎓 College Basis:</span>
-                          <span className="text-slate-700 font-medium">{skill.curriculum_match_subject || 'Theory lectures & semester end exam'}</span>
+                      {/* Dual-Tone Contrast Boxes: College Theory vs Industry Depth */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                        <div className="p-3 rounded-2xl bg-slate-50/90 border border-slate-200 text-xs space-y-1">
+                          <div className="flex items-center gap-1.5 text-slate-600 font-bold text-[10px] uppercase tracking-wider">
+                            <span className="w-2 h-2 rounded-full bg-slate-400" />
+                            <span>College Syllabi Scope</span>
+                          </div>
+                          <p className="text-slate-700 font-medium text-[11px] leading-snug">
+                            {skill.curriculum_match_subject || 'Theory lectures & semester end exam'}
+                          </p>
                         </div>
-                        <div className="flex items-start gap-2">
-                          <span className="text-teal-700 font-bold shrink-0 text-[11px] uppercase tracking-wider">💼 Industry Tests:</span>
-                          <span className="text-slate-800 font-semibold">{skill.expected_depth}</span>
+
+                        <div className="p-3 rounded-2xl bg-teal-50/60 border border-teal-200/90 text-xs space-y-1">
+                          <div className="flex items-center gap-1.5 text-teal-800 font-bold text-[10px] uppercase tracking-wider">
+                            <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+                            <span>Recruiter Practical Test</span>
+                          </div>
+                          <p className="text-teal-950 font-semibold text-[11px] leading-snug">
+                            {skill.expected_depth}
+                          </p>
                         </div>
                       </div>
                     </div>

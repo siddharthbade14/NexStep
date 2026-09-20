@@ -112,11 +112,11 @@ export const Navbar = () => {
       <div className="p-4 pb-3">
         <div 
           onClick={() => setProfileModalOpen(true)}
-          className="p-3 rounded-2xl bg-gradient-to-br from-slate-50 to-teal-50/40 border border-slate-200/80 hover:border-teal-400/70 hover:shadow-sm cursor-pointer transition-all duration-200 group"
+          className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-teal-50/50 border-sharp-teal hover:border-teal-400 hover:shadow-md cursor-pointer transition-all duration-200 group"
           title="Click to view Student Skill Passport"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-teal-600/10 text-teal-900 font-black text-sm flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-600/15 to-teal-800/10 text-teal-900 font-black text-sm flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-teal-200/80 shadow-2xs">
               {student?.name?.charAt(0) || 'A'}
             </div>
             <div className="min-w-0 flex-1">
@@ -135,12 +135,12 @@ export const Navbar = () => {
             </div>
           </div>
 
-          <div className="mt-2.5 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px]">
+          <div className="mt-2.5 pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px]">
             <span className="text-slate-500 font-semibold flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
               Passport Status
             </span>
-            <span className="font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/80">
+            <span className="font-black text-emerald-700 bg-emerald-50/90 px-2.5 py-0.5 rounded-full border border-emerald-300 shadow-2xs">
               {verifiedCount} Verified
             </span>
           </div>
@@ -148,7 +148,7 @@ export const Navbar = () => {
       </div>
 
       {/* 3. VERTICAL NAVIGATION LINKS */}
-      <div className="flex-1 px-3 py-2 space-y-1 overflow-y-auto sidebar-scroll">
+      <div className="flex-1 px-3 py-2 space-y-1.5 overflow-y-auto sidebar-scroll">
         <div className="px-3 pb-1 pt-1">
           <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
             Navigation Menu
@@ -165,17 +165,17 @@ export const Navbar = () => {
               onClick={() => handleNavClick(item.id)}
               className={`w-full group flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
                 isActive
-                  ? 'bg-gradient-to-r from-[#1F4E5F] to-[#2C6E8F] text-white shadow-brand shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 hover:translate-x-1'
+                  ? 'bg-gradient-to-r from-[#1F4E5F] to-[#2C6E8F] text-white shadow-brand border-l-4 border-[#F4B942] pl-2.5'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 hover:border-slate-200/90 border border-transparent hover:translate-x-1'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${
                   isActive 
-                    ? 'bg-white/15 text-[#F4B942]' 
+                    ? 'bg-white/15 text-[#F4B942] border border-white/20' 
                     : item.highlight 
-                      ? 'bg-amber-50 text-amber-600' 
-                      : 'bg-slate-100 text-slate-500'
+                      ? 'bg-amber-50 text-amber-600 border border-amber-200/80' 
+                      : 'bg-slate-100 text-slate-500 border border-slate-200/60'
                 }`}>
                   <Icon className="w-4 h-4" />
                 </div>
@@ -184,15 +184,21 @@ export const Navbar = () => {
 
               <div className="flex items-center gap-1.5 shrink-0">
                 {item.tag && !isActive && (
-                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
-                    item.badgeColor || (item.highlight ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-500')
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${
+                    item.badgeColor 
+                      ? 'bg-amber-50 text-amber-800 border-amber-200/80' 
+                      : item.highlight 
+                        ? 'bg-amber-100 text-amber-800 border-amber-300' 
+                        : 'bg-slate-100 text-slate-500 border-slate-200'
                   }`}>
                     {item.tag}
                   </span>
                 )}
                 {item.badgeCount !== undefined && (
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                    isActive ? 'bg-[#F4B942] text-slate-950 font-black' : 'bg-teal-50 text-teal-800 border border-teal-200'
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                    isActive 
+                      ? 'bg-[#F4B942] text-slate-950 font-black border-amber-400' 
+                      : 'bg-teal-50 text-teal-800 border-teal-200'
                   }`}>
                     {item.badgeCount}
                   </span>
@@ -207,22 +213,22 @@ export const Navbar = () => {
       </div>
 
       {/* 4. SIDEBAR FOOTER: TELEMETRY & CONTROLS */}
-      <div className="p-3 border-t border-slate-100/90 space-y-2 bg-slate-50/50">
+      <div className="p-3 border-t border-slate-200/80 space-y-2 bg-slate-50/70">
         {/* Real-time AI Telemetry Pill */}
-        <div className="p-2.5 rounded-xl bg-white border border-slate-200/80 text-[10px] space-y-1">
+        <div className="p-3 rounded-2xl bg-white border-sharp text-[10px] space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-slate-700 flex items-center gap-1.5">
+            <span className="font-black text-slate-800 flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5 text-teal-600" />
               AI Inference Engine
             </span>
-            <span className="flex items-center gap-1 text-emerald-600 font-bold">
+            <span className="flex items-center gap-1 text-emerald-600 font-bold bg-emerald-50 px-2 py-0.2 rounded-full border border-emerald-200">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Online
             </span>
           </div>
-          <div className="flex items-center justify-between text-slate-400 font-medium">
-            <span>all-MiniLM-L6-v2</span>
-            <span>22ms latency</span>
+          <div className="flex items-center justify-between text-slate-500 font-medium">
+            <span className="font-mono text-[9px] bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">all-MiniLM-L6-v2</span>
+            <span className="text-teal-700 font-semibold">22ms latency</span>
           </div>
         </div>
 
@@ -234,7 +240,7 @@ export const Navbar = () => {
               resetStudentState();
             }
           }}
-          className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors border border-dashed border-slate-200 hover:border-rose-300"
+          className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors border border-dashed border-slate-300 hover:border-rose-300"
           title="Reset demo data"
         >
           <RotateCcw className="w-3.5 h-3.5" />
@@ -250,7 +256,7 @@ export const Navbar = () => {
       {/* ========================================================================= */}
       {/* DESKTOP VERTICAL SIDEBAR (Persistent Left-Docked on lg: and above)         */}
       {/* ========================================================================= */}
-      <aside className="hidden lg:flex flex-col w-68 xl:w-72 h-screen sticky top-0 bg-white border-r border-slate-200/90 shadow-sm z-30 shrink-0 select-none overflow-hidden">
+      <aside className="hidden lg:flex flex-col w-68 xl:w-72 h-screen sticky top-0 bg-white sidebar-border-right z-30 shrink-0 select-none overflow-hidden">
         {renderSidebarContent()}
       </aside>
 

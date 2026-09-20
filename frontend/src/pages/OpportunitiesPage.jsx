@@ -113,7 +113,7 @@ export const OpportunitiesPage = () => {
       </div>
 
       {/* FILTER CONTROLS */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-slate-200/90 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-3xl bg-white border-sharp">
         
         {/* Category Filters */}
         <div className="flex flex-wrap items-center gap-2">
@@ -128,8 +128,8 @@ export const OpportunitiesPage = () => {
               onClick={() => setRoleFilter(tab.id)}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all hover:-translate-y-0.5 active:translate-y-0 ${
                 roleFilter === tab.id
-                  ? 'bg-gradient-to-r from-[#1F4E5F] to-[#2C6E8F] text-white shadow-md shadow-[#1F4E5F]/20'
-                  : 'bg-slate-100/90 text-slate-700 hover:bg-slate-200/80'
+                  ? 'bg-gradient-to-r from-[#1F4E5F] to-[#2C6E8F] text-white shadow-brand border border-teal-400/50'
+                  : 'bg-slate-100/90 text-slate-700 hover:bg-slate-200/80 border border-slate-200'
               }`}
             >
               {tab.label}
@@ -271,16 +271,16 @@ export const OpportunitiesPage = () => {
                         return (
                           <span
                             key={s}
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-all hover:scale-105 ${
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all hover:scale-105 ${
                               isSkillVerified
-                                ? 'bg-teal-50 text-teal-800 border-teal-300 shadow-xs'
-                                : 'bg-slate-100/80 text-slate-500 border-slate-200'
+                                ? 'bg-teal-50 text-teal-900 border-2 border-teal-400/90 font-bold shadow-2xs'
+                                : 'bg-slate-100/90 text-slate-500 border border-slate-200'
                             }`}
                           >
                             {isSkillVerified ? (
-                              <CheckCircle2 className="w-3 h-3 text-teal-600" />
+                              <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0" />
                             ) : (
-                              <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
                             )}
                             <span>{cleanName}</span>
                           </span>
