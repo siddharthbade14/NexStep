@@ -154,166 +154,179 @@ export const LandingPage = () => {
       <section className="relative overflow-hidden pt-4 sm:pt-8 pb-8">
         
         {/* Ambient background light orbs & subtle grid */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[520px] bg-gradient-to-tr from-teal-500/20 via-[#F4B942]/15 to-emerald-500/15 blur-3xl rounded-full pointer-events-none -z-10 animate-pulse-glow" />
-        <div className="absolute -top-16 left-8 w-72 h-72 bg-teal-400/15 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute top-40 right-6 w-80 h-80 bg-amber-400/12 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[460px] bg-gradient-to-tr from-teal-500/10 via-[#F4B942]/8 to-emerald-500/10 blur-3xl rounded-full pointer-events-none -z-10 animate-pulse-glow" />
+        <div className="absolute -top-16 left-12 w-64 h-64 bg-teal-400/8 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-36 right-10 w-72 h-72 bg-amber-400/8 rounded-full blur-3xl pointer-events-none -z-10" />
 
-        {/* --- FLOATING AMBIENT BADGES (Visible on desktop / laptops >= lg) --- */}
-        
-        {/* Floating Badge 1: Top Left (Code Assertions Passed) */}
-        <div className="hidden lg:flex items-center gap-3 p-3 rounded-2xl glass-card-premium border-sharp-teal shadow-xl animate-float-drift absolute top-6 left-0 xl:left-2 z-20 select-none hover:scale-105 transition-all duration-300">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-700 flex items-center justify-center font-bold shrink-0 border border-emerald-300 shadow-2xs">
-            <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+        {/* HERO STAGE WITH TIGHTLY-FRAMED FLOATING BADGES */}
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6">
+
+          {/* --- MINIMALIST FLOATING BADGES (Restrained colors, natural framing) --- */}
+          
+          {/* Floating Badge 1: Upper Left (Syllabus to Sandbox Code Assertions) */}
+          <div className="hidden xl:flex items-center gap-2.5 px-3 py-2 rounded-xl floating-badge-minimal animate-float-drift absolute top-3 -left-4 2xl:-left-10 z-20 select-none">
+            <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 border border-slate-200/70">
+              <CheckCircle2 className="w-3.5 h-3.5 text-slate-700" />
+            </div>
+            <div className="text-left leading-tight pr-1">
+              <div className="flex items-center gap-1.5">
+                <span className="font-semibold text-slate-900 block text-xs">3/3 Assertions Passed</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+              </div>
+              <span className="text-[10px] text-slate-500 font-mono">Judge0 Sandbox • 1.2ms</span>
+            </div>
           </div>
-          <div className="text-left text-xs leading-tight">
-            <div className="flex items-center gap-1.5">
-              <span className="font-black text-slate-900 block">3/3 Assertions Passed</span>
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+
+          {/* Floating Badge 2: Upper Right (Recruiter Qualification Match) */}
+          <div className="hidden xl:flex items-center gap-2.5 px-3 py-2 rounded-xl floating-badge-minimal animate-float-gentle absolute top-2 -right-4 2xl:-right-10 z-20 select-none">
+            <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 border border-slate-200/70">
+              <Briefcase className="w-3.5 h-3.5 text-slate-700" />
+            </div>
+            <div className="text-left leading-tight pr-1">
+              <div className="flex items-center gap-1.5">
+                <span className="font-semibold text-slate-900 block text-xs">Swiggy • Qualified</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
+              </div>
+              <span className="text-[10px] text-slate-500 font-medium">₹45,000/mo Stipend</span>
+            </div>
+          </div>
+
+          {/* Floating Badge 3: Lower Left (Semantic Gap AI Engine) */}
+          <div className="hidden xl:flex items-center gap-2.5 px-3 py-2 rounded-xl floating-badge-minimal animate-float-diagonal absolute top-48 -left-2 2xl:-left-8 z-20 select-none">
+            <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 border border-slate-200/70">
+              <Cpu className="w-3.5 h-3.5 text-slate-700" />
+            </div>
+            <div className="text-left leading-tight pr-1">
+              <div className="flex items-center gap-1.5">
+                <span className="font-semibold text-slate-900 block text-xs">all-MiniLM-L6-v2</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0"></span>
+              </div>
+              <span className="text-[10px] text-slate-500 font-mono">Cosine Delta: 0.38</span>
+            </div>
+          </div>
+
+          {/* Floating Badge 4: Lower Right (Verified Career Leap) */}
+          <div className="hidden xl:flex items-center gap-2.5 px-3 py-2 rounded-xl floating-badge-minimal animate-float-bounce absolute top-52 -right-2 2xl:-right-8 z-20 select-none">
+            <div className="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 border border-slate-200/70">
+              <TrendingUp className="w-3.5 h-3.5 text-slate-700" />
+            </div>
+            <div className="text-left leading-tight pr-1">
+              <div className="flex items-center gap-1.5">
+                <span className="font-semibold text-slate-900 block text-xs">Placement Uplift</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"></span>
+              </div>
+              <span className="text-[10px] text-slate-700 font-mono font-medium">₹4.5L → ₹14.5 LPA</span>
+            </div>
+          </div>
+
+          {/* HERO CONTENT CONTAINER */}
+          <div className="max-w-3xl mx-auto text-center space-y-7 relative z-10 px-2">
+            
+            {/* Top Minimal Pill Announcement */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-slate-200 shadow-2xs hover:border-slate-300 hover:bg-white transition-all cursor-default">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="text-xs font-semibold text-slate-700">
+                Smart India Hackathon Prototype
+              </span>
+              <span className="text-slate-300 hidden sm:inline">•</span>
+              <span className="text-[10px] font-mono text-slate-500 hidden sm:inline-block bg-slate-100 px-2 py-0.5 rounded-full">
+                Live Python IDE Sandbox
               </span>
             </div>
-            <span className="text-[10px] text-teal-700 font-semibold font-mono">Judge0 Python Sandbox • 1.2ms</span>
-          </div>
-        </div>
 
-        {/* Floating Badge 2: Top Right (Recruiter Internship Match) */}
-        <div className="hidden lg:flex items-center gap-3 p-3 rounded-2xl glass-card-premium border-sharp-amber shadow-xl animate-float-gentle absolute top-4 right-0 xl:right-2 z-20 select-none hover:scale-105 transition-all duration-300">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-900 flex items-center justify-center font-bold shrink-0 border border-amber-300 shadow-2xs">
-            <Briefcase className="w-5 h-5 text-amber-700" />
-          </div>
-          <div className="text-left text-xs leading-tight">
-            <span className="font-black text-slate-900 block">Swiggy • 94% Qualified</span>
-            <span className="text-[10px] text-amber-900 font-bold font-mono bg-amber-100 px-1.5 py-0.5 rounded">
-              ₹45,000/mo Stipend
-            </span>
-          </div>
-        </div>
+            {/* Hero Headline */}
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08]">
+              College syllabus is only <span className="text-slate-400 line-through decoration-rose-500 decoration-4">30%</span> of the job.{' '}
+              <span className="text-brand-gradient block sm:inline drop-shadow-xs">
+                NexStep verifies the other 70%.
+              </span>
+            </h1>
 
-        {/* Floating Badge 3: Mid Left (AI Sentence-Transformers) */}
-        <div className="hidden lg:flex items-center gap-2.5 p-2.5 rounded-2xl glass-card-premium border-sharp shadow-xl animate-float-diagonal absolute top-52 -left-2 xl:-left-4 z-20 select-none hover:scale-105 transition-all duration-300">
-          <div className="w-8 h-8 rounded-xl bg-teal-600 text-white flex items-center justify-center shadow-xs">
-            <Cpu className="w-4 h-4" />
-          </div>
-          <div className="text-left text-[11px] leading-tight pr-2">
-            <span className="font-black text-slate-800 block">all-MiniLM-L6-v2</span>
-            <span className="text-[9px] text-teal-700 font-mono font-bold">Cosine Sim Delta: 0.38</span>
-          </div>
-        </div>
+            {/* Hero Subheadline explaining the whole mission */}
+            <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
+              Indian universities teach textbook theory. Top tech startups interview for production code. 
+              <strong className="text-slate-900 font-bold"> NexStep</strong> uses semantic AI embeddings to mathematically calculate your syllabus gap, tests your hands-on code in a sandboxed IDE, and matches you with verified internships.
+            </p>
 
-        {/* Floating Badge 4: Mid Right (Salary Uplift) */}
-        <div className="hidden lg:flex items-center gap-2.5 p-2.5 rounded-2xl glass-card-premium border-sharp shadow-xl animate-float-bounce absolute top-56 -right-2 xl:-right-4 z-20 select-none hover:scale-105 transition-all duration-300">
-          <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
-            <TrendingUp className="w-4 h-4" />
-          </div>
-          <div className="text-left text-[11px] leading-tight pr-2">
-            <span className="font-black text-slate-800 block">CTC Leap: 3.5x</span>
-            <span className="text-[9px] text-emerald-700 font-bold">₹4.5L → ₹14.5 LPA Uplift</span>
-          </div>
-        </div>
+            {/* Hero CTAs */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1">
+              <Button
+                variant="accent"
+                size="lg"
+                onClick={handleStart}
+                iconRight={ArrowRight}
+                className="w-full sm:w-auto text-slate-950 font-black px-8 shadow-accent hover:scale-[1.03] active:scale-[0.98] border border-amber-400 text-sm"
+              >
+                Analyze My College Syllabus
+              </Button>
+              
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={handleExploreDashboard}
+                iconLeft={Terminal}
+                className="w-full sm:w-auto px-7 border-slate-300 hover:border-slate-400 hover:bg-slate-50 text-sm font-bold"
+              >
+                Explore Live Gap Dashboard
+              </Button>
+            </div>
 
-        {/* HERO CONTENT CONTAINER */}
-        <div className="max-w-4xl mx-auto text-center space-y-7 relative z-10 px-2">
-          
-          {/* Top Pill Announcement */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full glass-card-premium border-sharp-teal shadow-xs hover:border-teal-400 hover:scale-[1.02] transition-all cursor-default">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <Sparkles className="w-4 h-4 text-teal-700" />
-            <span className="text-xs font-black text-[#1F4E5F] tracking-wide">
-              Smart India Hackathon Prototype • AI Career Mapping Platform
-            </span>
-            <span className="text-slate-300 hidden sm:inline">•</span>
-            <span className="text-[10px] font-bold text-emerald-800 hidden sm:inline-block bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-300">
-              Live Python IDE Sandbox
-            </span>
-          </div>
+            {/* Responsive Floating Micro-Cards (Minimalist aesthetic across all screens) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 max-w-3xl mx-auto">
+              <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/80 border border-slate-200/80 shadow-2xs text-left animate-float-drift hover:border-slate-300 hover:bg-white transition-all">
+                <div className="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+                  <GraduationCap className="w-3.5 h-3.5" />
+                </div>
+                <div className="leading-tight">
+                  <span className="text-[11px] font-semibold text-slate-900 block">30% Academic</span>
+                  <span className="text-[9px] text-slate-500 font-mono">Sem 1-8 Syllabi</span>
+                </div>
+              </div>
 
-          {/* Hero Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08]">
-            College syllabus is only <span className="text-slate-400 line-through decoration-rose-500 decoration-4">30%</span> of the job.{' '}
-            <span className="text-brand-gradient block sm:inline drop-shadow-xs">
-              NexStep verifies the other 70%.
-            </span>
-          </h1>
+              <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/80 border border-slate-200/80 shadow-2xs text-left animate-float-gentle hover:border-slate-300 hover:bg-white transition-all">
+                <div className="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+                  <Cpu className="w-3.5 h-3.5" />
+                </div>
+                <div className="leading-tight">
+                  <span className="text-[11px] font-semibold text-slate-900 block">AI Gap Engine</span>
+                  <span className="text-[9px] text-slate-500 font-mono">MiniLM Vectors</span>
+                </div>
+              </div>
 
-          {/* Hero Subheadline explaining the whole mission */}
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
-            Indian universities teach textbook theory. Top tech startups interview for production code. 
-            <strong className="text-slate-900 font-bold"> NexStep</strong> uses semantic AI embeddings to mathematically calculate your syllabus gap, tests your hands-on code in a sandboxed IDE, and matches you with verified internships.
-          </p>
+              <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/80 border border-slate-200/80 shadow-2xs text-left animate-float-diagonal hover:border-slate-300 hover:bg-white transition-all">
+                <div className="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+                  <Code2 className="w-3.5 h-3.5" />
+                </div>
+                <div className="leading-tight">
+                  <span className="text-[11px] font-semibold text-slate-900 block">Code Sandbox</span>
+                  <span className="text-[9px] text-slate-500 font-mono">3 Unit Tests</span>
+                </div>
+              </div>
 
-          {/* Hero CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1">
-            <Button
-              variant="accent"
-              size="lg"
-              onClick={handleStart}
-              iconRight={ArrowRight}
-              className="w-full sm:w-auto text-slate-950 font-black px-8 shadow-accent hover:scale-[1.03] active:scale-[0.98] border border-amber-400 text-sm"
-            >
-              Analyze My College Syllabus
-            </Button>
-            
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={handleExploreDashboard}
-              iconLeft={Terminal}
-              className="w-full sm:w-auto px-7 border-slate-300 hover:border-teal-500 hover:bg-slate-50 text-sm font-bold"
-            >
-              Explore Live Gap Dashboard
-            </Button>
-          </div>
-
-          {/* Responsive Floating Micro-Pills (Visible across all screens) */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 max-w-3xl mx-auto">
-            <div className="flex items-center gap-2 p-2 rounded-xl bg-white/90 border border-slate-200 shadow-2xs text-left animate-float-drift hover:border-teal-400 transition-colors">
-              <GraduationCap className="w-4 h-4 text-teal-600 shrink-0" />
-              <div className="leading-tight">
-                <span className="text-[11px] font-black text-slate-900 block">30% Academic</span>
-                <span className="text-[9px] text-slate-500">Sem 1-8 Syllabi</span>
+              <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/80 border border-slate-200/80 shadow-2xs text-left animate-float-bounce hover:border-slate-300 hover:bg-white transition-all">
+                <div className="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+                  <Briefcase className="w-3.5 h-3.5" />
+                </div>
+                <div className="leading-tight">
+                  <span className="text-[11px] font-semibold text-slate-900 block">Verified Match</span>
+                  <span className="text-[9px] text-slate-500 font-mono">₹35k-50k/mo</span>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-2 rounded-xl bg-white/90 border border-amber-200 shadow-2xs text-left animate-float-gentle hover:border-amber-400 transition-colors">
-              <Cpu className="w-4 h-4 text-amber-600 shrink-0" />
-              <div className="leading-tight">
-                <span className="text-[11px] font-black text-slate-900 block">AI Gap Engine</span>
-                <span className="text-[9px] text-amber-800 font-mono font-semibold">MiniLM Vectors</span>
-              </div>
+            {/* Micro Guarantee Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-1 text-xs font-medium text-slate-500">
+              <span className="flex items-center gap-1.5 bg-white/70 px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
+                <Check className="w-3.5 h-3.5 text-slate-600" /> B.Tech Sem 1–8 Syllabi Mapped
+              </span>
+              <span className="flex items-center gap-1.5 bg-white/70 px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
+                <Check className="w-3.5 h-3.5 text-slate-600" /> Code Sandbox Assertions
+              </span>
+              <span className="flex items-center gap-1.5 bg-white/70 px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
+                <Check className="w-3.5 h-3.5 text-slate-600" /> 100% Transparent Hiring Match
+              </span>
             </div>
 
-            <div className="flex items-center gap-2 p-2 rounded-xl bg-white/90 border border-emerald-200 shadow-2xs text-left animate-float-diagonal hover:border-emerald-400 transition-colors">
-              <Code2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <div className="leading-tight">
-                <span className="text-[11px] font-black text-slate-900 block">Code Sandbox</span>
-                <span className="text-[9px] text-emerald-700 font-semibold">3 Unit Tests</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 p-2 rounded-xl bg-white/90 border border-teal-200 shadow-2xs text-left animate-float-bounce hover:border-teal-400 transition-colors">
-              <Briefcase className="w-4 h-4 text-teal-600 shrink-0" />
-              <div className="leading-tight">
-                <span className="text-[11px] font-black text-slate-900 block">Verified Match</span>
-                <span className="text-[9px] text-teal-800 font-semibold">₹35k-50k/mo</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Micro Guarantee Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-1 text-xs font-semibold text-slate-600">
-            <span className="flex items-center gap-1.5 bg-white/80 px-3 py-1 rounded-full border border-slate-200 shadow-2xs">
-              <Check className="w-3.5 h-3.5 text-teal-600" /> B.Tech Sem 1–8 Syllabi Mapped
-            </span>
-            <span className="flex items-center gap-1.5 bg-white/80 px-3 py-1 rounded-full border border-slate-200 shadow-2xs">
-              <Check className="w-3.5 h-3.5 text-teal-600" /> Code Sandbox Assertions
-            </span>
-            <span className="flex items-center gap-1.5 bg-white/80 px-3 py-1 rounded-full border border-slate-200 shadow-2xs">
-              <Check className="w-3.5 h-3.5 text-teal-600" /> 100% Transparent Hiring Match
-            </span>
           </div>
 
         </div>
