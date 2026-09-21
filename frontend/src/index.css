@@ -334,6 +334,57 @@
   box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
 }
 
+/* Colorful Floating Animation Badges */
+.floating-badge-colored {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-badge-emerald {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(236, 253, 245, 0.92) 100%);
+  border: 1px solid rgba(110, 231, 183, 0.9);
+  box-shadow: 0 12px 28px -4px rgba(16, 185, 129, 0.18), 0 2px 6px -1px rgba(16, 185, 129, 0.08);
+}
+.floating-badge-emerald:hover {
+  border-color: rgba(52, 211, 153, 1);
+  box-shadow: 0 16px 36px -4px rgba(16, 185, 129, 0.28), 0 4px 12px -2px rgba(16, 185, 129, 0.14);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.floating-badge-amber {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(254, 243, 199, 0.92) 100%);
+  border: 1px solid rgba(252, 211, 77, 0.9);
+  box-shadow: 0 12px 28px -4px rgba(245, 158, 11, 0.18), 0 2px 6px -1px rgba(245, 158, 11, 0.08);
+}
+.floating-badge-amber:hover {
+  border-color: rgba(245, 158, 11, 1);
+  box-shadow: 0 16px 36px -4px rgba(245, 158, 11, 0.28), 0 4px 12px -2px rgba(245, 158, 11, 0.14);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.floating-badge-teal {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(204, 251, 241, 0.92) 100%);
+  border: 1px solid rgba(94, 234, 212, 0.9);
+  box-shadow: 0 12px 28px -4px rgba(20, 184, 166, 0.18), 0 2px 6px -1px rgba(20, 184, 166, 0.08);
+}
+.floating-badge-teal:hover {
+  border-color: rgba(45, 212, 191, 1);
+  box-shadow: 0 16px 36px -4px rgba(20, 184, 166, 0.28), 0 4px 12px -2px rgba(20, 184, 166, 0.14);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.floating-badge-indigo {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(238, 242, 255, 0.92) 100%);
+  border: 1px solid rgba(165, 180, 252, 0.9);
+  box-shadow: 0 12px 28px -4px rgba(99, 102, 241, 0.18), 0 2px 6px -1px rgba(99, 102, 241, 0.08);
+}
+.floating-badge-indigo:hover {
+  border-color: rgba(129, 140, 248, 1);
+  box-shadow: 0 16px 36px -4px rgba(99, 102, 241, 0.28), 0 4px 12px -2px rgba(99, 102, 241, 0.14);
+  transform: translateY(-2px) scale(1.02);
+}
+
 /* Custom modern scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
