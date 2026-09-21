@@ -2,6 +2,7 @@
   {
     "id": "yt-git",
     "skill_id": "skill-git",
+    "video_id": "RGOj5yH7evk",
     "track": "Software Developer",
     "category": "Tooling & Collaboration",
     "title": "Git and GitHub for Beginners - Full Crash Course",
@@ -20,6 +21,7 @@
   {
     "id": "yt-fastapi",
     "skill_id": "skill-rest-apis",
+    "video_id": "0sOvCWFmrtA",
     "track": "Software Developer",
     "category": "Backend Development",
     "title": "FastAPI - Python Web Development Full Course",
@@ -38,6 +40,7 @@
   {
     "id": "yt-docker",
     "skill_id": "skill-docker",
+    "video_id": "3c-iBn73dDE",
     "track": "Software Developer",
     "category": "DevOps & Cloud",
     "title": "Docker Tutorial for Beginners - Full Course",
@@ -56,6 +59,7 @@
   {
     "id": "yt-dsa",
     "skill_id": "skill-dsa",
+    "video_id": "pkYVOmU3MgA",
     "track": "Software Developer",
     "category": "Core Computer Science",
     "title": "Data Structures & Algorithms in Python - Full Course",
@@ -74,6 +78,7 @@
   {
     "id": "yt-react",
     "skill_id": "skill-react",
+    "video_id": "bMknfKXIFA8",
     "track": "Software Developer",
     "category": "Frontend Engineering",
     "title": "React JS Full Course with Hands-on Projects",
@@ -92,6 +97,7 @@
   {
     "id": "yt-sys-design",
     "skill_id": "skill-sys-design",
+    "video_id": "i53Gi_K3o7I",
     "track": "Software Developer",
     "category": "Architecture & Scale",
     "title": "System Design for Beginners - High-Level Architecture",
@@ -110,6 +116,7 @@
   {
     "id": "yt-sql-da",
     "skill_id": "skill-sql-da",
+    "video_id": "7S_tz1z_5bA",
     "track": "Data Analyst",
     "category": "Database & Querying",
     "title": "SQL Full Course for Data Analytics & Business Intelligence",
@@ -128,6 +135,7 @@
   {
     "id": "yt-pandas",
     "skill_id": "skill-pandas",
+    "video_id": "vmEHCJofslg",
     "track": "Data Analyst",
     "category": "Data Wrangling & Python",
     "title": "Python Pandas & NumPy Data Analysis Full Course",
@@ -146,6 +154,7 @@
   {
     "id": "yt-powerbi",
     "skill_id": "skill-bi-dashboards",
+    "video_id": "3u7UDy4i_gU",
     "track": "Data Analyst",
     "category": "Business Intelligence",
     "title": "Power BI Full Course 2024 - Learn Power BI in 4 Hours",
@@ -164,6 +173,7 @@
   {
     "id": "yt-embedded-c",
     "skill_id": "skill-embedded-c",
+    "video_id": "yYvQsmP_tF0",
     "track": "Embedded Systems",
     "category": "Firmware & Hardware",
     "title": "Embedded C Programming & ARM Cortex Architecture",
@@ -182,6 +192,7 @@
   {
     "id": "yt-freertos",
     "skill_id": "skill-freertos",
+    "video_id": "F321087qrY4",
     "track": "Embedded Systems",
     "category": "Real-Time Systems",
     "title": "Introduction to RTOS with FreeRTOS & STM32",
@@ -200,6 +211,7 @@
   {
     "id": "yt-cicd",
     "skill_id": "skill-cicd",
+    "video_id": "R8_veQiYBjI",
     "track": "Software Developer",
     "category": "DevOps & Automation",
     "title": "GitHub Actions Tutorial - CI/CD Pipeline from Scratch",

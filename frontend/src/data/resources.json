@@ -6,6 +6,7 @@
     "provider": "freeCodeCamp & GitHub Guides",
     "url": "https://www.freecodecamp.org/news/git-and-github-for-beginners/",
     "youtube": {
+      "video_id": "RGOj5yH7evk",
       "title": "Git and GitHub for Beginners - Full Crash Course",
       "channel": "freeCodeCamp.org",
       "url": "https://www.youtube.com/watch?v=RGOj5yH7evk",
@@ -53,6 +54,7 @@
     "provider": "Official FastAPI Documentation",
     "url": "https://fastapi.tiangolo.com/tutorial/",
     "youtube": {
+      "video_id": "0sOvCWFmrtA",
       "title": "FastAPI - Python Web Development Full Course",
       "channel": "freeCodeCamp.org",
       "url": "https://www.youtube.com/watch?v=0sOvCWFmrtA",
@@ -105,6 +107,7 @@
     "provider": "Docker Official Docs & Roadmap.sh",
     "url": "https://docs.docker.com/get-started/",
     "youtube": {
+      "video_id": "3c-iBn73dDE",
       "title": "Docker Tutorial for Beginners - Full Course",
       "channel": "TechWorld with Nana",
       "url": "https://www.youtube.com/watch?v=3c-iBn73dDE",
@@ -162,6 +165,7 @@
     "provider": "W3Schools & Pandas Official Tutorial",
     "url": "https://pandas.pydata.org/docs/user_guide/10min.html",
     "youtube": {
+      "video_id": "vmEHCJofslg",
       "title": "Python Pandas & NumPy Data Analysis Full Course",
       "channel": "freeCodeCamp.org",
       "url": "https://www.youtube.com/watch?v=vmEHCJofslg",
@@ -209,6 +213,7 @@
     "provider": "GeeksforGeeks Embedded & Embedded Artistry",
     "url": "https://www.geeksforgeeks.org/embedded-c-programming-with-examples/",
     "youtube": {
+      "video_id": "yYvQsmP_tF0",
       "title": "Embedded C Programming & ARM Cortex Architecture",
       "channel": "FastBit Embedded Brain Academy",
       "url": "https://www.youtube.com/watch?v=yYvQsmP_tF0",

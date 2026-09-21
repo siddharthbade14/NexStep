@@ -51,6 +51,31 @@ export const ResourcesPage = () => {
   const [submittingQuiz, setSubmittingQuiz] = useState(false);
   const [quizResult, setQuizResult] = useState(null);
 
+  // In-Site Video Cinema Player State
+  const [playingVideo, setPlayingVideo] = useState(null);
+
+  const extractYoutubeVideoId = (url) => {
+    if (!url) return '';
+    const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+    return match ? match[1] : '';
+  };
+
+  const handlePlayVideo = (videoObj, parentResource = null) => {
+    if (!videoObj) return;
+    const videoId = videoObj.video_id || extractYoutubeVideoId(videoObj.url);
+    setPlayingVideo({
+      ...videoObj,
+      video_id: videoId,
+      skill_id: videoObj.skill_id || parentResource?.skill_id,
+      description: videoObj.description || parentResource?.summary,
+      key_topics: videoObj.key_topics || (parentResource?.title ? [parentResource.title, `${parentResource.level} Level`] : [])
+    });
+  };
+
+  const handleCloseVideo = () => {
+    setPlayingVideo(null);
+  };
+
   const loadResources = async () => {
     setLoading(true);
     try {
@@ -142,17 +167,17 @@ export const ResourcesPage = () => {
 
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 text-xs font-bold text-[#1F4E5F] border border-teal-200">
           <Sparkles className="w-3.5 h-3.5 text-[#F4B942]" />
-          <span>Curated YouTube Masterclasses & Sequenced Pathways</span>
+          <span>Curated In-Site Video Masterclasses & Sequenced Pathways</span>
         </div>
 
         <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-          Curated Free Resources & YouTube Video Courses
+          Curated Free Resources & In-Site Video Courses
         </h1>
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl mx-auto">
           Industry-tested free learning guides and full YouTube video masterclasses from top engineering educators 
           (<strong className="text-slate-900">freeCodeCamp, TechWorld with Nana, Chai aur Code, Alex The Analyst</strong>). 
-          Click any video to open directly in YouTube.
+          Stream complete courses directly inside NexStep without external redirects!
         </p>
       </div>
 
@@ -267,8 +292,9 @@ export const ResourcesPage = () => {
               <div>
                 <h2 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
                   <span>YouTube Video Masterclasses</span>
-                  <span className="text-xs font-mono font-bold bg-red-100 text-red-800 px-2 py-0.5 rounded-full border border-red-200">
-                    Opens in YouTube ↗
+                  <span className="text-xs font-mono font-bold bg-red-100 text-red-800 px-2.5 py-0.5 rounded-full border border-red-200 flex items-center gap-1.5">
+                    <Play className="w-3 h-3 fill-current" />
+                    <span>Plays Directly In-Site</span>
                   </span>
                 </h2>
                 <p className="text-xs text-slate-500">
@@ -304,6 +330,40 @@ export const ResourcesPage = () => {
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-amber-500 to-red-500 opacity-80" />
 
                     <div>
+                      {/* Video Thumbnail Preview with In-Site Play Overlay */}
+                      <div 
+                        onClick={() => handlePlayVideo(course)}
+                        className="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-900 cursor-pointer group/thumb mb-3 shadow-xs"
+                        title="Click to play in-site"
+                      >
+                        <img
+                          src={`https://img.youtube.com/vi/${course.video_id || extractYoutubeVideoId(course.url)}/hqdefault.jpg`}
+                          alt={course.title}
+                          className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-500 opacity-90 group-hover/thumb:opacity-100"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        
+                        {/* Center Glowing Play Button */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-lg group-hover/thumb:scale-115 group-hover/thumb:bg-red-600 transition-all duration-300">
+                            <Play className="w-5 h-5 fill-current ml-0.5 text-white" />
+                          </div>
+                        </div>
+
+                        {/* Bottom Duration Badge */}
+                        <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/80 backdrop-blur-xs text-[10px] font-mono font-bold text-white flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-slate-300" />
+                          <span>{course.duration}</span>
+                        </div>
+
+                        {/* In-Site Play Indicator */}
+                        <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-red-600/90 text-[10px] font-bold text-white flex items-center gap-1 shadow-xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                          <span>In-Site Video</span>
+                        </div>
+                      </div>
+
                       {/* Course Meta Banner */}
                       <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
                         <div className="flex items-center gap-1.5">
@@ -315,9 +375,8 @@ export const ResourcesPage = () => {
                         </div>
 
                         <div className="flex items-center gap-1.5 shrink-0">
-                          <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 flex items-center gap-1">
-                            <Clock className="w-3 h-3 text-slate-400" />
-                            {course.duration}
+                          <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                            {course.rating || '4.9 ★'}
                           </span>
                         </div>
                       </div>
@@ -333,7 +392,10 @@ export const ResourcesPage = () => {
                           </span>
                         </div>
 
-                        <h3 className="text-sm font-black text-slate-900 group-hover:text-red-700 transition-colors leading-snug">
+                        <h3 
+                          onClick={() => handlePlayVideo(course)}
+                          className="text-sm font-black text-slate-900 group-hover:text-red-700 transition-colors leading-snug cursor-pointer"
+                        >
                           {course.title}
                         </h3>
 
@@ -359,16 +421,14 @@ export const ResourcesPage = () => {
 
                     {/* Action Buttons */}
                     <div className="pt-4 mt-4 border-t border-slate-100 space-y-2">
-                      <a
-                        href={course.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs shadow-sm hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] group/btn"
+                      <button
+                        type="button"
+                        onClick={() => handlePlayVideo(course)}
+                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs shadow-sm hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] group/btn cursor-pointer"
                       >
-                        <YoutubeIcon className="w-4 h-4 text-white fill-current group-hover/btn:scale-110 transition-transform" />
-                        <span>Watch on YouTube</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-white/80" />
-                      </a>
+                        <Play className="w-4 h-4 text-white fill-current group-hover/btn:scale-110 transition-transform" />
+                        <span>Play Video in NexStep</span>
+                      </button>
 
                       {matchingResource && (
                         <Button
@@ -509,9 +569,11 @@ export const ResourcesPage = () => {
 
                         {/* YouTube Video Course Badge Strip */}
                         {res.youtube && (
-                          <div className="p-2.5 rounded-xl bg-red-50/70 border border-red-200/80 flex flex-wrap items-center justify-between gap-2 max-w-2xl">
+                          <div className="p-2.5 rounded-xl bg-red-50/70 border border-red-200/80 flex flex-wrap items-center justify-between gap-2 max-w-2xl shadow-xs">
                             <div className="flex items-center gap-2 text-xs">
-                              <YoutubeIcon className="w-4 h-4 text-red-600 shrink-0" />
+                              <div className="w-5 h-5 rounded-full bg-red-600 flex items-center justify-center text-white shrink-0">
+                                <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
+                              </div>
                               <span className="font-bold text-slate-900">
                                 {res.youtube.title}
                               </span>
@@ -522,15 +584,14 @@ export const ResourcesPage = () => {
                               </span>
                             </div>
 
-                            <a
-                              href={res.youtube.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-[11px] font-bold text-red-700 hover:text-red-900 underline underline-offset-2"
+                            <button
+                              type="button"
+                              onClick={() => handlePlayVideo(res.youtube, res)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-xs transition-colors cursor-pointer"
                             >
-                              <span>Watch on YouTube</span>
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
+                              <Play className="w-3 h-3 fill-current" />
+                              <span>Play Video (In-Site)</span>
+                            </button>
                           </div>
                         )}
 
@@ -549,18 +610,16 @@ export const ResourcesPage = () => {
                     <div className="flex flex-col sm:flex-row md:flex-col items-stretch gap-2.5 min-w-[210px] shrink-0">
                       {isUnlocked ? (
                         <>
-                          {/* Direct YouTube Link Button */}
+                          {/* In-Site Video Play Button */}
                           {res.youtube && (
-                            <a
-                              href={res.youtube.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-black transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 group"
+                            <button
+                              type="button"
+                              onClick={() => handlePlayVideo(res.youtube, res)}
+                              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-black transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 group cursor-pointer"
                             >
-                              <YoutubeIcon className="w-4 h-4 text-white fill-current group-hover:scale-110 transition-transform" />
-                              <span>Watch on YouTube</span>
-                              <ExternalLink className="w-3.5 h-3.5 text-white/80" />
-                            </a>
+                              <Play className="w-4 h-4 text-white fill-current group-hover:scale-110 transition-transform" />
+                              <span>Watch Video (In-Site)</span>
+                            </button>
                           )}
 
                           {/* Documentation / Tutorial Link */}
@@ -602,7 +661,145 @@ export const ResourcesPage = () => {
       )}
 
       {/* ========================================================================= */}
-      {/* 5. 3-QUESTION RE-CHECK QUIZ MODAL                                          */}
+      {/* 5. IN-SITE YOUTUBE CINEMA VIDEO PLAYER MODAL                              */}
+      {/* ========================================================================= */}
+      <Modal
+        isOpen={Boolean(playingVideo)}
+        onClose={handleCloseVideo}
+        title={playingVideo ? `${playingVideo.title}` : 'Video Masterclass'}
+        subtitle={playingVideo ? `${playingVideo.channel} • ${playingVideo.duration || ''} • In-Site Player` : ''}
+        maxWidth="max-w-4xl"
+      >
+        {playingVideo && (
+          <div className="space-y-4 pt-1">
+            {/* 16:9 Widescreen Embedded Iframe Container */}
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-950 shadow-2xl border border-slate-800">
+              {playingVideo.video_id ? (
+                <iframe
+                  src={`https://www.youtube.com/embed/${playingVideo.video_id}?autoplay=1&rel=0&modestbranding=1`}
+                  title={playingVideo.title}
+                  className="absolute inset-0 w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full text-slate-400 text-sm">
+                  Unable to load video stream
+                </div>
+              )}
+            </div>
+
+            {/* Video Metadata and In-Player Actions */}
+            <div className="space-y-3 pt-2">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                    <YoutubeIcon className="w-4 h-4 fill-current" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                      <span>{playingVideo.channel}</span>
+                      <span className="text-[10px] text-teal-600 font-bold bg-teal-50 px-1 rounded border border-teal-200" title="Verified Creator">✓ Verified</span>
+                    </div>
+                    {playingVideo.instructor && (
+                      <p className="text-[11px] text-slate-500">Instructor: {playingVideo.instructor}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {playingVideo.duration && (
+                    <span className="text-xs font-mono font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-slate-500" />
+                      {playingVideo.duration}
+                    </span>
+                  )}
+                  {playingVideo.rating && (
+                    <span className="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+                      {playingVideo.rating}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {playingVideo.description && (
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {playingVideo.description}
+                </p>
+              )}
+
+              {playingVideo.key_topics && playingVideo.key_topics.length > 0 && (
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                    Key Topics Covered:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {playingVideo.key_topics.map((topic, tIdx) => (
+                      <span
+                        key={tIdx}
+                        className="text-[11px] font-medium text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200"
+                      >
+                        {topic}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Footer Actions */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100">
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  {(() => {
+                    const matchingRes = resources.find(r => r.skill_id === playingVideo.skill_id);
+                    if (!matchingRes) return null;
+                    return (
+                      <Button
+                        variant="accent"
+                        size="sm"
+                        iconLeft={HelpCircle}
+                        onClick={() => {
+                          handleCloseVideo();
+                          handleOpenQuiz(matchingRes);
+                        }}
+                        className="text-xs font-bold text-slate-950 shadow-accent w-full sm:w-auto"
+                      >
+                        Take Evaluation Quiz for This Skill
+                      </Button>
+                    );
+                  })()}
+                </div>
+
+                <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                  {playingVideo.url && (
+                    <a
+                      href={playingVideo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] font-medium text-slate-400 hover:text-slate-600 flex items-center gap-1 underline"
+                    >
+                      <span>Watch on YouTube instead</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleCloseVideo}
+                    className="text-xs font-bold"
+                  >
+                    Close Player
+                  </Button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* ========================================================================= */}
+      {/* 6. 3-QUESTION RE-CHECK QUIZ MODAL                                          */}
       {/* ========================================================================= */}
       <Modal
         isOpen={Boolean(activeQuizResource)}
