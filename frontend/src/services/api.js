@@ -333,9 +333,9 @@ export const api = {
       }
     } catch (_) {}
 
-    let items = internshipsData.internships || [];
+    let items = Array.isArray(internshipsData) ? internshipsData : (internshipsData.internships || []);
     if (roleFilter && roleFilter !== 'all') {
-      items = items.filter(i => i.role === roleFilter);
+      items = items.filter(i => (i.role_category || i.role || '').toLowerCase() === roleFilter.toLowerCase());
     }
 
     const processed = items.map(item => {
