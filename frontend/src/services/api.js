@@ -3,6 +3,7 @@ import curriculaData from '../data/curricula.json';
 import internshipsData from '../data/internships.json';
 import resourcesData from '../data/resources.json';
 import rolesData from '../data/roles.json';
+import youtubeCoursesData from '../data/youtube_courses.json';
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
@@ -203,7 +204,10 @@ export const api = {
       }
     } catch (_) {}
 
-    const list = resourcesData['Software Developer'] || [];
+    const list = Array.isArray(resourcesData) 
+      ? resourcesData 
+      : Object.values(resourcesData);
+
     return list.map((item, idx) => {
       const isCompleted = completedQuizzes.includes(item.skill_id);
       const isUnlocked = idx === 0 || completedQuizzes.includes(list[idx - 1]?.skill_id);
@@ -213,6 +217,20 @@ export const api = {
         is_unlocked: isUnlocked
       };
     });
+  },
+
+  getYoutubeCourses: async (track = null) => {
+    try {
+      const param = track && track !== 'all' ? `?track=${encodeURIComponent(track)}` : '';
+      const res = await fetch(`${API_BASE}/resources/youtube-courses${param}`);
+      if (res.ok) return await res.json();
+    } catch (e) {
+      console.info('Backend unavailable, using client-side YouTube courses', e);
+    }
+    if (track && track !== 'all') {
+      return youtubeCoursesData.filter(c => c.track?.toLowerCase() === track.toLowerCase());
+    }
+    return youtubeCoursesData;
   },
 
   submitQuiz: async ({ studentId, skillId, answers }) => {

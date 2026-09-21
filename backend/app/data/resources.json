@@ -5,6 +5,14 @@
     "order": 1,
     "provider": "freeCodeCamp & GitHub Guides",
     "url": "https://www.freecodecamp.org/news/git-and-github-for-beginners/",
+    "youtube": {
+      "title": "Git and GitHub for Beginners - Full Crash Course",
+      "channel": "freeCodeCamp.org",
+      "url": "https://www.youtube.com/watch?v=RGOj5yH7evk",
+      "duration": "1 hr 08 mins",
+      "views": "2.8M views",
+      "badge": "YouTube Course"
+    },
     "duration_hours": "3 hours",
     "level": "Beginner",
     "prerequisites": [],
@@ -44,6 +52,14 @@
     "order": 2,
     "provider": "Official FastAPI Documentation",
     "url": "https://fastapi.tiangolo.com/tutorial/",
+    "youtube": {
+      "title": "FastAPI - Python Web Development Full Course",
+      "channel": "freeCodeCamp.org",
+      "url": "https://www.youtube.com/watch?v=0sOvCWFmrtA",
+      "duration": "19 hours",
+      "views": "1.5M views",
+      "badge": "YouTube Bootcamp"
+    },
     "duration_hours": "5 hours",
     "level": "Intermediate",
     "prerequisites": ["skill-git"],
@@ -88,6 +104,14 @@
     "order": 3,
     "provider": "Docker Official Docs & Roadmap.sh",
     "url": "https://docs.docker.com/get-started/",
+    "youtube": {
+      "title": "Docker Tutorial for Beginners - Full Course",
+      "channel": "TechWorld with Nana",
+      "url": "https://www.youtube.com/watch?v=3c-iBn73dDE",
+      "duration": "2 hrs 45 mins",
+      "views": "4.2M views",
+      "badge": "YouTube Course"
+    },
     "duration_hours": "4 hours",
     "level": "Intermediate",
     "prerequisites": ["skill-rest-apis"],
@@ -134,9 +158,17 @@
   "skill-pandas": {
     "skill_id": "skill-pandas",
     "title": "Python for Data Analysis (Pandas & NumPy Deep Dive)",
-    "order": 1,
+    "order": 4,
     "provider": "W3Schools & Pandas Official Tutorial",
     "url": "https://pandas.pydata.org/docs/user_guide/10min.html",
+    "youtube": {
+      "title": "Python Pandas & NumPy Data Analysis Full Course",
+      "channel": "freeCodeCamp.org",
+      "url": "https://www.youtube.com/watch?v=vmEHCJofslg",
+      "duration": "1 hour",
+      "views": "1.3M views",
+      "badge": "YouTube Course"
+    },
     "duration_hours": "6 hours",
     "level": "Intermediate",
     "prerequisites": [],
@@ -173,9 +205,17 @@
   "skill-embedded-c": {
     "skill_id": "skill-embedded-c",
     "title": "Embedded C Programming & Memory Architecture",
-    "order": 1,
+    "order": 5,
     "provider": "GeeksforGeeks Embedded & Embedded Artistry",
     "url": "https://www.geeksforgeeks.org/embedded-c-programming-with-examples/",
+    "youtube": {
+      "title": "Embedded C Programming & ARM Cortex Architecture",
+      "channel": "FastBit Embedded Brain Academy",
+      "url": "https://www.youtube.com/watch?v=yYvQsmP_tF0",
+      "duration": "4 hrs 30 mins",
+      "views": "850K views",
+      "badge": "YouTube Course"
+    },
     "duration_hours": "5 hours",
     "level": "Intermediate",
     "prerequisites": [],

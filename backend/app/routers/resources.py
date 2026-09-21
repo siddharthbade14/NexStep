@@ -68,6 +68,13 @@ def get_student_resources(student_id: str):
             "order": item["order"],
             "provider": item["provider"],
             "url": item["url"],
+            "youtube": item.get("youtube", {
+                "title": f"{item['title']} - Full Course",
+                "channel": "freeCodeCamp.org",
+                "url": f"https://www.youtube.com/results?search_query={item['title'].replace(' ', '+')}+full+course",
+                "duration": item.get("duration_hours", "3 hours"),
+                "badge": "YouTube Course"
+            }),
             "duration_hours": item["duration_hours"],
             "level": item["level"],
             "summary": item["summary"],
@@ -80,6 +87,17 @@ def get_student_resources(student_id: str):
         })
         
     return resource_list
+
+@router.get("/youtube-courses")
+def get_youtube_courses(track: Optional[str] = None):
+    yt_path = os.path.join(DATA_DIR, "youtube_courses.json")
+    if os.path.exists(yt_path):
+        with open(yt_path, "r", encoding="utf-8") as f:
+            courses = json.load(f)
+            if track and track != "all":
+                courses = [c for c in courses if c.get("track", "").lower() == track.lower()]
+            return courses
+    return []
 
 @router.post("/quiz/submit", response_model=QuizSubmissionResponse)
 def submit_recheck_quiz(payload: QuizSubmissionRequest):

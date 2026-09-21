@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useStudent } from '../context/StudentContext';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
@@ -16,14 +16,34 @@ import {
   ArrowRight,
   ShieldCheck,
   ChevronRight,
-  Check
+  Check,
+  Search,
+  Play,
+  Tv,
+  Filter,
+  GraduationCap,
+  TrendingUp,
+  Layers
 } from 'lucide-react';
 import { api } from '../services/api';
+
+// Pixel-perfect official YouTube Play Logo SVG
+export const YoutubeIcon = ({ className = "w-4 h-4 text-red-600" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+  </svg>
+);
 
 export const ResourcesPage = () => {
   const { student, addCompletedQuiz, setActiveTab } = useStudent();
   const [resources, setResources] = useState([]);
+  const [youtubeCourses, setYoutubeCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Filter & Search states
+  const [activeTabFilter, setActiveTabFilter] = useState('all'); // 'all' | 'youtube' | 'pathway'
+  const [selectedTrack, setSelectedTrack] = useState('all'); // 'all' | 'Software Developer' | 'Data Analyst' | 'Embedded Systems'
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Quiz Modal State
   const [activeQuizResource, setActiveQuizResource] = useState(null);
@@ -34,10 +54,14 @@ export const ResourcesPage = () => {
   const loadResources = async () => {
     setLoading(true);
     try {
-      const data = await api.getResources(student.id);
-      setResources(data);
+      const [resData, ytData] = await Promise.all([
+        api.getResources(student.id),
+        api.getYoutubeCourses()
+      ]);
+      setResources(resData || []);
+      setYoutubeCourses(ytData || []);
     } catch (err) {
-      console.warn('Could not fetch resources', err);
+      console.warn('Could not fetch resources or YouTube courses', err);
     } finally {
       setLoading(false);
     }
@@ -86,169 +110,500 @@ export const ResourcesPage = () => {
     }
   };
 
+  // Filter YouTube courses by track and search query
+  const filteredYoutubeCourses = useMemo(() => {
+    return youtubeCourses.filter(course => {
+      const matchesTrack = selectedTrack === 'all' || course.track?.toLowerCase() === selectedTrack.toLowerCase();
+      const matchesSearch = !searchQuery.trim() || 
+        course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.channel?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.instructor?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.key_topics?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesTrack && matchesSearch;
+    });
+  }, [youtubeCourses, selectedTrack, searchQuery]);
+
   return (
-    <div className="space-y-8 py-2 sm:py-4 max-w-5xl mx-auto">
+    <div className="space-y-8 py-2 sm:py-4 max-w-6xl mx-auto">
       
-      {/* HEADER */}
+      {/* ========================================================================= */}
+      {/* 1. HEADER SECTION                                                         */}
+      {/* ========================================================================= */}
       <div className="text-center space-y-3 max-w-3xl mx-auto">
-        <div className="icon-3d icon-3d-navy w-14 h-14 rounded-2xl mx-auto flex items-center justify-center shadow-lg">
-          <BookOpen className="w-7 h-7 text-teal-300" />
+        <div className="flex items-center justify-center gap-3">
+          <div className="icon-3d icon-3d-navy w-13 h-13 rounded-2xl flex items-center justify-center shadow-lg">
+            <BookOpen className="w-6 h-6 text-teal-300" />
+          </div>
+          <div className="w-13 h-13 rounded-2xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-500/20 text-white">
+            <YoutubeIcon className="w-7 h-7 text-white fill-current" />
+          </div>
         </div>
+
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 text-xs font-bold text-[#1F4E5F] border border-teal-200">
           <Sparkles className="w-3.5 h-3.5 text-[#F4B942]" />
-          <span>Sequenced Adaptive Pathway</span>
+          <span>Curated YouTube Masterclasses & Sequenced Pathways</span>
         </div>
+
         <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-          Curated Free Resources & Re-check Quizzes
+          Curated Free Resources & YouTube Video Courses
         </h1>
+
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl mx-auto">
-          Industry-tested free learning guides from freeCodeCamp, MDN, and official docs. 
-          Resources unlock in dependency sequence once you pass each module’s 3-question verification quiz.
+          Industry-tested free learning guides and full YouTube video masterclasses from top engineering educators 
+          (<strong className="text-slate-900">freeCodeCamp, TechWorld with Nana, Chai aur Code, Alex The Analyst</strong>). 
+          Click any video to open directly in YouTube.
         </p>
       </div>
 
-      {/* SEQUENCED RESOURCE CARDS WITH CONNECTING TIMELINE */}
-      <div className="relative space-y-6">
-        {/* Subtle vertical connecting guideline behind milestones */}
-        <div className="hidden md:block absolute left-12 top-8 bottom-8 w-0.5 bg-gradient-to-b from-teal-500 via-amber-400 to-slate-200 opacity-30 -z-0" />
-
-        {resources.map((res, idx) => {
-          const isCompleted = student.completed_quizzes?.includes(res.skill_id) || res.is_completed;
-          const isUnlocked = res.is_unlocked || isCompleted;
-
-          return (
-            <div
-              key={res.skill_id}
-              className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 border relative overflow-hidden bg-white/95 backdrop-blur-md ${
-                isCompleted
-                  ? 'border-teal-200 shadow-sm hover:shadow-md hover:border-teal-300'
-                  : isUnlocked
-                  ? 'border-slate-200/90 shadow-lg hover:shadow-2xl ring-1 ring-[#1F4E5F]/15 hover:-translate-y-1 glow-ring-teal'
-                  : 'border-slate-200/60 bg-slate-50/70 opacity-65 backdrop-blur-xs'
+      {/* ========================================================================= */}
+      {/* 2. FILTER & VIEW SWITCHER TOOLBAR                                         */}
+      {/* ========================================================================= */}
+      <div className="p-4 rounded-3xl glass-card-premium border-sharp space-y-4 shadow-sm">
+        
+        {/* Top View Mode Switcher */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-100/90 border border-slate-200/90 w-full md:w-auto">
+            <button
+              type="button"
+              onClick={() => setActiveTabFilter('all')}
+              className={`flex-1 md:flex-initial px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                activeTabFilter === 'all'
+                  ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              {/* Specular top highlight for unlocked */}
-              {isUnlocked && !isCompleted && (
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#1F4E5F] via-[#F4B942] to-teal-400"></div>
-              )}
-              {isCompleted && (
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-emerald-500"></div>
-              )}
+              All Resources ({resources.length + youtubeCourses.length})
+            </button>
 
-              {/* Order Watermark */}
-              <div className="absolute right-6 top-5 text-6xl font-black text-slate-100/90 select-none pointer-events-none font-mono">
-                #{res.order}
-              </div>
+            <button
+              type="button"
+              onClick={() => setActiveTabFilter('youtube')}
+              className={`flex-1 md:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                activeTabFilter === 'youtube'
+                  ? 'bg-red-600 text-white shadow-sm shadow-red-500/30'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <YoutubeIcon className={`w-3.5 h-3.5 ${activeTabFilter === 'youtube' ? 'text-white' : 'text-red-600'}`} />
+              <span>YouTube Video Courses ({youtubeCourses.length})</span>
+            </button>
 
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
-                
-                {/* Left Content with 3D Status Pedestal */}
-                <div className="flex items-start gap-4 flex-1">
-                  <div className={`icon-3d ${
-                    isCompleted 
-                      ? 'icon-3d-emerald' 
-                      : isUnlocked 
-                      ? 'icon-3d-amber' 
-                      : 'icon-3d-navy opacity-50'
-                  } w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-md`}>
-                    {isCompleted ? (
-                      <CheckCircle2 className="w-6 h-6 text-white" />
-                    ) : isUnlocked ? (
-                      <BookOpen className="w-5 h-5 text-slate-950" />
-                    ) : (
-                      <Lock className="w-5 h-5 text-slate-400" />
-                    )}
-                  </div>
+            <button
+              type="button"
+              onClick={() => setActiveTabFilter('pathway')}
+              className={`flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                activeTabFilter === 'pathway'
+                  ? 'bg-[#1F4E5F] text-white shadow-sm shadow-teal-900/30'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Sequenced Quizzes ({resources.length})</span>
+            </button>
+          </div>
 
-                  <div className="space-y-2.5 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs font-black text-[#1F4E5F] bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-200">
-                        Milestone {res.order}
-                      </span>
+          {/* Search Box */}
+          <div className="relative w-full md:w-72">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search topics (e.g. Docker, SQL, React)..."
+              className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200/90 bg-white text-xs font-medium focus:outline-hidden focus:ring-2 focus:ring-[#1F4E5F]/20 focus:border-[#1F4E5F]"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
 
-                      {isCompleted ? (
-                        <Badge variant="verified" size="sm">
-                          Quiz Passed & Verified
-                        </Badge>
-                      ) : isUnlocked ? (
-                        <Badge variant="in_progress" size="sm">
-                          Ready to Learn & Quiz
-                        </Badge>
-                      ) : (
-                        <Badge variant="locked" size="sm">
-                          Locked (Pass Prior Quiz)
-                        </Badge>
-                      )}
+        {/* Track Category Chips */}
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 text-xs">
+          <span className="font-bold text-slate-500 mr-1 flex items-center gap-1">
+            <Filter className="w-3 h-3 text-slate-400" />
+            Role Track:
+          </span>
+          {[
+            { id: 'all', label: 'All Career Tracks' },
+            { id: 'Software Developer', label: 'Software Developer' },
+            { id: 'Data Analyst', label: 'Data Analyst' },
+            { id: 'Embedded Systems', label: 'Embedded & IoT' }
+          ].map((trk) => (
+            <button
+              key={trk.id}
+              type="button"
+              onClick={() => setSelectedTrack(trk.id)}
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all ${
+                selectedTrack === trk.id
+                  ? 'bg-[#1F4E5F] text-white shadow-xs'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+              }`}
+            >
+              {trk.label}
+            </button>
+          ))}
+        </div>
 
-                      <span className="text-xs text-slate-500 font-medium flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-slate-400" />
-                        {res.duration_hours}
-                      </span>
-
-                      <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">
-                        {res.provider}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
-                        {res.title}
-                      </h3>
-                      <p className="text-xs text-slate-600 mt-1 leading-relaxed max-w-2xl">
-                        {res.summary}
-                      </p>
-                    </div>
-
-                    {res.prerequisites?.length > 0 && (
-                      <div className="text-[11px] text-slate-500">
-                        Prerequisites:{' '}
-                        <span className="font-semibold text-slate-700">
-                          {res.prerequisites.map(p => p.replace('skill-', '').replace('-', ' ').toUpperCase()).join(', ')}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Right Action Buttons */}
-                <div className="flex flex-col sm:flex-row md:flex-col items-stretch gap-2.5 min-w-[210px] shrink-0">
-                  {isUnlocked ? (
-                    <>
-                      <a
-                        href={res.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300/90 bg-white hover:bg-slate-50 text-xs font-bold text-slate-800 transition-all shadow-xs hover:-translate-y-0.5 active:translate-y-0"
-                      >
-                        <span>Open Free Tutorial</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
-                      </a>
-
-                      <Button
-                        variant={isCompleted ? 'secondary' : 'accent'}
-                        size="md"
-                        onClick={() => handleOpenQuiz(res)}
-                        iconLeft={HelpCircle}
-                        className={`text-xs font-bold ${isCompleted ? '' : 'text-slate-950 shadow-accent'} hover:-translate-y-0.5 active:translate-y-0`}
-                      >
-                        {isCompleted ? 'Re-take Quiz' : 'Take Re-check Quiz'}
-                      </Button>
-                    </>
-                  ) : (
-                    <div className="p-3.5 rounded-xl bg-slate-100/90 border border-slate-200 text-center text-xs text-slate-500 flex items-center justify-center gap-2 font-medium">
-                      <Lock className="w-4 h-4 text-slate-400" />
-                      <span>Locked until prior module</span>
-                    </div>
-                  )}
-                </div>
-
-              </div>
-            </div>
-          );
-        })}
       </div>
 
-      {/* 3-QUESTION RE-CHECK QUIZ MODAL */}
+      {/* ========================================================================= */}
+      {/* 3. FEATURED YOUTUBE VIDEO COURSES SECTION                                  */}
+      {/* ========================================================================= */}
+      {(activeTabFilter === 'all' || activeTabFilter === 'youtube') && (
+        <section className="space-y-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-red-600 text-white flex items-center justify-center shadow-xs">
+                <YoutubeIcon className="w-4 h-4 text-white fill-current" />
+              </div>
+              <div>
+                <h2 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                  <span>YouTube Video Masterclasses</span>
+                  <span className="text-xs font-mono font-bold bg-red-100 text-red-800 px-2 py-0.5 rounded-full border border-red-200">
+                    Opens in YouTube ↗
+                  </span>
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Full-length courses, crash courses, and hands-on project walkthroughs
+                </p>
+              </div>
+            </div>
+
+            <span className="text-xs font-bold text-slate-400 font-mono hidden sm:inline">
+              Showing {filteredYoutubeCourses.length} video courses
+            </span>
+          </div>
+
+          {filteredYoutubeCourses.length === 0 ? (
+            <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-2">
+              <p className="text-sm font-bold text-slate-700">No YouTube courses found matching your query</p>
+              <Button size="sm" variant="secondary" onClick={() => { setSearchQuery(''); setSelectedTrack('all'); }}>
+                Clear Filters
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredYoutubeCourses.map((course) => {
+                // Find matching resource if it exists for quiz linking
+                const matchingResource = resources.find(r => r.skill_id === course.skill_id);
+
+                return (
+                  <div
+                    key={course.id}
+                    className="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:border-red-300 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
+                  >
+                    {/* Top Specular Sheen */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-amber-500 to-red-500 opacity-80" />
+
+                    <div>
+                      {/* Course Meta Banner */}
+                      <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
+                        <div className="flex items-center gap-1.5">
+                          <YoutubeIcon className="w-4 h-4 text-red-600" />
+                          <span className="text-xs font-bold text-slate-800 truncate max-w-[150px]">
+                            {course.channel}
+                          </span>
+                          <span className="text-[10px] text-teal-600 font-bold" title="Verified Creator">✓</span>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-slate-400" />
+                            {course.duration}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Title & Badge */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[9px] font-black uppercase tracking-wider bg-red-50 text-red-700 px-2 py-0.5 rounded-md border border-red-200">
+                            {course.badge || 'YouTube Course'}
+                          </span>
+                          <span className="text-[9px] font-mono text-slate-400">
+                            {course.views}
+                          </span>
+                        </div>
+
+                        <h3 className="text-sm font-black text-slate-900 group-hover:text-red-700 transition-colors leading-snug">
+                          {course.title}
+                        </h3>
+
+                        <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                          {course.description}
+                        </p>
+                      </div>
+
+                      {/* Key Topics Pills */}
+                      {course.key_topics && (
+                        <div className="flex flex-wrap gap-1.5 pt-3 mt-2">
+                          {course.key_topics.slice(0, 3).map((topic, tIdx) => (
+                            <span 
+                              key={tIdx}
+                              className="text-[10px] font-medium text-slate-600 bg-slate-50 px-2 py-0.5 rounded border border-slate-200"
+                            >
+                              {topic}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="pt-4 mt-4 border-t border-slate-100 space-y-2">
+                      <a
+                        href={course.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs shadow-sm hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] group/btn"
+                      >
+                        <YoutubeIcon className="w-4 h-4 text-white fill-current group-hover/btn:scale-110 transition-transform" />
+                        <span>Watch on YouTube</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-white/80" />
+                      </a>
+
+                      {matchingResource && (
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => handleOpenQuiz(matchingResource)}
+                          iconLeft={HelpCircle}
+                          className="w-full text-xs font-bold border-slate-200 hover:border-[#1F4E5F]"
+                        >
+                          Take Evaluation Quiz
+                        </Button>
+                      )}
+                    </div>
+
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 4. SEQUENCED PATHWAYS & RE-CHECK QUIZZES SECTION                          */}
+      {/* ========================================================================= */}
+      {(activeTabFilter === 'all' || activeTabFilter === 'pathway') && (
+        <section className="space-y-6 pt-4">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-[#1F4E5F] text-white flex items-center justify-center shadow-xs">
+                <Layers className="w-4 h-4 text-teal-300" />
+              </div>
+              <div>
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">
+                  Sequenced Learning Pathway & Verification Quizzes
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Step-by-step milestones. Pass each 3-question evaluation quiz to unlock the next milestone.
+                </p>
+              </div>
+            </div>
+
+            <span className="text-xs font-bold text-slate-400 font-mono">
+              {resources.filter(r => student.completed_quizzes?.includes(r.skill_id) || r.is_completed).length} / {resources.length} Completed
+            </span>
+          </div>
+
+          <div className="relative space-y-6">
+            {/* Vertical timeline connector guideline */}
+            <div className="hidden md:block absolute left-12 top-8 bottom-8 w-0.5 bg-gradient-to-b from-teal-500 via-amber-400 to-slate-200 opacity-30 -z-0" />
+
+            {resources.map((res, idx) => {
+              const isCompleted = student.completed_quizzes?.includes(res.skill_id) || res.is_completed;
+              const isUnlocked = res.is_unlocked || isCompleted;
+
+              return (
+                <div
+                  key={res.skill_id}
+                  className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 border relative overflow-hidden bg-white/95 backdrop-blur-md ${
+                    isCompleted
+                      ? 'border-teal-200 shadow-sm hover:shadow-md hover:border-teal-300'
+                      : isUnlocked
+                      ? 'border-slate-200/90 shadow-lg hover:shadow-2xl ring-1 ring-[#1F4E5F]/15 hover:-translate-y-1 glow-ring-teal'
+                      : 'border-slate-200/60 bg-slate-50/70 opacity-65 backdrop-blur-xs'
+                  }`}
+                >
+                  {/* Specular top highlight */}
+                  {isUnlocked && !isCompleted && (
+                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#1F4E5F] via-[#F4B942] to-teal-400"></div>
+                  )}
+                  {isCompleted && (
+                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-emerald-500"></div>
+                  )}
+
+                  {/* Order Watermark */}
+                  <div className="absolute right-6 top-5 text-6xl font-black text-slate-100/90 select-none pointer-events-none font-mono">
+                    #{res.order}
+                  </div>
+
+                  <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+                    
+                    {/* Left Content with 3D Status Pedestal */}
+                    <div className="flex items-start gap-4 flex-1">
+                      <div className={`icon-3d ${
+                        isCompleted 
+                          ? 'icon-3d-emerald' 
+                          : isUnlocked 
+                          ? 'icon-3d-amber' 
+                          : 'icon-3d-navy opacity-50'
+                      } w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-md`}>
+                        {isCompleted ? (
+                          <CheckCircle2 className="w-6 h-6 text-white" />
+                        ) : isUnlocked ? (
+                          <BookOpen className="w-5 h-5 text-slate-950" />
+                        ) : (
+                          <Lock className="w-5 h-5 text-slate-400" />
+                        )}
+                      </div>
+
+                      <div className="space-y-2.5 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-xs font-black text-[#1F4E5F] bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-200">
+                            Milestone {res.order}
+                          </span>
+
+                          {isCompleted ? (
+                            <Badge variant="verified" size="sm">
+                              Quiz Passed & Verified
+                            </Badge>
+                          ) : isUnlocked ? (
+                            <Badge variant="in_progress" size="sm">
+                              Ready to Learn & Quiz
+                            </Badge>
+                          ) : (
+                            <Badge variant="locked" size="sm">
+                              Locked (Pass Prior Quiz)
+                            </Badge>
+                          )}
+
+                          <span className="text-xs text-slate-500 font-medium flex items-center gap-1">
+                            <Clock className="w-3.5 h-3.5 text-slate-400" />
+                            {res.duration_hours}
+                          </span>
+
+                          <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">
+                            {res.provider}
+                          </span>
+                        </div>
+
+                        <div>
+                          <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+                            {res.title}
+                          </h3>
+                          <p className="text-xs text-slate-600 mt-1 leading-relaxed max-w-2xl">
+                            {res.summary}
+                          </p>
+                        </div>
+
+                        {/* YouTube Video Course Badge Strip */}
+                        {res.youtube && (
+                          <div className="p-2.5 rounded-xl bg-red-50/70 border border-red-200/80 flex flex-wrap items-center justify-between gap-2 max-w-2xl">
+                            <div className="flex items-center gap-2 text-xs">
+                              <YoutubeIcon className="w-4 h-4 text-red-600 shrink-0" />
+                              <span className="font-bold text-slate-900">
+                                {res.youtube.title}
+                              </span>
+                              <span className="text-slate-400">•</span>
+                              <span className="text-slate-600 font-medium">{res.youtube.channel}</span>
+                              <span className="text-[10px] font-mono font-bold bg-white px-1.5 py-0.5 rounded border border-red-200 text-red-800">
+                                {res.youtube.duration}
+                              </span>
+                            </div>
+
+                            <a
+                              href={res.youtube.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-[11px] font-bold text-red-700 hover:text-red-900 underline underline-offset-2"
+                            >
+                              <span>Watch on YouTube</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
+                        )}
+
+                        {res.prerequisites?.length > 0 && (
+                          <div className="text-[11px] text-slate-500">
+                            Prerequisites:{' '}
+                            <span className="font-semibold text-slate-700">
+                              {res.prerequisites.map(p => p.replace('skill-', '').replace('-', ' ').toUpperCase()).join(', ')}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Right Action Buttons */}
+                    <div className="flex flex-col sm:flex-row md:flex-col items-stretch gap-2.5 min-w-[210px] shrink-0">
+                      {isUnlocked ? (
+                        <>
+                          {/* Direct YouTube Link Button */}
+                          {res.youtube && (
+                            <a
+                              href={res.youtube.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-black transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 group"
+                            >
+                              <YoutubeIcon className="w-4 h-4 text-white fill-current group-hover:scale-110 transition-transform" />
+                              <span>Watch on YouTube</span>
+                              <ExternalLink className="w-3.5 h-3.5 text-white/80" />
+                            </a>
+                          )}
+
+                          {/* Documentation / Tutorial Link */}
+                          <a
+                            href={res.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl border border-slate-300/90 bg-white hover:bg-slate-50 text-xs font-bold text-slate-800 transition-all shadow-xs hover:-translate-y-0.5 active:translate-y-0"
+                          >
+                            <span>Open Free Tutorial</span>
+                            <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+                          </a>
+
+                          {/* Evaluation Quiz */}
+                          <Button
+                            variant={isCompleted ? 'secondary' : 'accent'}
+                            size="md"
+                            onClick={() => handleOpenQuiz(res)}
+                            iconLeft={HelpCircle}
+                            className={`text-xs font-bold ${isCompleted ? '' : 'text-slate-950 shadow-accent'} hover:-translate-y-0.5 active:translate-y-0`}
+                          >
+                            {isCompleted ? 'Re-take Quiz' : 'Take Re-check Quiz'}
+                          </Button>
+                        </>
+                      ) : (
+                        <div className="p-3.5 rounded-xl bg-slate-100/90 border border-slate-200 text-center text-xs text-slate-500 flex items-center justify-center gap-2 font-medium">
+                          <Lock className="w-4 h-4 text-slate-400" />
+                          <span>Locked until prior module</span>
+                        </div>
+                      )}
+                    </div>
+
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 5. 3-QUESTION RE-CHECK QUIZ MODAL                                          */}
+      {/* ========================================================================= */}
       <Modal
         isOpen={Boolean(activeQuizResource)}
         onClose={() => setActiveQuizResource(null)}
@@ -352,3 +707,5 @@ export const ResourcesPage = () => {
     </div>
   );
 };
+
+export default ResourcesPage;
