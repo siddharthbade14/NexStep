@@ -18,7 +18,8 @@ import {
   Cpu,
   ArrowRight,
   Activity,
-  Award
+  Award,
+  LogIn
 } from 'lucide-react';
 import { Badge } from './Badge';
 import { Modal } from './Modal';
@@ -63,12 +64,13 @@ export const Navbar = () => {
 
   const navItems = [
     { id: 'landing', label: 'Home', icon: Compass, tag: null },
+    { id: 'login', label: 'Login / Demo', icon: LogIn, tag: 'Demo Access', highlight: true },
     { id: 'onboarding', label: 'Onboarding', icon: Layers, tag: 'Setup' },
-    { id: 'gap-analysis', label: 'Gap Analysis', icon: Sparkles, tag: 'AI Core', highlight: true },
+    { id: 'gap-analysis', label: 'Gap Analysis', icon: Sparkles, tag: 'AI Core' },
     { id: 'verification', label: 'Verify Skills', icon: CheckCircle, badgeCount: student.verified_skills?.length || 0 },
     { id: 'resources', label: 'Resources', icon: BookOpen, tag: 'Guides' },
     { id: 'roadmap', label: 'Milestone Roadmap', icon: MapPin, tag: 'Path' },
-    { id: 'opportunities', label: 'Internships', icon: Briefcase, tag: '12 Live', badgeColor: 'bg-amber-100 text-amber-800' }
+    { id: 'opportunities', label: 'Internships', icon: Briefcase, tag: '22 Live', badgeColor: 'bg-amber-100 text-amber-800' }
   ];
 
   const handleNavClick = (id) => {
@@ -232,20 +234,32 @@ export const Navbar = () => {
           </div>
         </div>
 
-        {/* Demo Reset Button */}
-        <button
-          type="button"
-          onClick={() => {
-            if (window.confirm('Reset student profile & verified credentials back to initial DTU state?')) {
-              resetStudentState();
-            }
-          }}
-          className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors border border-dashed border-slate-300 hover:border-rose-300"
-          title="Reset demo data"
-        >
-          <RotateCcw className="w-3.5 h-3.5" />
-          <span>Reset Demo Profile</span>
-        </button>
+        {/* Quick Demo / Login Actions */}
+        <div className="grid grid-cols-2 gap-1.5 pt-1">
+          <button
+            type="button"
+            onClick={() => handleNavClick('login')}
+            className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-800 bg-amber-100/80 hover:bg-amber-200 text-amber-950 transition-colors border border-amber-300/80 shadow-2xs"
+            title="Launch Demo Personas or Login"
+          >
+            <LogIn className="w-3.5 h-3.5 text-amber-700" />
+            <span>Demo / Login</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm('Reset student profile & verified credentials back to initial DTU state?')) {
+                resetStudentState();
+              }
+            }}
+            className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors border border-dashed border-slate-300 hover:border-rose-300"
+            title="Reset demo data"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Reset</span>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -279,7 +293,16 @@ export const Navbar = () => {
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <button 
+            type="button"
+            onClick={() => handleNavClick('login')}
+            className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-amber-100 text-amber-950 text-xs font-bold border border-amber-300 shadow-2xs"
+          >
+            <LogIn className="w-3.5 h-3.5 text-amber-700" />
+            <span>Demo / Login</span>
+          </button>
+
           <button 
             type="button"
             onClick={() => setProfileModalOpen(true)}

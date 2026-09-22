@@ -41,6 +41,24 @@ export const OnboardingPage = () => {
 
   const [customSkillInput, setCustomSkillInput] = useState('');
 
+  // When demo account is clicked or student profile is reset, start Onboarding strictly from Step 1
+  useEffect(() => {
+    if (student?.resetTimestamp) {
+      setCurrentStep(1);
+      setFormData({
+        name: student.name || '',
+        college: student.college || 'Delhi Technological University (DTU)',
+        course: student.course || 'B.Tech CSE',
+        semester: student.semester || 1,
+        dream_role: student.dream_role || 'Software Developer',
+        language: student.language || 'English',
+        self_reported_skills: student.self_reported_skills || []
+      });
+      setCustomSkillInput('');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [student?.resetTimestamp]);
+
   useEffect(() => {
     const loadMeta = async () => {
       try {

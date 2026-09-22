@@ -10,6 +10,7 @@ import { VerificationPage } from './pages/VerificationPage';
 import { ResourcesPage } from './pages/ResourcesPage';
 import { RoadmapPage } from './pages/RoadmapPage';
 import { OpportunitiesPage } from './pages/OpportunitiesPage';
+import { LoginPage } from './pages/LoginPage';
 
 const AppContent = () => {
   const { activeTab, setActiveTab } = useStudent();
@@ -25,6 +26,8 @@ const AppContent = () => {
     switch (activeTab) {
       case 'landing':
         return <LandingPage />;
+      case 'login':
+        return <LoginPage />;
       case 'onboarding':
         return <OnboardingPage />;
       case 'gap-analysis':

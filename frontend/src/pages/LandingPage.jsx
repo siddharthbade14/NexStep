@@ -32,7 +32,8 @@ import {
   Binary,
   Target,
   Workflow,
-  Award
+  Award,
+  LogIn
 } from 'lucide-react';
 
 const SIMULATION_TRACKS = {
@@ -276,6 +277,19 @@ export const LandingPage = () => {
                 className="w-full sm:w-auto px-7 border-slate-300 hover:border-slate-400 hover:bg-slate-50 text-sm font-bold"
               >
                 Explore Live Gap Dashboard
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={() => {
+                  setActiveTab('login');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                iconLeft={LogIn}
+                className="w-full sm:w-auto px-6 bg-white/95 hover:bg-white border border-teal-200/90 hover:border-teal-400 text-slate-800 text-sm font-bold shadow-xs hover:shadow-md transition-all"
+              >
+                🚀 Demo Account & Login
               </Button>
             </div>
 
