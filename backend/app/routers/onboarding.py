@@ -70,12 +70,19 @@ def submit_onboarding(profile: StudentOnboardingRequest):
         id=student_id,
         name=profile.name,
         college=profile.college,
+        department=profile.department,
+        stream=profile.stream,
+        domain=profile.domain,
+        degree=profile.degree,
         course=profile.course,
         semester=profile.semester,
+        grad_year=profile.grad_year,
         dream_role=profile.dream_role,
         language=profile.language,
         self_reported_skills=profile.self_reported_skills,
-        verified_skills=verified_skills
+        verified_skills=verified_skills,
+        preferred_work_mode=profile.preferred_work_mode,
+        preferred_location=profile.preferred_location
     )
 
 @router.get("/profile/{student_id}", response_model=StudentProfile)

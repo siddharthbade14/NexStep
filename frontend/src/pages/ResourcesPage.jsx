@@ -184,18 +184,18 @@ export const ResourcesPage = () => {
       {/* ========================================================================= */}
       {/* 2. FILTER & VIEW SWITCHER TOOLBAR                                         */}
       {/* ========================================================================= */}
-      <div className="p-4 rounded-3xl glass-card-premium border-sharp space-y-4 shadow-sm">
+      <div className="p-4 rounded-3xl glass-card-premium border-sharp space-y-4 shadow-sm transition-colors duration-300">
         
         {/* Top View Mode Switcher */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-100/90 border border-slate-200/90 w-full md:w-auto">
+          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-100/90 dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 w-full md:w-auto">
             <button
               type="button"
               onClick={() => setActiveTabFilter('all')}
               className={`flex-1 md:flex-initial px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeTabFilter === 'all'
-                  ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm border border-slate-200 dark:border-slate-700'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               All Resources ({resources.length + youtubeCourses.length})
@@ -207,7 +207,7 @@ export const ResourcesPage = () => {
               className={`flex-1 md:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeTabFilter === 'youtube'
                   ? 'bg-red-600 text-white shadow-sm shadow-red-500/30'
-                  : 'text-slate-600 hover:text-slate-900'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <YoutubeIcon className={`w-3.5 h-3.5 ${activeTabFilter === 'youtube' ? 'text-white' : 'text-red-600'}`} />
@@ -219,8 +219,8 @@ export const ResourcesPage = () => {
               onClick={() => setActiveTabFilter('pathway')}
               className={`flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 activeTabFilter === 'pathway'
-                  ? 'bg-[#1F4E5F] text-white shadow-sm shadow-teal-900/30'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[#1F4E5F] dark:bg-teal-600 text-white shadow-sm shadow-teal-900/30'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -230,13 +230,13 @@ export const ResourcesPage = () => {
 
           {/* Search Box */}
           <div className="relative w-full md:w-72">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search topics (e.g. Docker, SQL, React)..."
-              className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200/90 bg-white text-xs font-medium focus:outline-hidden focus:ring-2 focus:ring-[#1F4E5F]/20 focus:border-[#1F4E5F]"
+              className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 text-xs font-medium focus:outline-hidden focus:ring-2 focus:ring-[#1F4E5F]/20 focus:border-[#1F4E5F]"
             />
             {searchQuery && (
               <button
@@ -251,8 +251,8 @@ export const ResourcesPage = () => {
         </div>
 
         {/* Track Category Chips */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 text-xs">
-          <span className="font-bold text-slate-500 mr-1 flex items-center gap-1">
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+          <span className="font-bold text-slate-500 dark:text-slate-400 mr-1 flex items-center gap-1">
             <Filter className="w-3 h-3 text-slate-400" />
             Role Track:
           </span>
@@ -268,8 +268,8 @@ export const ResourcesPage = () => {
               onClick={() => setSelectedTrack(trk.id)}
               className={`px-3 py-1.5 rounded-xl font-bold transition-all ${
                 selectedTrack === trk.id
-                  ? 'bg-[#1F4E5F] text-white shadow-xs'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                  ? 'bg-[#1F4E5F] dark:bg-teal-600 text-white shadow-xs'
+                  : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300'
               }`}
             >
               {trk.label}
@@ -324,7 +324,7 @@ export const ResourcesPage = () => {
                 return (
                   <div
                     key={course.id}
-                    className="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:border-red-300 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
+                    className="p-5 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-red-300 dark:hover:border-red-500/50 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
                   >
                     {/* Top Specular Sheen */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-amber-500 to-red-500 opacity-80" />
@@ -365,17 +365,17 @@ export const ResourcesPage = () => {
                       </div>
 
                       {/* Course Meta Banner */}
-                      <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
+                      <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
                         <div className="flex items-center gap-1.5">
                           <YoutubeIcon className="w-4 h-4 text-red-600" />
-                          <span className="text-xs font-bold text-slate-800 truncate max-w-[150px]">
+                          <span className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate max-w-[150px]">
                             {course.channel}
                           </span>
-                          <span className="text-[10px] text-teal-600 font-bold" title="Verified Creator">✓</span>
+                          <span className="text-[10px] text-teal-600 dark:text-teal-400 font-bold" title="Verified Creator">✓</span>
                         </div>
 
                         <div className="flex items-center gap-1.5 shrink-0">
-                          <span className="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                          <span className="text-[10px] font-bold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-md border border-amber-200 dark:border-amber-800/60">
                             {course.rating || '4.9 ★'}
                           </span>
                         </div>
@@ -384,22 +384,22 @@ export const ResourcesPage = () => {
                       {/* Title & Badge */}
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[9px] font-black uppercase tracking-wider bg-red-50 text-red-700 px-2 py-0.5 rounded-md border border-red-200">
+                          <span className="text-[9px] font-black uppercase tracking-wider bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 px-2 py-0.5 rounded-md border border-red-200 dark:border-red-800/60">
                             {course.badge || 'YouTube Course'}
                           </span>
-                          <span className="text-[9px] font-mono text-slate-400">
+                          <span className="text-[9px] font-mono text-slate-400 dark:text-slate-500">
                             {course.views}
                           </span>
                         </div>
 
                         <h3 
                           onClick={() => handlePlayVideo(course)}
-                          className="text-sm font-black text-slate-900 group-hover:text-red-700 transition-colors leading-snug cursor-pointer"
+                          className="text-sm font-black text-slate-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-snug cursor-pointer"
                         >
                           {course.title}
                         </h3>
 
-                        <p className="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
                           {course.description}
                         </p>
                       </div>
@@ -410,7 +410,7 @@ export const ResourcesPage = () => {
                           {course.key_topics.slice(0, 3).map((topic, tIdx) => (
                             <span 
                               key={tIdx}
-                              className="text-[10px] font-medium text-slate-600 bg-slate-50 px-2 py-0.5 rounded border border-slate-200"
+                              className="text-[10px] font-medium text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700"
                             >
                               {topic}
                             </span>
@@ -420,7 +420,7 @@ export const ResourcesPage = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="pt-4 mt-4 border-t border-slate-100 space-y-2">
+                    <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 space-y-2">
                       <button
                         type="button"
                         onClick={() => handlePlayVideo(course)}
@@ -436,7 +436,7 @@ export const ResourcesPage = () => {
                           size="sm"
                           onClick={() => handleOpenQuiz(matchingResource)}
                           iconLeft={HelpCircle}
-                          className="w-full text-xs font-bold border-slate-200 hover:border-[#1F4E5F]"
+                          className="w-full text-xs font-bold border-slate-200 dark:border-slate-700 hover:border-[#1F4E5F]"
                         >
                           Take Evaluation Quiz
                         </Button>
@@ -487,12 +487,12 @@ export const ResourcesPage = () => {
               return (
                 <div
                   key={res.skill_id}
-                  className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 border relative overflow-hidden bg-white/95 backdrop-blur-md ${
+                  className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 border relative overflow-hidden bg-white/95 dark:bg-slate-900/90 backdrop-blur-md ${
                     isCompleted
-                      ? 'border-teal-200 shadow-sm hover:shadow-md hover:border-teal-300'
+                      ? 'border-teal-200 dark:border-teal-800/60 shadow-sm hover:shadow-md hover:border-teal-300'
                       : isUnlocked
-                      ? 'border-slate-200/90 shadow-lg hover:shadow-2xl ring-1 ring-[#1F4E5F]/15 hover:-translate-y-1 glow-ring-teal'
-                      : 'border-slate-200/60 bg-slate-50/70 opacity-65 backdrop-blur-xs'
+                      ? 'border-slate-200/90 dark:border-slate-800 shadow-lg hover:shadow-2xl ring-1 ring-[#1F4E5F]/15 dark:ring-teal-500/20 hover:-translate-y-1 glow-ring-teal'
+                      : 'border-slate-200/60 dark:border-slate-800/60 bg-slate-50/70 dark:bg-slate-950/60 opacity-65 backdrop-blur-xs'
                   }`}
                 >
                   {/* Specular top highlight */}
@@ -504,7 +504,7 @@ export const ResourcesPage = () => {
                   )}
 
                   {/* Order Watermark */}
-                  <div className="absolute right-6 top-5 text-6xl font-black text-slate-100/90 select-none pointer-events-none font-mono">
+                  <div className="absolute right-6 top-5 text-6xl font-black text-slate-100/90 dark:text-slate-800/60 select-none pointer-events-none font-mono">
                     #{res.order}
                   </div>
 
@@ -530,7 +530,7 @@ export const ResourcesPage = () => {
 
                       <div className="space-y-2.5 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-xs font-black text-[#1F4E5F] bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-200">
+                          <span className="text-xs font-black text-[#1F4E5F] dark:text-teal-400 bg-teal-50 dark:bg-teal-950/50 px-2.5 py-0.5 rounded-lg border border-teal-200 dark:border-teal-800/60">
                             Milestone {res.order}
                           </span>
 
@@ -548,38 +548,38 @@ export const ResourcesPage = () => {
                             </Badge>
                           )}
 
-                          <span className="text-xs text-slate-500 font-medium flex items-center gap-1">
+                          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1">
                             <Clock className="w-3.5 h-3.5 text-slate-400" />
                             {res.duration_hours}
                           </span>
 
-                          <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">
+                          <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700">
                             {res.provider}
                           </span>
                         </div>
 
                         <div>
-                          <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+                          <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">
                             {res.title}
                           </h3>
-                          <p className="text-xs text-slate-600 mt-1 leading-relaxed max-w-2xl">
+                          <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed max-w-2xl">
                             {res.summary}
                           </p>
                         </div>
 
                         {/* YouTube Video Course Badge Strip */}
                         {res.youtube && (
-                          <div className="p-2.5 rounded-xl bg-red-50/70 border border-red-200/80 flex flex-wrap items-center justify-between gap-2 max-w-2xl shadow-xs">
+                          <div className="p-2.5 rounded-xl bg-red-50/70 dark:bg-red-950/30 border border-red-200/80 dark:border-red-900/40 flex flex-wrap items-center justify-between gap-2 max-w-2xl shadow-xs">
                             <div className="flex items-center gap-2 text-xs">
                               <div className="w-5 h-5 rounded-full bg-red-600 flex items-center justify-center text-white shrink-0">
                                 <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
                               </div>
-                              <span className="font-bold text-slate-900">
+                              <span className="font-bold text-slate-900 dark:text-white">
                                 {res.youtube.title}
                               </span>
                               <span className="text-slate-400">•</span>
-                              <span className="text-slate-600 font-medium">{res.youtube.channel}</span>
-                              <span className="text-[10px] font-mono font-bold bg-white px-1.5 py-0.5 rounded border border-red-200 text-red-800">
+                              <span className="text-slate-600 dark:text-slate-300 font-medium">{res.youtube.channel}</span>
+                              <span className="text-[10px] font-mono font-bold bg-white dark:bg-slate-900 px-1.5 py-0.5 rounded border border-red-200 dark:border-red-900/60 text-red-800 dark:text-red-300">
                                 {res.youtube.duration}
                               </span>
                             </div>
@@ -596,9 +596,9 @@ export const ResourcesPage = () => {
                         )}
 
                         {res.prerequisites?.length > 0 && (
-                          <div className="text-[11px] text-slate-500">
+                          <div className="text-[11px] text-slate-500 dark:text-slate-400">
                             Prerequisites:{' '}
-                            <span className="font-semibold text-slate-700">
+                            <span className="font-semibold text-slate-700 dark:text-slate-200">
                               {res.prerequisites.map(p => p.replace('skill-', '').replace('-', ' ').toUpperCase()).join(', ')}
                             </span>
                           </div>
@@ -627,10 +627,10 @@ export const ResourcesPage = () => {
                             href={res.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl border border-slate-300/90 bg-white hover:bg-slate-50 text-xs font-bold text-slate-800 transition-all shadow-xs hover:-translate-y-0.5 active:translate-y-0"
+                            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl border border-slate-300/90 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs font-bold text-slate-800 dark:text-slate-200 transition-all shadow-xs hover:-translate-y-0.5 active:translate-y-0"
                           >
                             <span>Open Free Tutorial</span>
-                            <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+                            <ExternalLink className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
                           </a>
 
                           {/* Evaluation Quiz */}
@@ -645,7 +645,7 @@ export const ResourcesPage = () => {
                           </Button>
                         </>
                       ) : (
-                        <div className="p-3.5 rounded-xl bg-slate-100/90 border border-slate-200 text-center text-xs text-slate-500 flex items-center justify-center gap-2 font-medium">
+                        <div className="p-3.5 rounded-xl bg-slate-100/90 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 flex items-center justify-center gap-2 font-medium">
                           <Lock className="w-4 h-4 text-slate-400" />
                           <span>Locked until prior module</span>
                         </div>
@@ -747,7 +747,7 @@ export const ResourcesPage = () => {
               )}
 
               {/* Footer Actions */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                   {(() => {
                     const matchingRes = resources.find(r => r.skill_id === playingVideo.skill_id);
@@ -775,7 +775,7 @@ export const ResourcesPage = () => {
                       href={playingVideo.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[11px] font-medium text-slate-400 hover:text-slate-600 flex items-center gap-1 underline"
+                      className="text-[11px] font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 flex items-center gap-1 underline"
                     >
                       <span>Watch on YouTube instead</span>
                       <ExternalLink className="w-3 h-3" />
@@ -815,8 +815,8 @@ export const ResourcesPage = () => {
             {quizResult && (
               <div className={`p-4 rounded-2xl text-xs font-medium border flex items-center gap-3.5 ${
                 quizResult.passed
-                  ? 'bg-emerald-50/90 border-emerald-300 text-emerald-950 shadow-sm'
-                  : 'bg-amber-50/90 border-amber-300 text-amber-950 shadow-sm'
+                  ? 'bg-emerald-50/90 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-800 text-emerald-950 dark:text-emerald-200 shadow-sm'
+                  : 'bg-amber-50/90 dark:bg-amber-950/50 border-amber-300 dark:border-amber-800 text-amber-950 dark:text-amber-200 shadow-sm'
               }`}>
                 <div className={`icon-3d ${quizResult.passed ? 'icon-3d-emerald' : 'icon-3d-amber'} w-10 h-10 rounded-xl flex items-center justify-center shrink-0`}>
                   {quizResult.passed ? (
@@ -839,9 +839,9 @@ export const ResourcesPage = () => {
               {activeQuizResource.quiz?.map((q, qIndex) => {
                 const selectedOption = quizAnswers[q.id];
                 return (
-                  <div key={q.id} className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/90 space-y-3">
-                    <p className="text-xs sm:text-sm font-black text-slate-900">
-                      <span className="text-[#1F4E5F] mr-1.5">Q{qIndex + 1}.</span>
+                  <div key={q.id} className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200/90 dark:border-slate-800 space-y-3">
+                    <p className="text-xs sm:text-sm font-black text-slate-900 dark:text-white">
+                      <span className="text-[#1F4E5F] dark:text-teal-400 mr-1.5">Q{qIndex + 1}.</span>
                       {q.question}
                     </p>
 
@@ -854,8 +854,8 @@ export const ResourcesPage = () => {
                             onClick={() => handleSelectAnswer(q.id, optIdx)}
                             className={`flex items-center gap-3 p-3 rounded-xl border text-xs cursor-pointer transition-all hover:scale-[1.01] ${
                               isChosen
-                                ? 'bg-teal-50 border-[#1F4E5F] text-slate-900 font-bold shadow-xs'
-                                : 'bg-white border-slate-200/90 hover:bg-slate-50 hover:border-slate-300 text-slate-700'
+                                ? 'bg-teal-50 dark:bg-teal-950/60 border-[#1F4E5F] dark:border-teal-500 text-slate-900 dark:text-white font-bold shadow-xs'
+                                : 'bg-white dark:bg-slate-900 border-slate-200/90 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                             }`}
                           >
                             <input
@@ -863,7 +863,7 @@ export const ResourcesPage = () => {
                               name={q.id}
                               checked={isChosen}
                               onChange={() => handleSelectAnswer(q.id, optIdx)}
-                              className="text-[#1F4E5F] focus:ring-[#1F4E5F] cursor-pointer"
+                              className="text-[#1F4E5F] dark:text-teal-400 focus:ring-[#1F4E5F] cursor-pointer"
                             />
                             <span className="leading-snug">{opt}</span>
                           </label>
@@ -876,7 +876,7 @@ export const ResourcesPage = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
               <Button
                 variant="ghost"
                 size="sm"

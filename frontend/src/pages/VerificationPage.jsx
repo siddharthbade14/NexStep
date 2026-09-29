@@ -19,9 +19,13 @@ import {
   Check,
   Zap,
   HelpCircle,
-  Bug
+  Bug,
+  Award
 } from 'lucide-react';
 import { api } from '../services/api';
+import { CertificateModal } from '../components/common/CertificateModal';
+import { Card3D } from '../components/3d/Card3D';
+
 
 const AVAILABLE_CHALLENGES = [
   // Software Developer
@@ -309,6 +313,8 @@ export const VerificationPage = ({ initialSkillId }) => {
   const [running, setRunning] = useState(false);
   const [executionResult, setExecutionResult] = useState(null);
   const [showConfettiEffect, setShowConfettiEffect] = useState(false);
+  const [certificateModalOpen, setCertificateModalOpen] = useState(false);
+  const [activeCertificate, setActiveCertificate] = useState(null);
 
   // Update selected skill if prop changes
   useEffect(() => {
@@ -349,6 +355,24 @@ export const VerificationPage = ({ initialSkillId }) => {
         addVerifiedSkill(selectedSkillId);
         setShowConfettiEffect(true);
         triggerConfetti();
+
+        const certObj = res.proof_credential ? {
+          ...res.proof_credential,
+          student_name: student.name || 'Aarav Sharma',
+          skill_name: challenge?.title || selectedSkillId,
+          test_cases_passed: res.passed_count,
+          total_test_cases: res.total_count,
+          execution_time_ms: res.total_time_ms || 12.5
+        } : {
+          certificate_id: `NX-VERIFIED-${selectedSkillId.replace('skill-', '').toUpperCase()}-2026`,
+          proof_hash: '4bddb178ddf6827f63f4790da29b9dd51dc5694c365adf02e196ceb6fccb9953',
+          student_name: student.name || 'Aarav Sharma',
+          skill_name: challenge?.title || selectedSkillId,
+          test_cases_passed: res.passed_count,
+          total_test_cases: res.total_count,
+          execution_time_ms: 12.5
+        };
+        setActiveCertificate(certObj);
       } else {
         setShowConfettiEffect(false);
       }
@@ -366,6 +390,7 @@ export const VerificationPage = ({ initialSkillId }) => {
       setRunning(false);
     }
   };
+
 
   const handleAutoSolve = () => {
     if (SOLUTION_TEMPLATES[selectedSkillId]) {
@@ -413,7 +438,7 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
                 </Badge>
               )}
             </div>
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 mt-1 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-1 tracking-tight">
               {challenge?.title || 'Interactive Coding Challenge'}
             </h1>
           </div>
@@ -426,10 +451,10 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
             <select
               value={selectedSkillId}
               onChange={(e) => setSelectedSkillId(e.target.value)}
-              className="w-full sm:w-88 px-3.5 py-2.5 rounded-xl border border-slate-300/90 text-xs font-semibold text-slate-800 bg-white/95 shadow-sm focus:ring-2 focus:ring-[#1F4E5F] focus:border-transparent transition-all cursor-pointer hover:border-slate-400"
+              className="w-full sm:w-88 px-3.5 py-2.5 rounded-xl border border-slate-300/90 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-100 bg-white/95 dark:bg-slate-900/95 shadow-sm focus:ring-2 focus:ring-[#1F4E5F] dark:focus:ring-teal-400 focus:border-transparent transition-all cursor-pointer hover:border-slate-400 dark:hover:border-slate-600"
             >
               {AVAILABLE_CHALLENGES.map((ch) => (
-                <option key={ch.id} value={ch.id}>
+                <option key={ch.id} value={ch.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                   {ch.label} {student.verified_skills?.includes(ch.id) ? '✓ (Verified)' : ''}
                 </option>
               ))}
@@ -478,13 +503,13 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
         
         {/* LEFT COLUMN: Problem Description & Requirements (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="p-5 sm:p-6 space-y-4 bg-white rounded-3xl border-sharp card-sheen-teal shadow-brand relative">
+          <div className="p-5 sm:p-6 space-y-4 bg-white dark:bg-slate-900/90 rounded-3xl border-sharp card-sheen-teal shadow-brand relative transition-colors duration-300">
             <div className="flex items-center justify-between pt-1">
               <div className="flex items-center gap-2">
                 <div className="icon-3d icon-3d-navy w-8 h-8 rounded-xl flex items-center justify-center shadow-xs">
                   <Layers className="w-4 h-4 text-teal-300" />
                 </div>
-                <span className="text-xs font-black text-slate-800 uppercase tracking-wider">
+                <span className="text-xs font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">
                   Challenge Spec
                 </span>
               </div>
@@ -493,25 +518,25 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
               </Badge>
             </div>
 
-            <div className="text-xs text-slate-700 whitespace-pre-line leading-relaxed font-sans bg-slate-50/80 p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+            <div className="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed font-sans bg-slate-50/80 dark:bg-slate-950/60 p-4 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-2xs">
               {challenge?.description || 'Loading challenge description...'}
             </div>
 
             {/* Test Cases Preview */}
-            <div className="pt-3 border-t border-slate-200/80 space-y-2.5">
-              <span className="text-xs font-black text-slate-800 flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-teal-600" />
+            <div className="pt-3 border-t border-slate-200/80 dark:border-slate-800 space-y-2.5">
+              <span className="text-xs font-black text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
+                <Terminal className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
                 Target Test Case Expectations:
               </span>
               <div className="space-y-2">
                 {challenge?.test_cases?.map((tc, idx) => (
-                  <div key={idx} className="p-3.5 rounded-2xl bg-slate-50/90 border border-slate-200/90 text-[11px] font-mono hover:border-teal-400 transition-colors shadow-2xs">
-                    <div className="flex items-center justify-between text-slate-500 mb-1.5">
-                      <span className="font-bold text-slate-800">Assertion #{idx + 1}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-md bg-white text-slate-700 font-sans font-bold border border-slate-200">Required</span>
+                  <div key={idx} className="p-3.5 rounded-2xl bg-slate-50/90 dark:bg-slate-950/60 border border-slate-200/90 dark:border-slate-800 text-[11px] font-mono hover:border-teal-400 transition-colors shadow-2xs">
+                    <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-1.5">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">Assertion #{idx + 1}</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-sans font-bold border border-slate-200 dark:border-slate-700">Required</span>
                     </div>
-                    <span className="text-slate-600 block truncate">Input: {tc.input}</span>
-                    <span className="text-teal-700 font-bold block mt-1">
+                    <span className="text-slate-600 dark:text-slate-400 block truncate">Input: {tc.input}</span>
+                    <span className="text-teal-700 dark:text-teal-400 font-bold block mt-1">
                       &rarr; Expected: {tc.expected}
                     </span>
                   </div>
@@ -520,12 +545,12 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
             </div>
 
             {/* Strict Sandboxed Test Assertion Banner */}
-            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 text-[11px] text-teal-900 space-y-1 shadow-2xs">
+            <div className="p-3.5 rounded-2xl bg-gradient-to-r from-teal-50 to-emerald-50 dark:from-teal-950/40 dark:to-emerald-950/30 border border-teal-200 dark:border-teal-700/60 text-[11px] text-teal-900 dark:text-teal-200 space-y-1 shadow-2xs">
               <div className="font-black flex items-center gap-1.5">
-                <Zap className="w-3.5 h-3.5 text-teal-700" />
+                <Zap className="w-3.5 h-3.5 text-teal-700 dark:text-teal-400" />
                 <span>Automated Test Assertion Engine</span>
               </div>
-              <p className="text-teal-800 leading-relaxed text-[11px] font-medium">
+              <p className="text-teal-800 dark:text-teal-300 leading-relaxed text-[11px] font-medium">
                 Submissions are executed in an isolated Python 3 sandbox. All assertions must evaluate strictly to verify your skill.
               </p>
             </div>
@@ -534,8 +559,13 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
 
         {/* RIGHT COLUMN: Code Editor & Output Console (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="rounded-2xl overflow-hidden bg-slate-950 border border-slate-800/90 shadow-2xl code-glow-ide flex flex-col transition-all">
+          <div className="rounded-2xl overflow-hidden bg-slate-950 border border-slate-800/90 shadow-2xl code-glow-ide flex flex-col transition-all hud-corner relative">
             
+            {/* Animated Laser Scanning Line during Execution */}
+            {running && (
+              <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-teal-400 to-transparent shadow-[0_0_15px_#2dd4bf] z-30 animate-pulse pointer-events-none" style={{ animation: 'bounce 1.5s infinite' }} />
+            )}
+
             {/* macOS Window Chrome & Editor Top Bar */}
             <div className="px-4 py-3 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
               
@@ -629,17 +659,18 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
 
           {/* EXECUTION RESULTS / TEST CASES PANEL */}
           {executionResult && (
-            <div className={`p-6 bg-white border-sharp ${executionResult.all_passed ? 'card-sheen-emerald border-teal-300' : 'card-sheen-amber border-rose-300'} shadow-xl space-y-4 animate-in fade-in duration-200 rounded-3xl`}>
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <Card3D maxTilt={6} scale={1.01}>
+            <div className={`p-6 bg-white dark:bg-slate-900/90 border-sharp ${executionResult.all_passed ? 'card-sheen-emerald border-teal-300 dark:border-teal-500/40' : 'card-sheen-amber border-rose-300 dark:border-rose-500/40'} shadow-xl space-y-4 animate-in fade-in duration-200 rounded-3xl transition-colors duration-300`}>
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-3">
                   <div className={`icon-3d ${executionResult.all_passed ? 'icon-3d-emerald' : 'icon-3d-rose'} w-9 h-9 rounded-xl flex items-center justify-center shadow-xs`}>
                     <Terminal className="w-4.5 h-4.5 text-white" />
                   </div>
                   <div>
-                    <span className="text-xs font-black text-slate-900 block tracking-tight">
+                    <span className="text-xs font-black text-slate-900 dark:text-white block tracking-tight">
                       Evaluation Output & Assertions
                     </span>
-                    <span className="text-[10px] text-slate-500 font-medium">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
                       {executionResult.passed_count} of {executionResult.total_count} test cases passed
                     </span>
                   </div>
@@ -657,43 +688,66 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
 
               <div className={`p-3.5 rounded-2xl text-xs font-semibold border ${
                 executionResult.all_passed
-                  ? 'bg-emerald-50/90 border-emerald-200/90 text-emerald-950 shadow-2xs'
-                  : 'bg-rose-50/90 border-rose-200/90 text-rose-950 shadow-2xs'
+                  ? 'bg-emerald-50/90 dark:bg-emerald-950/60 border-emerald-200/90 dark:border-emerald-700/60 text-emerald-950 dark:text-emerald-200 shadow-2xs'
+                  : 'bg-rose-50/90 dark:bg-rose-950/60 border-rose-200/90 dark:border-rose-700/60 text-rose-950 dark:text-rose-200 shadow-2xs'
               }`}>
                 {executionResult.message}
               </div>
 
+              {executionResult.all_passed && activeCertificate && (
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-teal-950 via-slate-900 to-slate-950 text-white border-2 border-teal-500/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/40 text-teal-300 flex items-center justify-center shrink-0">
+                      <ShieldCheck className="w-5 h-5 text-teal-400" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-black uppercase tracking-wider text-[#F4B942]">Cryptographic Proof-of-Work Ready</div>
+                      <div className="text-[11px] text-slate-300 font-mono mt-0.5">ID: {activeCertificate.certificate_id}</div>
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={() => setCertificateModalOpen(true)}
+                    className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs py-2 px-3.5 shadow-md flex items-center gap-1.5 shrink-0"
+                  >
+                    <Award className="w-4 h-4 text-slate-950" />
+                    <span>View Verifiable Certificate</span>
+                  </Button>
+                </div>
+              )}
+
               {/* Individual Test Cases List */}
+
               <div className="space-y-2.5 pt-1">
                 {executionResult.results?.map((res, idx) => (
                   <div
                     key={idx}
                     className={`p-3.5 rounded-2xl border-2 text-xs font-mono transition-all hover:shadow-xs ${
                       res.passed
-                        ? 'bg-emerald-50/40 border-emerald-300/80 text-emerald-950'
-                        : 'bg-rose-50/40 border-rose-300/80 text-rose-950'
+                        ? 'bg-emerald-50/40 dark:bg-emerald-950/30 border-emerald-300/80 dark:border-emerald-700/60 text-emerald-950 dark:text-emerald-200'
+                        : 'bg-rose-50/40 dark:bg-rose-950/30 border-rose-300/80 dark:border-rose-700/60 text-rose-950 dark:text-rose-200'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 font-bold">
                         {res.passed ? (
-                          <CheckCircle2 className="w-4.5 h-4.5 text-emerald-600 shrink-0" />
+                          <CheckCircle2 className="w-4.5 h-4.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                         ) : (
-                          <XCircle className="w-4.5 h-4.5 text-rose-600 shrink-0" />
+                          <XCircle className="w-4.5 h-4.5 text-rose-600 dark:text-rose-400 shrink-0" />
                         )}
                         <span className="font-black">Test Case {res.test_case_index}</span>
                       </div>
-                      <span className="text-[10px] text-slate-600 font-sans font-bold px-2 py-0.5 rounded-lg bg-white border border-slate-200 shadow-2xs">
+                      <span className="text-[10px] text-slate-600 dark:text-slate-300 font-sans font-bold px-2 py-0.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xs">
                         ⚡ {res.execution_time_ms} ms
                       </span>
                     </div>
 
-                    <div className="mt-2.5 text-[11px] space-y-1 bg-white/70 p-2.5 rounded-xl border border-slate-200/60">
-                      <div className="text-slate-600 truncate">Input: {res.input_str}</div>
-                      <div>Expected: <span className="font-bold text-slate-900">{res.expected_str}</span></div>
-                      <div>Actual: <span className={res.passed ? 'font-bold text-emerald-700' : 'font-bold text-rose-700'}>{res.actual_str}</span></div>
+                    <div className="mt-2.5 text-[11px] space-y-1 bg-white/70 dark:bg-slate-900/70 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
+                      <div className="text-slate-600 dark:text-slate-400 truncate">Input: {res.input_str}</div>
+                      <div>Expected: <span className="font-bold text-slate-900 dark:text-slate-100">{res.expected_str}</span></div>
+                      <div>Actual: <span className={res.passed ? 'font-bold text-emerald-700 dark:text-emerald-400' : 'font-bold text-rose-700 dark:text-rose-400'}>{res.actual_str}</span></div>
                       {res.error_message && (
-                        <div className="text-rose-700 font-sans mt-1.5 text-[11px] font-semibold bg-rose-100/80 p-2 rounded-lg border border-rose-200">
+                        <div className="text-rose-700 dark:text-rose-300 font-sans mt-1.5 text-[11px] font-semibold bg-rose-100/80 dark:bg-rose-950/60 p-2 rounded-lg border border-rose-200 dark:border-rose-800">
                           Assertion: {res.error_message}
                         </div>
                       )}
@@ -702,12 +756,21 @@ def ${challenge?.starter_code?.split('def ')[1]?.split('(')[0] || 'solution'}(*a
                 ))}
               </div>
             </div>
+            </Card3D>
           )}
 
         </div>
 
       </div>
 
+      {/* VERIFIABLE DIGITAL CREDENTIAL MODAL */}
+      <CertificateModal
+        isOpen={certificateModalOpen}
+        onClose={() => setCertificateModalOpen(false)}
+        certificate={activeCertificate}
+      />
+
     </div>
   );
 };
+

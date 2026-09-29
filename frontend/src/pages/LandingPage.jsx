@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useStudent } from '../context/StudentContext';
+import { useTheme } from '../context/ThemeContext';
 import { Button } from '../components/common/Button';
-import { Card } from '../components/common/Card';
 import { Badge } from '../components/common/Badge';
 import { triggerConfetti } from '../components/common/Confetti';
 import { 
@@ -35,6 +35,11 @@ import {
   Award,
   LogIn
 } from 'lucide-react';
+import { HeroCyberCanvas } from '../components/3d/HeroCyberCanvas';
+import { HoloOrbit3D } from '../components/3d/HoloOrbit3D';
+import { Card3D } from '../components/3d/Card3D';
+import { HeroTitle3D } from '../components/3d/HeroTitle3D';
+import { TactileButton3D } from '../components/3d/TactileButton3D';
 
 const SIMULATION_TRACKS = {
   software: {
@@ -107,6 +112,7 @@ const SIMULATION_TRACKS = {
 
 export const LandingPage = () => {
   const { setActiveTab } = useStudent();
+  const { isDark } = useTheme();
   const [selectedTrack, setSelectedTrack] = useState('software');
   const [simCode, setSimCode] = useState(SIMULATION_TRACKS.software.starterSnippet);
   const [simRunning, setSimRunning] = useState(false);
@@ -147,340 +153,263 @@ export const LandingPage = () => {
   ];
 
   return (
-    <div className="space-y-28 py-4 sm:py-8">
+    <div className="space-y-24 py-4 sm:py-8 transition-colors duration-300">
       
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION WITH AMBIENT LIGHTING & DYNAMIC FLOATING BADGES           */}
+      {/* 1. HERO SECTION (Clean, Impactful, No Floating Rows)                      */}
       {/* ========================================================================= */}
-      <section className="relative overflow-hidden pt-4 sm:pt-8 pb-8">
+      <section className="relative overflow-visible pt-4 sm:pt-10 pb-8">
         
+        {/* Interactive 3D Cyber Particle Constellation Canvas */}
+        <HeroCyberCanvas className="absolute inset-0 w-full h-full pointer-events-none opacity-40 -z-5" />
+
         {/* Ambient background light orbs with rich multi-hue depth */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] h-[520px] bg-gradient-to-tr from-teal-500/16 via-[#F4B942]/14 to-emerald-500/16 blur-3xl rounded-full pointer-events-none -z-10 animate-pulse-glow" />
-        <div className="absolute -top-16 left-6 w-80 h-80 bg-gradient-to-br from-teal-400/20 to-emerald-400/14 rounded-full blur-3xl pointer-events-none -z-10 animate-float-slow" />
-        <div className="absolute top-28 right-6 w-80 h-80 bg-gradient-to-bl from-amber-400/20 via-orange-400/14 to-rose-400/14 rounded-full blur-3xl pointer-events-none -z-10 animate-float-reverse" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] h-[520px] bg-gradient-to-tr from-teal-500/10 via-amber-400/8 to-purple-500/10 dark:from-teal-500/15 dark:via-[#FBBF24]/10 dark:to-purple-500/15 blur-[140px] rounded-full pointer-events-none -z-10" />
 
-        {/* HERO STAGE WITH COLORFUL FLOATING BADGES */}
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6">
-
-          {/* --- VIBRANT COLOR FLOATING BADGES --- */}
+        {/* HERO CONTENT CONTAINER */}
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-7 z-10">
           
-          {/* Floating Badge 1: Upper Left (Syllabus to Sandbox Code Assertions) - Vivid Emerald */}
-          <div className="hidden xl:flex items-center gap-3 px-3.5 py-2.5 rounded-2xl floating-badge-colored floating-badge-emerald animate-float-drift absolute top-3 -left-6 2xl:-left-12 z-20 select-none">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/30 border border-emerald-300/50">
-              <CheckCircle2 className="w-4 h-4 text-white" />
-            </div>
-            <div className="text-left leading-tight pr-1">
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-slate-900 block text-xs">3/3 Assertions Passed</span>
-                <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-xs shadow-emerald-500/60 animate-pulse shrink-0"></span>
-              </div>
-              <span className="text-[10px] text-emerald-800 font-mono font-bold bg-emerald-100/90 px-2 py-0.5 rounded-md border border-emerald-300/70 inline-block mt-0.5">
-                Judge0 Sandbox • 1.2ms
-              </span>
-            </div>
+          {/* Top Futuristic Telemetry Pill Announcement */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 dark:bg-slate-900/80 text-white border border-teal-500/40 shadow-sm backdrop-blur-xl hover:border-teal-400 transition-all cursor-default" data-cursor="pointer">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+            </span>
+            <span className="text-[11px] font-mono tracking-wider text-teal-300 font-bold uppercase">
+              Autonomous Curriculum Verification
+            </span>
+            <span className="text-slate-600 hidden sm:inline">|</span>
+            <span className="text-[10px] font-mono text-[#FBBF24] hidden sm:inline-block font-semibold">
+              AICTE & Industry Mapped
+            </span>
           </div>
 
-          {/* Floating Badge 2: Upper Right (Recruiter Qualification Match) - Warm Amber Gold */}
-          <div className="hidden xl:flex items-center gap-3 px-3.5 py-2.5 rounded-2xl floating-badge-colored floating-badge-amber animate-float-gentle absolute top-2 -right-6 2xl:-right-12 z-20 select-none">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-600 to-orange-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-500/30 border border-amber-300/50">
-              <Briefcase className="w-4 h-4 text-white" />
-            </div>
-            <div className="text-left leading-tight pr-1">
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-slate-900 block text-xs">Swiggy • Qualified</span>
-                <span className="w-2 h-2 rounded-full bg-amber-500 shadow-xs shadow-amber-500/60 animate-pulse shrink-0"></span>
-              </div>
-              <span className="text-[10px] text-amber-900 font-bold bg-amber-100/90 px-2 py-0.5 rounded-md border border-amber-300/70 inline-block mt-0.5">
-                ₹45,000/mo Stipend
-              </span>
-            </div>
-          </div>
+          {/* 3D Staggered Flip Reveal Hero Headline with Glowing Red Strikethrough */}
+          <HeroTitle3D />
 
-          {/* Floating Badge 3: Lower Left (Semantic Gap AI Engine) - Deep Tech Teal */}
-          <div className="hidden xl:flex items-center gap-3 px-3.5 py-2.5 rounded-2xl floating-badge-colored floating-badge-teal animate-float-diagonal absolute top-48 -left-4 2xl:-left-10 z-20 select-none">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#1F4E5F] via-teal-600 to-cyan-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-teal-500/30 border border-teal-300/50">
-              <Cpu className="w-4 h-4 text-cyan-200" />
-            </div>
-            <div className="text-left leading-tight pr-1">
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-slate-900 block text-xs">all-MiniLM-L6-v2</span>
-                <span className="w-2 h-2 rounded-full bg-teal-500 shadow-xs shadow-teal-500/60 animate-pulse shrink-0"></span>
-              </div>
-              <span className="text-[10px] text-teal-900 font-mono font-bold bg-teal-100/90 px-2 py-0.5 rounded-md border border-teal-300/70 inline-block mt-0.5">
-                Cosine Delta: 0.38
-              </span>
-            </div>
-          </div>
+          {/* Hero Subheadline */}
+          <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-600 dark:text-slate-300 font-normal leading-relaxed">
+            Indian universities teach textbook theory. Top tech startups interview for production code. 
+            <strong className="text-slate-900 dark:text-white font-bold"> NexStep</strong> uses semantic AI embeddings to mathematically calculate your syllabus gap, tests your hands-on code in a sandboxed IDE, and matches you with verified internships.
+          </p>
 
-          {/* Floating Badge 4: Lower Right (Verified Career Leap) - Electric Indigo & Violet */}
-          <div className="hidden xl:flex items-center gap-3 px-3.5 py-2.5 rounded-2xl floating-badge-colored floating-badge-indigo animate-float-bounce absolute top-52 -right-4 2xl:-right-10 z-20 select-none">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/30 border border-indigo-300/50">
-              <TrendingUp className="w-4 h-4 text-white" />
-            </div>
-            <div className="text-left leading-tight pr-1">
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-slate-900 block text-xs">Placement Uplift</span>
-                <span className="w-2 h-2 rounded-full bg-indigo-500 shadow-xs shadow-indigo-500/60 animate-pulse shrink-0"></span>
-              </div>
-              <span className="text-[10px] text-indigo-950 font-mono font-black bg-gradient-to-r from-indigo-100 to-purple-100 px-2 py-0.5 rounded-md border border-indigo-300/70 inline-block mt-0.5">
-                ₹4.5L → ₹14.5 LPA
-              </span>
-            </div>
-          </div>
-
-          {/* HERO CONTENT CONTAINER */}
-          <div className="max-w-3xl mx-auto text-center space-y-7 relative z-10 px-2">
+          {/* Hero CTAs with Tactile 3D Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <TactileButton3D
+              variant="primary"
+              size="lg"
+              onClick={handleStart}
+              iconRight={ArrowRight}
+              className="w-full sm:w-auto"
+            >
+              Analyze My College Syllabus
+            </TactileButton3D>
             
-            {/* Top Minimal Pill Announcement */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-slate-200 shadow-2xs hover:border-slate-300 hover:bg-white transition-all cursor-default">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="text-xs font-semibold text-slate-700">
-                Smart India Hackathon Prototype
-              </span>
-              <span className="text-slate-300 hidden sm:inline">•</span>
-              <span className="text-[10px] font-mono text-slate-500 hidden sm:inline-block bg-slate-100 px-2 py-0.5 rounded-full">
-                Live Python IDE Sandbox
-              </span>
-            </div>
+            <TactileButton3D
+              variant="secondary"
+              size="lg"
+              onClick={handleExploreDashboard}
+              iconLeft={Terminal}
+              className="w-full sm:w-auto"
+            >
+              Explore Live Gap Dashboard
+            </TactileButton3D>
 
-            {/* Hero Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08]">
-              College syllabus is only <span className="text-slate-400 line-through decoration-rose-500 decoration-4">30%</span> of the job.{' '}
-              <span className="text-brand-gradient block sm:inline drop-shadow-xs">
-                NexStep verifies the other 70%.
-              </span>
-            </h1>
-
-            {/* Hero Subheadline explaining the whole mission */}
-            <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
-              Indian universities teach textbook theory. Top tech startups interview for production code. 
-              <strong className="text-slate-900 font-bold"> NexStep</strong> uses semantic AI embeddings to mathematically calculate your syllabus gap, tests your hands-on code in a sandboxed IDE, and matches you with verified internships.
-            </p>
-
-            {/* Hero CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1">
-              <Button
-                variant="accent"
-                size="lg"
-                onClick={handleStart}
-                iconRight={ArrowRight}
-                className="w-full sm:w-auto text-slate-950 font-black px-8 shadow-accent hover:scale-[1.03] active:scale-[0.98] border border-amber-400 text-sm"
-              >
-                Analyze My College Syllabus
-              </Button>
-              
-              <Button
-                variant="secondary"
-                size="lg"
-                onClick={handleExploreDashboard}
-                iconLeft={Terminal}
-                className="w-full sm:w-auto px-7 border-slate-300 hover:border-slate-400 hover:bg-slate-50 text-sm font-bold"
-              >
-                Explore Live Gap Dashboard
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="lg"
-                onClick={() => {
-                  setActiveTab('login');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                iconLeft={LogIn}
-                className="w-full sm:w-auto px-6 bg-white/95 hover:bg-white border border-teal-200/90 hover:border-teal-400 text-slate-800 text-sm font-bold shadow-xs hover:shadow-md transition-all"
-              >
-                🚀 Demo Account & Login
-              </Button>
-            </div>
-
-            {/* Responsive Floating Micro-Cards with Vibrant Color Accents */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-2 max-w-3xl mx-auto">
-              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-white via-teal-50/70 to-emerald-50/50 border border-teal-200/90 shadow-xs text-left animate-float-drift hover:border-teal-300 hover:shadow-md transition-all">
-                <div className="w-7 h-7 rounded-lg bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <GraduationCap className="w-3.5 h-3.5" />
-                </div>
-                <div className="leading-tight">
-                  <span className="text-[11px] font-black text-teal-950 block">30% Academic</span>
-                  <span className="text-[9px] text-teal-700 font-mono font-medium">Sem 1-8 Syllabi</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-white via-purple-50/70 to-indigo-50/50 border border-purple-200/90 shadow-xs text-left animate-float-gentle hover:border-purple-300 hover:shadow-md transition-all">
-                <div className="w-7 h-7 rounded-lg bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <Cpu className="w-3.5 h-3.5" />
-                </div>
-                <div className="leading-tight">
-                  <span className="text-[11px] font-black text-purple-950 block">AI Gap Engine</span>
-                  <span className="text-[9px] text-purple-700 font-mono font-medium">MiniLM Vectors</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-white via-emerald-50/70 to-teal-50/50 border border-emerald-200/90 shadow-xs text-left animate-float-diagonal hover:border-emerald-300 hover:shadow-md transition-all">
-                <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <Code2 className="w-3.5 h-3.5" />
-                </div>
-                <div className="leading-tight">
-                  <span className="text-[11px] font-black text-emerald-950 block">Code Sandbox</span>
-                  <span className="text-[9px] text-emerald-700 font-mono font-medium">3 Unit Tests</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl bg-gradient-to-br from-white via-amber-50/70 to-orange-50/50 border border-amber-200/90 shadow-xs text-left animate-float-bounce hover:border-amber-300 hover:shadow-md transition-all">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <Briefcase className="w-3.5 h-3.5" />
-                </div>
-                <div className="leading-tight">
-                  <span className="text-[11px] font-black text-amber-950 block">Verified Match</span>
-                  <span className="text-[9px] text-amber-800 font-mono font-bold">₹35k-50k/mo</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Micro Guarantee Badges */}
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-1 text-xs font-medium text-slate-500">
-              <span className="flex items-center gap-1.5 bg-white/70 px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
-                <Check className="w-3.5 h-3.5 text-slate-600" /> B.Tech Sem 1–8 Syllabi Mapped
-              </span>
-              <span className="flex items-center gap-1.5 bg-white/70 px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
-                <Check className="w-3.5 h-3.5 text-slate-600" /> Code Sandbox Assertions
-              </span>
-              <span className="flex items-center gap-1.5 bg-white/70 px-2.5 py-1 rounded-full border border-slate-200/80 shadow-2xs">
-                <Check className="w-3.5 h-3.5 text-slate-600" /> 100% Transparent Hiring Match
-              </span>
-            </div>
-
+            <TactileButton3D
+              variant="secondary"
+              size="lg"
+              onClick={() => {
+                setActiveTab('login');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              iconLeft={LogIn}
+              className="w-full sm:w-auto text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-500/30"
+            >
+              🚀 Demo Account & Login
+            </TactileButton3D>
           </div>
 
         </div>
 
         {/* ========================================================================= */}
-        {/* 1B. THE 4-STEP ENGINEERING BRIDGE: PROJECT ARCHITECTURE AT A GLANCE       */}
-        {/* (Makes the entire project understandable in 5 seconds right on the fold) */}
+        {/* 1B. 3D HOLOGRAPHIC ORBIT ENGINE SHOWCASE                                 */}
         {/* ========================================================================= */}
-        <div className="max-w-5xl mx-auto mt-12 relative z-10 px-2">
-          <div className="p-6 sm:p-8 rounded-3xl glass-card-premium border-sharp-teal shadow-xl space-y-6">
+        <div className="max-w-5xl mx-auto mt-14 mb-4 relative z-10 px-4">
+          <div className="relative rounded-3xl bg-white/80 dark:bg-slate-950/80 backdrop-blur-2xl border border-slate-200 dark:border-teal-500/30 p-6 sm:p-8 shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden transition-colors duration-300">
+            {/* Ambient Radial Lights */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 bg-teal-500/10 dark:bg-teal-500/15 blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-10 right-10 w-64 h-32 bg-purple-500/10 dark:bg-purple-500/15 blur-3xl pointer-events-none" />
+            
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+              <div className="text-left max-w-md space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-950/80 border border-teal-200 dark:border-teal-400/40 text-[11px] font-mono text-teal-700 dark:text-teal-300 font-bold uppercase">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                  Live Holographic Telemetry Core
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-snug">
+                  Cryptographic Skill Validation Core
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                  Real-time visualization of AST code sandbox isolation, HMAC-SHA256 signature verification, and multi-tenant AICTE syllabus audit.
+                </p>
+                <div className="pt-2 flex flex-wrap items-center gap-2.5 text-[10px] font-mono">
+                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-teal-700/60 text-slate-700 dark:text-teal-300 shadow-2xs">LATENCY: 1.2ms</span>
+                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-amber-200 dark:border-amber-700/60 text-amber-700 dark:text-amber-300 shadow-2xs">SANDBOX: ISOLATED</span>
+                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-emerald-200 dark:border-emerald-700/60 text-emerald-700 dark:text-emerald-300 shadow-2xs">PROOFS: SHA-256</span>
+                </div>
+              </div>
+
+              {/* 3D Rotating Holographic Orbit with rings & satellites */}
+              <div className="shrink-0">
+                <HoloOrbit3D className="scale-95 sm:scale-105" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* 1C. THE 4-STEP ENGINEERING BRIDGE: PROJECT ARCHITECTURE AT A GLANCE       */}
+        {/* ========================================================================= */}
+        <div className="max-w-5xl mx-auto mt-10 relative z-10 px-2">
+          <div className="p-6 sm:p-8 rounded-3xl bg-white/85 dark:bg-slate-900/70 backdrop-blur-2xl border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-6 relative overflow-hidden transition-colors duration-300">
             
             {/* Header of Project Architecture Strip */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-200/80">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 dark:border-white/10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#1F4E5F] text-[#F4B942] flex items-center justify-center shadow-xs">
+                <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-500/20 border border-teal-200 dark:border-teal-400/40 text-teal-600 dark:text-teal-300 flex items-center justify-center shadow-xs">
                   <Workflow className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-black uppercase tracking-wider text-teal-800">
+                    <span className="text-xs font-black uppercase tracking-wider text-teal-700 dark:text-teal-400">
                       System Architecture
                     </span>
-                    <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-300">
+                    <span className="text-[10px] font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-500/40">
                       Understand In 10 Seconds
                     </span>
                   </div>
-                  <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+                  <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
                     The NexStep 4-Step Engineering Bridge
                   </h2>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-500 font-mono">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400 font-mono">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
                 <span>Autonomous Student-to-Recruiter Pipeline</span>
               </div>
             </div>
 
-            {/* 4 Connected Step Cards with visual arrows */}
+            {/* 4 Connected Step Cards with 3D Tilt Physics */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
               
               {/* Step 1 */}
-              <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-teal-400 hover:shadow-md transition-all group relative">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
-                    Step 01
-                  </span>
-                  <GraduationCap className="w-4 h-4 text-teal-600" />
+              <Card3D maxTilt={10} scale={1.03} className="h-full">
+                <div className="p-4 rounded-2xl bg-white dark:bg-slate-950/70 border border-slate-200 dark:border-teal-500/30 backdrop-blur-xl hover:border-teal-500 dark:hover:border-teal-400 hover:shadow-md dark:hover:shadow-[0_0_20px_rgba(45,212,191,0.25)] h-full flex flex-col justify-between group relative transition-all" data-cursor="pointer">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-500/15 px-2 py-0.5 rounded border border-teal-200 dark:border-teal-500/30">
+                        Step 01
+                      </span>
+                      <GraduationCap className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                    </div>
+                    <h4 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
+                      University Syllabus
+                    </h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                      Ingests your university curriculum (SPPU, AKTU, VTU) across B.Tech Sem 1–8.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-slate-100 dark:border-white/10 text-[10px] font-bold text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                    <span>30% College Baseline</span>
+                    <span className="text-teal-700 dark:text-teal-400 font-semibold">Theory Focus</span>
+                  </div>
                 </div>
-                <h4 className="text-sm font-black text-slate-900 tracking-tight">
-                  University Syllabus
-                </h4>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  Ingests your university curriculum (SPPU, AKTU, VTU) across B.Tech Sem 1–8.
-                </p>
-                <div className="mt-3 pt-2 border-t border-slate-100 text-[10px] font-bold text-slate-500 flex items-center justify-between">
-                  <span>30% College Baseline</span>
-                  <span className="text-teal-700 font-semibold">Theory Focus</span>
-                </div>
-              </div>
+              </Card3D>
 
               {/* Step 2 */}
-              <div className="p-4 rounded-2xl bg-white border-sharp-amber shadow-2xs hover:border-amber-400 hover:shadow-md transition-all group relative">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-amber-900 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-                    Step 02
-                  </span>
-                  <Cpu className="w-4 h-4 text-amber-600" />
+              <Card3D maxTilt={10} scale={1.03} className="h-full">
+                <div className="p-4 rounded-2xl bg-white dark:bg-slate-950/70 border border-amber-200 dark:border-amber-500/30 backdrop-blur-xl hover:border-amber-500 dark:hover:border-amber-400 hover:shadow-md dark:hover:shadow-[0_0_20px_rgba(245,158,11,0.25)] h-full flex flex-col justify-between group relative transition-all" data-cursor="pointer">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-500/15 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-500/30">
+                        Step 02
+                      </span>
+                      <Cpu className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                    </div>
+                    <h4 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
+                      AI Semantic Gap
+                    </h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                      <code className="text-teal-700 dark:text-teal-300 font-mono text-[11px]">all-MiniLM-L6-v2</code> compares syllabus vectors against 500+ tech job descriptions.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-slate-100 dark:border-white/10 text-[10px] font-bold text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                    <span>Cosine Similarity</span>
+                    <span className="text-rose-600 dark:text-rose-400 font-black">-72% Gap Found</span>
+                  </div>
                 </div>
-                <h4 className="text-sm font-black text-slate-900 tracking-tight">
-                  AI Semantic Gap
-                </h4>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  <code className="text-teal-800 font-mono text-[11px]">all-MiniLM-L6-v2</code> compares syllabus vectors against 500+ tech job descriptions.
-                </p>
-                <div className="mt-3 pt-2 border-t border-slate-100 text-[10px] font-bold text-slate-500 flex items-center justify-between">
-                  <span>Cosine Similarity</span>
-                  <span className="text-rose-700 font-black">-72% Gap Found</span>
-                </div>
-              </div>
+              </Card3D>
 
               {/* Step 3 */}
-              <div className="p-4 rounded-2xl bg-white border-sharp-teal shadow-2xs hover:border-teal-500 hover:shadow-md transition-all group relative">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    Step 03
-                  </span>
-                  <Terminal className="w-4 h-4 text-emerald-600" />
+              <Card3D maxTilt={10} scale={1.03} className="h-full">
+                <div className="p-4 rounded-2xl bg-white dark:bg-slate-950/70 border border-emerald-200 dark:border-emerald-500/30 backdrop-blur-xl hover:border-emerald-500 dark:hover:border-emerald-400 hover:shadow-md dark:hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] h-full flex flex-col justify-between group relative transition-all" data-cursor="pointer">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-500/15 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-500/30">
+                        Step 03
+                      </span>
+                      <Terminal className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <h4 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
+                      Sandbox Code IDE
+                    </h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                      Student writes real code in an isolated runner. Must pass 3 test assertions to earn verified credentials.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-slate-100 dark:border-white/10 text-[10px] font-bold text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                    <span>Judge0 Python IDE</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">100% Proof</span>
+                  </div>
                 </div>
-                <h4 className="text-sm font-black text-slate-900 tracking-tight">
-                  Sandbox Code IDE
-                </h4>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  Student writes real code in an isolated runner. Must pass 3 test assertions to earn verified credentials.
-                </p>
-                <div className="mt-3 pt-2 border-t border-slate-100 text-[10px] font-bold text-slate-500 flex items-center justify-between">
-                  <span>Judge0 Python IDE</span>
-                  <span className="text-emerald-700 font-bold">100% Proof</span>
-                </div>
-              </div>
+              </Card3D>
 
               {/* Step 4 */}
-              <div className="p-4 rounded-2xl bg-white border-sharp shadow-2xs hover:border-teal-500 hover:shadow-md transition-all group relative">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[#1F4E5F] bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
-                    Step 04
-                  </span>
-                  <Briefcase className="w-4 h-4 text-[#1F4E5F]" />
+              <Card3D maxTilt={10} scale={1.03} className="h-full">
+                <div className="p-4 rounded-2xl bg-white dark:bg-slate-950/70 border border-purple-200 dark:border-purple-500/30 backdrop-blur-xl hover:border-purple-500 dark:hover:border-purple-400 hover:shadow-md dark:hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] h-full flex flex-col justify-between group relative transition-all" data-cursor="pointer">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-purple-800 dark:text-purple-300 bg-purple-50 dark:bg-purple-500/15 px-2 py-0.5 rounded border border-purple-200 dark:border-purple-500/30">
+                        Step 04
+                      </span>
+                      <Briefcase className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <h4 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
+                      Recruiter Match
+                    </h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                      Direct pipeline to top startup internships (Swiggy, CRED, Zerodha) with transparent hiring match criteria.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-slate-100 dark:border-white/10 text-[10px] font-bold text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                    <span>Verified Passport</span>
+                    <span className="text-amber-800 dark:text-amber-300 font-black">₹40k/mo Stipend</span>
+                  </div>
                 </div>
-                <h4 className="text-sm font-black text-slate-900 tracking-tight">
-                  Recruiter Match
-                </h4>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                  Direct pipeline to top startup internships (Swiggy, CRED, Zerodha) with transparent hiring match criteria.
-                </p>
-                <div className="mt-3 pt-2 border-t border-slate-100 text-[10px] font-bold text-slate-500 flex items-center justify-between">
-                  <span>Verified Passport</span>
-                  <span className="text-amber-800 font-black">₹40k/mo Stipend</span>
-                </div>
-              </div>
+              </Card3D>
 
             </div>
 
             {/* Explanatory summary footer bar */}
-            <div className="p-3.5 rounded-2xl bg-slate-100/80 border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2 text-slate-700">
-                <Target className="w-4 h-4 text-teal-700 shrink-0" />
+            <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-950/60 border border-slate-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                <Target className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0" />
                 <span>
-                  <strong>Result:</strong> Zero resume fraud. Engineering students prove hands-on production capability before the interview.
+                  <strong className="text-slate-900 dark:text-white">Result:</strong> Zero resume fraud. Engineering students prove hands-on production capability before the interview.
                 </span>
               </div>
-              <span className="text-slate-500 font-mono text-[11px] shrink-0 font-semibold">
+              <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px] shrink-0 font-semibold">
                 Try the interactive simulation below ↓
               </span>
             </div>
@@ -489,14 +418,11 @@ export const LandingPage = () => {
         </div>
 
         {/* ========================================================================= */}
-        {/* 2. INTERACTIVE LIVE PLATFORM SIMULATOR (Understand the project in 10s)   */}
+        {/* 2. INTERACTIVE LIVE PLATFORM SIMULATOR                                    */}
         {/* ========================================================================= */}
-        <div className="max-w-5xl mx-auto mt-14 relative z-10">
+        <div className="max-w-5xl mx-auto mt-14 relative z-10 px-2">
           
-          {/* Outer Specular Aura */}
-          <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-teal-500/25 via-[#F4B942]/20 to-emerald-500/25 blur-xl -z-10 opacity-80" />
-
-          <div className="glass-card-premium rounded-3xl overflow-hidden border-2 border-slate-200/90 shadow-2xl">
+          <div className="bg-white/90 dark:bg-slate-900/80 backdrop-blur-2xl rounded-3xl overflow-hidden border border-slate-200 dark:border-white/15 shadow-xl dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] transition-colors duration-300">
             
             {/* Top Chrome Header & Track Switcher Tabs */}
             <div className="bg-slate-900 px-5 sm:px-8 py-4 border-b border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -507,7 +433,7 @@ export const LandingPage = () => {
                   <span className="w-3 h-3 rounded-full bg-[#27c93f]" />
                 </div>
                 <div className="text-left">
-                  <span className="text-xs font-mono text-slate-300 font-bold block">
+                  <span className="text-xs font-mono text-slate-200 font-bold block">
                     nexstep-simulation // live-career-engine
                   </span>
                   <span className="text-[10px] text-teal-400 font-semibold font-mono">
@@ -527,11 +453,12 @@ export const LandingPage = () => {
                     key={track.id}
                     type="button"
                     onClick={() => handleTrackSwitch(track.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                       selectedTrack === track.id
-                        ? 'bg-gradient-to-r from-[#1F4E5F] to-[#2C6E8F] text-white shadow-brand border border-teal-400/40 scale-105'
+                        ? 'bg-gradient-to-r from-teal-500 to-cyan-600 text-slate-950 font-black shadow-[0_0_15px_rgba(45,212,191,0.4)] border border-teal-300 scale-105'
                         : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
+                    data-cursor="pointer"
                   >
                     {track.label}
                   </button>
@@ -540,30 +467,30 @@ export const LandingPage = () => {
             </div>
 
             {/* Main Interactive 3-Step Simulation Grid */}
-            <div className="p-6 sm:p-8 bg-gradient-to-b from-white/95 via-slate-50/80 to-slate-50/95 space-y-6">
+            <div className="p-6 sm:p-8 bg-slate-50/60 dark:bg-slate-900/40 space-y-6">
               
               {/* Role Header Banner */}
-              <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-gradient-to-r from-[#1F4E5F]/8 via-teal-50/40 to-amber-50/40 border-sharp-teal">
+              <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-slate-950/60 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-2xs">
                 <div className="flex items-center gap-3">
-                  <div className="icon-3d icon-3d-navy w-11 h-11 rounded-xl flex items-center justify-center shadow-sm">
+                  <div className="icon-3d icon-3d-navy w-11 h-11 rounded-xl flex items-center justify-center shadow-xs">
                     {selectedTrack === 'data' ? (
                       <Database className="w-5 h-5 text-amber-300" />
                     ) : selectedTrack === 'embedded' ? (
                       <Binary className="w-5 h-5 text-teal-300" />
                     ) : (
-                      <Code2 className="w-5 h-5 text-[#F4B942]" />
+                      <Code2 className="w-5 h-5 text-[#FBBF24]" />
                     )}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-base font-black text-slate-900 tracking-tight">
+                      <h3 className="text-base font-black text-slate-900 dark:text-white tracking-tight">
                         {currentTrackData.title}
                       </h3>
-                      <span className="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-300">
+                      <span className="text-[10px] font-black uppercase tracking-wider bg-amber-100 dark:bg-amber-500/20 text-amber-900 dark:text-amber-300 px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-500/40">
                         {currentTrackData.badge}
                       </span>
                     </div>
-                    <span className="text-xs text-slate-500 font-medium">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                       Simulating real Indian university syllabus vs. recruiter interview requirements
                     </span>
                   </div>
@@ -571,7 +498,7 @@ export const LandingPage = () => {
 
                 <div className="text-right">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Average Placement CTC</span>
-                  <span className="text-lg font-black text-[#1F4E5F]">{currentTrackData.ctc}</span>
+                  <span className="text-lg font-black text-amber-600 dark:text-[#FBBF24]">{currentTrackData.ctc}</span>
                 </div>
               </div>
 
@@ -579,68 +506,68 @@ export const LandingPage = () => {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 {/* Column 1: College Syllabus Baseline */}
-                <div className="p-5 rounded-2xl bg-white border-sharp space-y-3 flex flex-col justify-between">
+                <div className="p-5 rounded-2xl bg-white dark:bg-slate-950/70 border border-slate-200 dark:border-white/10 space-y-3 flex flex-col justify-between shadow-2xs dark:shadow-none">
                   <div>
-                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
-                        <GraduationCap className="w-3.5 h-3.5 text-teal-700" />
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-white/10">
+                      <span className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <GraduationCap className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
                         1. College Coursework
                       </span>
-                      <span className="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                      <span className="text-[10px] font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-500/15 px-2 py-0.5 rounded border border-teal-200 dark:border-teal-500/30">
                         Syllabus Baseline
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-500 mt-2 font-medium">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 font-medium">
                       What state university textbooks cover:
                     </p>
 
                     <div className="space-y-2 mt-2.5">
                       {currentTrackData.collegeCurriculum.map((subj, idx) => (
-                        <div key={idx} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                        <div key={idx} className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-white/5 text-xs">
                           <div className="flex items-center justify-between">
-                            <span className="font-bold text-slate-800">{subj.name}</span>
+                            <span className="font-bold text-slate-800 dark:text-white">{subj.name}</span>
                             <span className="text-[10px] font-semibold text-slate-400">{subj.sem}</span>
                           </div>
-                          <span className="text-[10px] text-slate-500 block mt-0.5">{subj.status}</span>
+                          <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-0.5">{subj.status}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-500 flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
+                  <div className="pt-3 border-t border-slate-100 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
                     <span>Mapped automatically from college curriculum</span>
                   </div>
                 </div>
 
                 {/* Column 2: AI Semantic Gap Analysis */}
-                <div className="p-5 rounded-2xl bg-white border-sharp-amber space-y-3 flex flex-col justify-between shadow-xs">
+                <div className="p-5 rounded-2xl bg-white dark:bg-slate-950/70 border border-amber-200 dark:border-amber-500/30 space-y-3 flex flex-col justify-between shadow-2xs dark:shadow-none">
                   <div>
-                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                      <span className="text-[10px] font-black text-amber-900 uppercase tracking-widest flex items-center gap-1.5">
-                        <Cpu className="w-3.5 h-3.5 text-amber-600" />
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-white/10">
+                      <span className="text-[10px] font-black text-amber-800 dark:text-amber-300 uppercase tracking-widest flex items-center gap-1.5">
+                        <Cpu className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                         2. AI Semantic Gaps
                       </span>
-                      <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded border border-amber-300">
+                      <span className="text-[10px] font-bold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-500/40">
                         all-MiniLM-L6-v2
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-500 mt-2 font-medium">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 font-medium">
                       Critical production skills missing from textbook syllabi:
                     </p>
 
                     <div className="space-y-2 mt-2.5">
                       {currentTrackData.aiGaps.map((gap, idx) => (
-                        <div key={idx} className="p-2.5 rounded-xl bg-amber-50/60 border border-amber-200 text-xs">
+                        <div key={idx} className="p-2.5 rounded-xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-500/30 text-xs">
                           <div className="flex items-center justify-between">
-                            <span className="font-bold text-slate-900 truncate">{gap.name}</span>
-                            <span className="text-[10px] font-black text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200 shrink-0">
+                            <span className="font-bold text-slate-900 dark:text-amber-100 truncate">{gap.name}</span>
+                            <span className="text-[10px] font-black text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 px-1.5 py-0.5 rounded border border-rose-200 dark:border-rose-500/40 shrink-0">
                               {gap.delta}
                             </span>
                           </div>
-                          <div className="flex items-center justify-between text-[10px] text-amber-900 mt-1">
+                          <div className="flex items-center justify-between text-[10px] text-amber-800 dark:text-amber-300 mt-1">
                             <span>Recruiter Expectation</span>
                             <span className="font-mono font-bold">Cosine: {gap.score}</span>
                           </div>
@@ -649,26 +576,26 @@ export const LandingPage = () => {
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 text-[11px] text-amber-900 font-semibold flex items-center gap-1">
-                    <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
+                  <div className="pt-3 border-t border-slate-100 dark:border-white/10 text-[11px] text-amber-800 dark:text-amber-300 font-semibold flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                     <span>Discovered via semantic vector analysis</span>
                   </div>
                 </div>
 
                 {/* Column 3: Live Sandbox Code Verification */}
-                <div className="p-5 rounded-2xl bg-slate-950 text-white border border-slate-800 shadow-xl space-y-3 flex flex-col justify-between code-glow-ide">
+                <div className="p-5 rounded-2xl bg-slate-950 border border-emerald-500/30 shadow-xl space-y-3 flex flex-col justify-between code-glow-ide backdrop-blur-xl">
                   <div>
-                    <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <div className="flex items-center justify-between pb-2 border-b border-white/10">
                       <span className="text-[10px] font-mono font-bold text-teal-400 flex items-center gap-1.5">
                         <Terminal className="w-3.5 h-3.5" />
                         3. Code Sandbox IDE
                       </span>
-                      <span className="text-[9px] font-bold text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">
+                      <span className="text-[9px] font-bold text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-700">
                         Isolated Python 3
                       </span>
                     </div>
 
-                    <div className="mt-2.5 bg-slate-900 p-3 rounded-xl border border-slate-800 font-mono text-[10.5px] leading-relaxed text-emerald-300 overflow-x-auto select-none">
+                    <div className="mt-2.5 bg-slate-900/90 p-3 rounded-xl border border-white/10 font-mono text-[10.5px] leading-relaxed text-emerald-300 overflow-x-auto select-none shadow-inner">
                       <pre className="whitespace-pre-wrap">{simCode}</pre>
                     </div>
 
@@ -684,14 +611,14 @@ export const LandingPage = () => {
                     )}
                   </div>
 
-                  <div className="space-y-2 pt-2 border-t border-slate-800">
+                  <div className="space-y-2 pt-2 border-t border-white/10">
                     <Button
                       variant={simPassed ? 'secondary' : 'accent'}
                       size="sm"
                       onClick={handleRunSimulation}
                       loading={simRunning}
                       iconLeft={Play}
-                      className="w-full text-xs font-black shadow-accent"
+                      className="w-full text-xs font-black shadow-[0_0_20px_rgba(251,191,36,0.3)] hover:scale-[1.02] cursor-pointer"
                     >
                       {simPassed ? 'Re-run Sandbox Assertions' : 'Run & Verify Code in Sandbox'}
                     </Button>
@@ -704,19 +631,19 @@ export const LandingPage = () => {
               </div>
 
               {/* Bottom Unlock Strip: Real Internships Unlocked with Proof */}
-              <div className="p-4 rounded-2xl bg-white border-sharp flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-950/70 border border-slate-200 dark:border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-2xs">
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
                     Direct Recruiter Pipelines Unlocked Once Verified:
                   </span>
                   <div className="flex flex-wrap items-center gap-2 mt-1.5">
                     {currentTrackData.matchedInternships.map((job, idx) => (
-                      <div key={idx} className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-teal-50/70 border border-teal-200 text-xs">
-                        <Building2 className="w-3.5 h-3.5 text-teal-700" />
-                        <strong className="text-slate-900">{job.company}</strong>
+                      <div key={idx} className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-teal-500/30 text-xs">
+                        <Building2 className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+                        <strong className="text-slate-900 dark:text-white">{job.company}</strong>
                         <span className="text-slate-400">•</span>
-                        <span className="text-teal-900 font-semibold">{job.role}</span>
-                        <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-1.5 py-0.2 rounded">
+                        <span className="text-teal-700 dark:text-teal-300 font-semibold">{job.role}</span>
+                        <span className="text-[10px] font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/20 px-1.5 py-0.5 rounded border border-amber-200 dark:border-amber-500/30">
                           {job.stipend}
                         </span>
                       </div>
@@ -724,15 +651,15 @@ export const LandingPage = () => {
                   </div>
                 </div>
 
-                <Button
-                  variant="primary"
+                <TactileButton3D
+                  variant="secondary"
                   size="sm"
                   onClick={handleExploreDashboard}
                   iconRight={ArrowRight}
                   className="shrink-0 text-xs font-bold"
                 >
                   View Full Gap Analysis
-                </Button>
+                </TactileButton3D>
               </div>
 
             </div>
@@ -744,17 +671,17 @@ export const LandingPage = () => {
       {/* ========================================================================= */}
       {/* 3. PLATFORM IMPACT STATS BANNER                                           */}
       {/* ========================================================================= */}
-      <section className="bg-brand-dark-gradient rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-slate-800">
+      <section className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden border border-slate-800">
         <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none translate-x-12 translate-y-12">
-          <TrendingUp className="w-96 h-96 text-white" />
+          <TrendingUp className="w-96 h-96 text-teal-400" />
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left relative z-10">
           {stats.map((stat, idx) => (
-            <div key={idx} className="space-y-1.5 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs hover:bg-white/10 hover:border-white/20 transition-all hover:-translate-y-1">
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#F4B942] tracking-tight drop-shadow-sm">
+            <div key={idx} className="space-y-1.5 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl hover:border-teal-400/50 hover:shadow-[0_0_25px_rgba(45,212,191,0.2)] transition-all hover:-translate-y-1" data-cursor="pointer">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#FBBF24] tracking-tight drop-shadow-[0_2px_10px_rgba(251,191,36,0.3)]">
                 {stat.value}
               </div>
-              <div className="text-sm font-bold text-slate-100">
+              <div className="text-sm font-bold text-white">
                 {stat.label}
               </div>
               <div className="text-xs text-slate-400 font-medium">
@@ -771,10 +698,10 @@ export const LandingPage = () => {
       <section className="space-y-12">
         <div className="text-center max-w-3xl mx-auto space-y-3">
           <Badge variant="primary" size="md">End-to-End System Design</Badge>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             How NexStep Works: The 4-Pillar Pipeline
           </h2>
-          <p className="text-slate-600 text-sm sm:text-base">
+          <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base">
             From textbook syllabi to verified interview-ready engineering credentials in four transparent stages.
           </p>
         </div>
@@ -820,38 +747,40 @@ export const LandingPage = () => {
           ].map((pillar, idx) => {
             const Icon = pillar.icon;
             return (
-              <div 
-                key={idx}
-                className="glass-card-premium p-6 rounded-3xl relative flex flex-col justify-between border-sharp hover:-translate-y-1.5 hover:shadow-xl hover:border-teal-400/80 transition-all duration-300 group"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className={`icon-3d ${pillar.theme} w-13 h-13 rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-6 h-6 text-white" />
+              <Card3D key={idx} maxTilt={10} scale={1.03} className="h-full">
+                <div 
+                  className="bg-white/85 dark:bg-slate-900/70 backdrop-blur-xl p-6 rounded-3xl relative flex flex-col justify-between border border-slate-200 dark:border-white/10 h-full hover:border-teal-500/60 dark:hover:border-teal-400/60 hover:shadow-xl dark:hover:shadow-[0_0_35px_rgba(45,212,191,0.25)] transition-all duration-300 group"
+                  data-cursor="pointer"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className={`icon-3d ${pillar.theme} w-13 h-13 rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform`}>
+                        <Icon className="w-6 h-6 text-white" />
+                      </div>
+                      <span className="text-3xl font-black text-slate-300 dark:text-slate-700 font-mono group-hover:text-teal-500 dark:group-hover:text-teal-400/60 transition-colors">
+                        {pillar.step}
+                      </span>
                     </div>
-                    <span className="text-3xl font-black text-slate-300 font-mono">
-                      {pillar.step}
+
+                    <span className="text-[10px] font-black uppercase tracking-wider text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-500/15 px-2 py-0.5 rounded-md border border-teal-200 dark:border-teal-500/30">
+                      {pillar.subtitle}
                     </span>
+
+                    <h3 className="text-base font-black text-slate-900 dark:text-white mt-2 mb-2 tracking-tight">
+                      {pillar.title}
+                    </h3>
+
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                      {pillar.desc}
+                    </p>
                   </div>
 
-                  <span className="text-[10px] font-black uppercase tracking-wider text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">
-                    {pillar.subtitle}
-                  </span>
-
-                  <h3 className="text-base font-black text-slate-900 mt-2 mb-2 tracking-tight">
-                    {pillar.title}
-                  </h3>
-
-                  <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                    {pillar.desc}
-                  </p>
+                  <div className="pt-4 mt-5 border-t border-slate-100 dark:border-white/10 flex items-center justify-between text-[11px] font-bold text-slate-500 dark:text-slate-400 font-mono">
+                    <span>{pillar.tech}</span>
+                    <ChevronRight className="w-4 h-4 text-teal-600 dark:text-teal-400 transition-transform group-hover:translate-x-1" />
+                  </div>
                 </div>
-
-                <div className="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-500 font-mono">
-                  <span>{pillar.tech}</span>
-                  <ChevronRight className="w-4 h-4 text-teal-600 transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
+              </Card3D>
             );
           })}
         </div>
@@ -860,58 +789,58 @@ export const LandingPage = () => {
       {/* ========================================================================= */}
       {/* 5. TRADITIONAL PATH VS. NEXSTEP COMPARISON TABLE                          */}
       {/* ========================================================================= */}
-      <section className="p-8 sm:p-12 rounded-3xl bg-white border-sharp shadow-sm space-y-8 max-w-5xl mx-auto">
+      <section className="p-8 sm:p-12 rounded-3xl bg-white/85 dark:bg-slate-900/70 backdrop-blur-2xl border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-8 max-w-5xl mx-auto transition-colors duration-300">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <Badge variant="accent" size="sm">The Core Problem We Solve</Badge>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
             Traditional Placement Path vs. NexStep Career Engine
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
             Why 80% of Indian engineering students from Tier-2/3 colleges get filtered out—and how we fix it.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Traditional Path Card */}
-          <div className="p-6 rounded-3xl bg-rose-50/40 border border-rose-200 space-y-4">
-            <div className="flex items-center gap-2 text-rose-800 font-black text-sm uppercase tracking-wider">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+          <div className="p-6 rounded-3xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-500/30 space-y-4">
+            <div className="flex items-center gap-2 text-rose-800 dark:text-rose-300 font-black text-sm uppercase tracking-wider">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e]" />
               <span>The Broken Traditional Way</span>
             </div>
-            <ul className="space-y-3 text-xs text-slate-700">
+            <ul className="space-y-3 text-xs text-slate-700 dark:text-slate-300">
               <li className="flex items-start gap-2.5">
-                <span className="text-rose-500 font-bold text-base leading-none">✕</span>
-                <span><strong>Unverified Resumes:</strong> Students list buzzwords (Docker, AWS) without verifiable code evidence.</span>
+                <span className="text-rose-500 dark:text-rose-400 font-bold text-base leading-none">✕</span>
+                <span><strong className="text-slate-900 dark:text-white">Unverified Resumes:</strong> Students list buzzwords (Docker, AWS) without verifiable code evidence.</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <span className="text-rose-500 font-bold text-base leading-none">✕</span>
-                <span><strong>Syllabus Blindspot:</strong> Colleges assume students know modern async APIs; students assume textbooks are enough.</span>
+                <span className="text-rose-500 dark:text-rose-400 font-bold text-base leading-none">✕</span>
+                <span><strong className="text-slate-900 dark:text-white">Syllabus Blindspot:</strong> Colleges assume students know modern async APIs; students assume textbooks are enough.</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <span className="text-rose-500 font-bold text-base leading-none">✕</span>
-                <span><strong>Mass Recruiter Trap:</strong> 0 practical proof forces graduates into ₹3.5 LPA mass recruiter service companies.</span>
+                <span className="text-rose-500 dark:text-rose-400 font-bold text-base leading-none">✕</span>
+                <span><strong className="text-slate-900 dark:text-white">Mass Recruiter Trap:</strong> 0 practical proof forces graduates into ₹3.5 LPA mass recruiter service companies.</span>
               </li>
             </ul>
           </div>
 
           {/* NexStep Path Card */}
-          <div className="p-6 rounded-3xl bg-teal-50/40 border-2 border-teal-300 shadow-brand space-y-4">
-            <div className="flex items-center gap-2 text-teal-800 font-black text-sm uppercase tracking-wider">
-              <span className="w-2.5 h-2.5 rounded-full bg-teal-500 animate-pulse" />
+          <div className="p-6 rounded-3xl bg-teal-50/70 dark:bg-teal-950/20 border-2 border-teal-400 dark:border-teal-500/40 shadow-md dark:shadow-[0_0_30px_rgba(45,212,191,0.2)] space-y-4">
+            <div className="flex items-center gap-2 text-teal-800 dark:text-teal-300 font-black text-sm uppercase tracking-wider">
+              <span className="w-2.5 h-2.5 rounded-full bg-teal-500 dark:bg-teal-400 shadow-[0_0_8px_#2dd4bf] animate-pulse" />
               <span>The NexStep Verified Pipeline</span>
             </div>
-            <ul className="space-y-3 text-xs text-slate-700">
+            <ul className="space-y-3 text-xs text-slate-700 dark:text-slate-300">
               <li className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                <span><strong>Proof-of-Competence:</strong> Every skill badge is backed by passed test assertions in our isolated Python sandbox.</span>
+                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
+                <span><strong className="text-slate-900 dark:text-white">Proof-of-Competence:</strong> Every skill badge is backed by passed test assertions in our isolated Python sandbox.</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                <span><strong>Exact AI Gap Isolation:</strong> Mathematical semantic matching reveals precisely what to learn each semester.</span>
+                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
+                <span><strong className="text-slate-900 dark:text-white">Exact AI Gap Isolation:</strong> Mathematical semantic matching reveals precisely what to learn each semester.</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                <span><strong>Direct High-CTC Internships:</strong> Direct qualification matching for ₹35,000–₹50,000/mo high-growth startup roles.</span>
+                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
+                <span><strong className="text-slate-900 dark:text-white">Direct High-CTC Internships:</strong> Direct qualification matching for ₹35,000–₹50,000/mo high-growth startup roles.</span>
               </li>
             </ul>
           </div>
@@ -921,24 +850,27 @@ export const LandingPage = () => {
       {/* ========================================================================= */}
       {/* 6. CALL TO ACTION BOTTOM BANNER                                           */}
       {/* ========================================================================= */}
-      <section className="text-center bg-brand-gradient text-white rounded-3xl p-10 sm:p-14 shadow-brand space-y-6 relative overflow-hidden border border-teal-600/30">
+      <section className="text-center rounded-3xl p-10 sm:p-14 space-y-6 relative overflow-hidden border border-teal-500/40 shadow-xl bg-gradient-to-r from-teal-900/90 via-[#0B1120] to-teal-900/90 text-white backdrop-blur-2xl">
+        {/* Ambient Lights */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-48 bg-teal-500/20 blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-10 w-64 h-32 bg-amber-500/15 blur-3xl pointer-events-none" />
+
         <div className="max-w-2xl mx-auto space-y-4 relative z-10">
-          <h2 className="text-3xl sm:text-4xl font-black tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
             Map Your Degree to Industry Reality Today.
           </h2>
           <p className="text-sm sm:text-base text-teal-100 font-normal leading-relaxed">
             Takes less than 2 minutes. Enter your branch and semester to see your exact curriculum gaps and start verifying skills immediately.
           </p>
           <div className="pt-2">
-            <Button
-              variant="accent"
+            <TactileButton3D
+              variant="primary"
               size="lg"
               onClick={handleStart}
               iconRight={ArrowRight}
-              className="text-slate-950 font-black px-8 shadow-xl hover:scale-105"
             >
               Start Free Gap Analysis
-            </Button>
+            </TactileButton3D>
           </div>
         </div>
       </section>

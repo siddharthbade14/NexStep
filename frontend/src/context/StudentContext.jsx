@@ -1,19 +1,28 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { api } from '../services/api';
 
 const StudentContext = createContext();
 
 export const DEMO_PERSONAS = [
+  // Students
   {
     id: 'demo-student',
     name: 'Aarav Sharma',
     college: 'Delhi Technological University (DTU)',
     course: 'B.Tech CSE',
+    degree: 'B.Tech',
+    stream: 'Computer Science & Engineering',
+    domain: 'Full-Stack & Web Engineering',
     semester: 5,
+    grad_year: 2026,
     dream_role: 'Software Developer',
+    role: 'student',
     language: 'English',
     self_reported_skills: ['Python', 'C++', 'Data Structures', 'DBMS', 'Git'],
     avatar: 'AS',
     department: 'Computer Science',
+    preferred_work_mode: 'Hybrid (Office + Remote)',
+    preferred_location: 'Bengaluru (Bangalore)',
     tagline: 'Aspiring Full-Stack & Backend Systems Engineer',
     accentColor: 'from-teal-600 to-cyan-600'
   },
@@ -24,6 +33,7 @@ export const DEMO_PERSONAS = [
     course: 'B.Tech ECE',
     semester: 5,
     dream_role: 'Embedded Systems Engineer',
+    role: 'student',
     language: 'English',
     self_reported_skills: ['C++', 'Microprocessors', 'Digital Electronics', 'Basic C', 'Git'],
     avatar: 'PN',
@@ -38,6 +48,7 @@ export const DEMO_PERSONAS = [
     course: 'B.Tech IT',
     semester: 5,
     dream_role: 'Data Analyst',
+    role: 'student',
     language: 'English',
     self_reported_skills: ['Python', 'SQL', 'Statistics', 'Excel', 'Data Visualization'],
     avatar: 'RV',
@@ -45,19 +56,40 @@ export const DEMO_PERSONAS = [
     tagline: 'Business Intelligence & Exploratory Data Analysis',
     accentColor: 'from-purple-600 to-indigo-600'
   },
+  // College TPO
   {
-    id: 'demo-blank',
-    name: '',
-    college: '',
-    course: 'B.Tech CSE',
-    semester: 1,
-    dream_role: 'Software Developer',
-    language: 'English',
-    self_reported_skills: [],
-    avatar: 'NEW',
-    department: 'Custom Student Profile',
-    tagline: 'Build a completely custom profile from scratch',
-    accentColor: 'from-slate-600 to-slate-800'
+    id: 'tpo-dtu',
+    name: 'Dr. Rajesh Gupta',
+    college: 'Delhi Technological University (DTU)',
+    role: 'college_tpo',
+    department: 'Training & Placement Office',
+    designation: 'Head of Placements & Industry Relations',
+    avatar: 'RG',
+    tagline: 'Leading placement readiness and curriculum modernization for 2,400+ engineers',
+    accentColor: 'from-blue-600 to-indigo-700'
+  },
+  // Corporate Recruiters
+  {
+    id: 'recruiter-swiggy',
+    name: 'Ananya Sen',
+    company: 'Swiggy',
+    role: 'recruiter',
+    department: 'Engineering Talent Acquisition',
+    designation: 'Principal Tech Talent Partner',
+    avatar: 'AS',
+    tagline: 'Sourcing top-tier verified backend and cloud engineering interns across Bharat',
+    accentColor: 'from-orange-500 to-amber-600'
+  },
+  {
+    id: 'recruiter-zerodha',
+    name: 'Karan Mehta',
+    company: 'Zerodha',
+    role: 'recruiter',
+    department: 'Core Systems Recruiting',
+    designation: 'Lead Engineering Recruiter',
+    avatar: 'KM',
+    tagline: 'Hiring verified full-stack, distributed systems, and low-latency developers',
+    accentColor: 'from-emerald-600 to-teal-700'
   }
 ];
 
@@ -82,7 +114,14 @@ export const StudentProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const saved = localStorage.getItem('nexstep_auth_user');
-      return saved ? JSON.parse(saved) : null;
+      return saved ? JSON.parse(saved) : {
+        id: 'demo-student',
+        email: 'student@nexstep.in',
+        full_name: 'Aarav Sharma',
+        role: 'student',
+        avatar: 'AS',
+        college: 'Delhi Technological University (DTU)'
+      };
     } catch {
       return null;
     }
@@ -112,7 +151,6 @@ export const StudentProvider = ({ children }) => {
     setStudent(prev => ({
       ...prev,
       ...newProfile,
-      // preserve verified skills unless explicitly passed
       verified_skills: newProfile.verified_skills !== undefined ? newProfile.verified_skills : (prev.verified_skills || []),
       completed_quizzes: newProfile.completed_quizzes !== undefined ? newProfile.completed_quizzes : (prev.completed_quizzes || [])
     }));
@@ -137,7 +175,6 @@ export const StudentProvider = ({ children }) => {
       return {
         ...prev,
         completed_quizzes: [...current, skillId],
-        // also count towards verified skills
         verified_skills: prev.verified_skills.includes(skillId) ? prev.verified_skills : [...prev.verified_skills, skillId]
       };
     });
@@ -145,7 +182,7 @@ export const StudentProvider = ({ children }) => {
 
   const resetStudentState = async () => {
     try {
-      await fetch('/api/reset-demo', { method: 'POST' });
+      await api.resetDemo();
     } catch (e) {
       console.warn('Backend reset call failed', e);
     }
@@ -157,69 +194,115 @@ export const StudentProvider = ({ children }) => {
     });
   };
 
-  // Launch Demo Account and start Onboarding directly from the beginning (Step 1)
   const startDemoOnboarding = async (persona = DEMO_PERSONAS[0]) => {
     try {
-      await fetch('/api/reset-demo', { method: 'POST' });
+      await api.resetDemo();
     } catch (e) {
       console.warn('Backend reset call failed', e);
     }
 
     const freshStudent = {
       ...persona,
-      verified_skills: [], // WIPE verified skills so onboarding begins from scratch
+      verified_skills: [],
       completed_quizzes: [],
-      resetTimestamp: Date.now() // Signals OnboardingPage to reset step to 1
+      resetTimestamp: Date.now()
     };
 
     setStudent(freshStudent);
     setCurrentUser({
       id: freshStudent.id,
       name: freshStudent.name || 'Demo Student',
+      full_name: freshStudent.name || 'Demo Student',
       email: `${freshStudent.id}@demo.nexstep.in`,
+      role: 'student',
+      avatar: freshStudent.avatar || 'DS',
+      college: freshStudent.college,
       isDemo: true
     });
-
-    try {
-      localStorage.setItem('nexstep_student', JSON.stringify(freshStudent));
-    } catch (err) {
-      console.error('Failed to save to localStorage', err);
-    }
 
     setActiveTab('onboarding');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Standard user login
-  const loginStudent = ({ email, password, persona = null }) => {
-    const selectedPersona = persona || DEMO_PERSONAS[0];
+  // Multi-Role Persona Switcher (Student, TPO, Recruiter)
+  const switchRolePersona = async (personaId) => {
+    const found = DEMO_PERSONAS.find(p => p.id === personaId) || DEMO_PERSONAS[0];
+    
+    // Attempt backend switch
+    try {
+      await api.switchPersona(personaId);
+    } catch (_) {}
+
+    const role = found.role || 'student';
     const userObj = {
-      id: selectedPersona.id,
-      name: selectedPersona.name || email.split('@')[0],
-      email: email || 'student@dtu.ac.in',
-      isDemo: Boolean(persona || email?.includes('demo'))
+      id: found.id,
+      name: found.name,
+      full_name: found.name,
+      email: `${found.id}@nexstep.in`,
+      role: role,
+      avatar: found.avatar,
+      college: found.college,
+      company_name: found.company,
+      designation: found.designation
     };
 
     setCurrentUser(userObj);
+
+    if (role === 'student') {
+      setStudent(prev => ({
+        ...found,
+        verified_skills: prev.verified_skills || ['skill-git'],
+        completed_quizzes: prev.completed_quizzes || ['skill-git']
+      }));
+      setActiveTab('gap-analysis');
+    } else if (role === 'college_tpo') {
+      setActiveTab('tpo-dashboard');
+    } else if (role === 'recruiter') {
+      setActiveTab('recruiter-portal');
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     return userObj;
   };
 
+  const loginWithCredentials = async (email, password) => {
+    const result = await api.login(email, password);
+    if (result && result.user) {
+      setCurrentUser(result.user);
+      if (result.user.role === 'college_tpo') {
+        setActiveTab('tpo-dashboard');
+      } else if (result.user.role === 'recruiter') {
+        setActiveTab('recruiter-portal');
+      } else {
+        setActiveTab('gap-analysis');
+      }
+      return result.user;
+    }
+    throw new Error('Login failed');
+  };
+
   const logout = () => {
+    localStorage.removeItem('nexstep_auth_token');
+    localStorage.removeItem('nexstep_auth_user');
     setCurrentUser(null);
     setActiveTab('landing');
   };
+
+  const currentRole = currentUser?.role || student?.role || 'student';
 
   return (
     <StudentContext.Provider value={{
       student,
       currentUser,
+      currentRole,
       DEMO_PERSONAS,
       updateProfile,
       addVerifiedSkill,
       addCompletedQuiz,
       resetStudentState,
       startDemoOnboarding,
-      loginStudent,
+      switchRolePersona,
+      loginWithCredentials,
       logout,
       activeTab,
       setActiveTab,

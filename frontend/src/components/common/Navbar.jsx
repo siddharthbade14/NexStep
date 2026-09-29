@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useStudent } from '../../context/StudentContext';
+import { useTheme } from '../../context/ThemeContext';
 import { 
   Compass, 
   Layers, 
@@ -19,11 +21,16 @@ import {
   ArrowRight,
   Activity,
   Award,
-  LogIn
+  LogIn,
+  Building2,
+  UserCheck,
+  Users
 } from 'lucide-react';
 import { Badge } from './Badge';
 import { Modal } from './Modal';
 import { Button } from './Button';
+import { AuthModal } from './AuthModal';
+import { ThemeToggle } from './ThemeToggle';
 
 const SKILL_NAMES = {
   'skill-git': 'Git & Version Control',
@@ -58,20 +65,43 @@ const formatSkillName = (skillId) => {
 };
 
 export const Navbar = () => {
-  const { student, activeTab, setActiveTab, resetStudentState } = useStudent();
+  const { student, currentUser, currentRole, activeTab, setActiveTab, resetStudentState } = useStudent();
+  const { isDark } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
-  const navItems = [
-    { id: 'landing', label: 'Home', icon: Compass, tag: null },
-    { id: 'login', label: 'Login / Demo', icon: LogIn, tag: 'Demo Access', highlight: true },
-    { id: 'onboarding', label: 'Onboarding', icon: Layers, tag: 'Setup' },
-    { id: 'gap-analysis', label: 'Gap Analysis', icon: Sparkles, tag: 'AI Core' },
-    { id: 'verification', label: 'Verify Skills', icon: CheckCircle, badgeCount: student.verified_skills?.length || 0 },
-    { id: 'resources', label: 'Resources', icon: BookOpen, tag: 'Guides' },
-    { id: 'roadmap', label: 'Milestone Roadmap', icon: MapPin, tag: 'Path' },
-    { id: 'opportunities', label: 'Internships', icon: Briefcase, tag: '22 Live', badgeColor: 'bg-amber-100 text-amber-800' }
-  ];
+  const getNavItems = () => {
+    if (currentRole === 'college_tpo') {
+      return [
+        { id: 'tpo-dashboard', label: 'TPO Analytics', icon: Building2, tag: 'Institutional', highlight: true },
+        { id: 'gap-analysis', label: 'Curriculum Gap Engine', icon: Sparkles, tag: 'AI Core' },
+        { id: 'resources', label: 'Curriculum Resources', icon: BookOpen, tag: 'AICTE' },
+        { id: 'opportunities', label: 'Hiring Partners', icon: Briefcase, tag: 'Recruiters' },
+        { id: 'landing', label: 'Home Page', icon: Compass, tag: null }
+      ];
+    }
+    if (currentRole === 'recruiter') {
+      return [
+        { id: 'recruiter-portal', label: 'Recruiter Hub', icon: Briefcase, tag: 'Talent Pool', highlight: true },
+        { id: 'opportunities', label: 'Active Openings', icon: Layers, tag: 'Hiring' },
+        { id: 'verification', label: 'Code Proof Benchmarks', icon: CheckCircle, tag: 'Sandbox' },
+        { id: 'landing', label: 'Home Page', icon: Compass, tag: null }
+      ];
+    }
+    // Default student
+    return [
+      { id: 'landing', label: 'Home', icon: Compass, tag: null },
+      { id: 'gap-analysis', label: 'Gap Analysis', icon: Sparkles, tag: 'AI Core' },
+      { id: 'verification', label: 'Verify Skills', icon: CheckCircle, badgeCount: student.verified_skills?.length || 0 },
+      { id: 'resources', label: 'Learning Hub', icon: BookOpen, tag: 'Courses' },
+      { id: 'roadmap', label: 'Milestone Roadmap', icon: MapPin, tag: 'Path' },
+      { id: 'opportunities', label: 'Internships & Jobs', icon: Briefcase, tag: 'Verified' },
+      { id: 'onboarding', label: 'Edit Profile', icon: Layers, tag: 'Setup' }
+    ];
+  };
+
+  const navItems = getNavItems();
 
   const handleNavClick = (id) => {
     setActiveTab(id);
@@ -79,81 +109,96 @@ export const Navbar = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const verifiedCount = student.verified_skills?.length || 0;
+  const isTpo = currentRole === 'college_tpo';
+  const isRecruiter = currentRole === 'recruiter';
 
-  // Render the core sidebar navigation content (shared between desktop sidebar and mobile drawer)
+  const roleLabel = isTpo ? '🏛️ College TPO' : isRecruiter ? '🏢 Tech Recruiter' : '🎓 Student';
+  const userName = currentUser?.full_name || student?.name || 'Aarav Sharma';
+  const userSubtext = isTpo 
+    ? (currentUser?.college || 'DTU')
+    : isRecruiter 
+    ? (currentUser?.company_name || 'Swiggy')
+    : (student?.dream_role || 'Software Developer');
+
   const renderSidebarContent = () => (
-    <div className="flex flex-col h-full bg-white text-slate-800">
+    <div className="flex flex-col h-full text-slate-800 dark:text-slate-100 relative">
       
       {/* 1. BRAND HEADER */}
-      <div className="p-5 pb-4 border-b border-slate-100/90 flex items-center justify-between">
+      <div className="p-4 sm:p-5 pb-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between">
         <div 
           onClick={() => handleNavClick('landing')}
           className="flex items-center gap-3 cursor-pointer group"
+          data-cursor="pointer"
         >
-          <div className="w-10 h-10 rounded-xl bg-brand-gradient flex items-center justify-center p-2 shadow-xs group-hover:scale-105 transition-transform duration-200">
-            <img src="/logo.svg" alt="NexStep Logo" className="w-full h-full" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 via-cyan-500 to-indigo-600 flex items-center justify-center p-2 shadow-[0_0_20px_rgba(45,212,191,0.35)] group-hover:scale-105 transition-transform duration-200 border border-white/20">
+            <img src="/logo.svg" alt="NexStep Logo" className="w-full h-full dark:invert dark:brightness-200" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-xl font-black tracking-tight text-[#1F4E5F]">
-                Nex<span className="text-[#F4B942]">Step</span>
+              <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+                Nex<span className="text-amber-500 dark:text-[#FBBF24]">Step</span>
               </span>
-              <span className="text-[9px] font-extrabold uppercase bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded border border-teal-200/60 tracking-wider">
-                AI v2.4
+              <span className="text-[9px] font-extrabold uppercase bg-teal-500/15 text-teal-700 dark:text-teal-300 px-1.5 py-0.5 rounded border border-teal-500/30 tracking-wider">
+                AI-Powered
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 font-medium -mt-0.5">
-              Career Engine for Bharat
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono -mt-0.5">
+              Verified Career Engine
             </p>
           </div>
         </div>
+
+        {/* Compact Theme Switcher Button in Header */}
+        <ThemeToggle variant="compact" />
       </div>
 
-      {/* 2. STUDENT CREDENTIAL PASSPORT CARD */}
+      {/* 2. USER CREDENTIAL & ACTIVE ROLE CARD */}
       <div className="p-4 pb-3">
         <div 
-          onClick={() => setProfileModalOpen(true)}
-          className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-teal-50/50 border-sharp-teal hover:border-teal-400 hover:shadow-md cursor-pointer transition-all duration-200 group"
-          title="Click to view Student Skill Passport"
+          onClick={() => setAuthModalOpen(true)}
+          className="p-3.5 rounded-2xl bg-slate-100/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-teal-500/50 hover:bg-slate-200/50 dark:hover:bg-white/10 hover:shadow-[0_0_25px_rgba(45,212,191,0.2)] cursor-pointer transition-all duration-300 group relative overflow-hidden"
+          title="Click to Switch Role or View Profile"
+          data-cursor="pointer"
         >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-600/15 to-teal-800/10 text-teal-900 font-black text-sm flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-teal-200/80 shadow-2xs">
-              {student?.name?.charAt(0) || 'A'}
+          <div className="flex items-center gap-3 relative z-10">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500/20 via-purple-500/20 to-indigo-500/20 text-teal-600 dark:text-teal-300 font-black text-sm flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-teal-400/40 shadow-sm">
+              {currentUser?.avatar || userName.slice(0, 2).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-bold text-slate-900 truncate">
-                  {student?.name || 'Aarav Sharma'}
+                <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                  {userName}
                 </span>
                 <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium truncate">
-                {student?.dream_role || 'Software Developer'}
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate">
+                {userSubtext}
               </p>
             </div>
           </div>
 
-          <div className="mt-2.5 pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px]">
-            <span className="text-slate-500 font-semibold flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
-              Passport Status
+          <div className="mt-2.5 pt-2 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-[10px] relative z-10">
+            <span className="text-slate-600 dark:text-slate-300 font-semibold flex items-center gap-1">
+              {roleLabel}
             </span>
-            <span className="font-black text-emerald-700 bg-emerald-50/90 px-2.5 py-0.5 rounded-full border border-emerald-300 shadow-2xs">
-              {verifiedCount} Verified
+            <span className="font-extrabold text-amber-700 dark:text-[#FBBF24] bg-amber-500/15 px-2 py-0.5 rounded-full border border-amber-500/30">
+              Switch Role ▾
             </span>
           </div>
         </div>
       </div>
 
-      {/* 3. VERTICAL NAVIGATION LINKS */}
+      {/* 3. VERTICAL NAVIGATION LINKS WITH PHYSICAL SLIDING LAYOUT-ID PILL */}
       <div className="flex-1 px-3 py-2 space-y-1.5 overflow-y-auto sidebar-scroll">
-        <div className="px-3 pb-1 pt-1">
-          <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-            Navigation Menu
+        <div className="px-3 pb-1 pt-1 flex items-center justify-between">
+          <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 font-mono">
+            {isTpo ? 'TPO Institutional' : isRecruiter ? 'Recruiter Pipeline' : 'Navigation Hub'}
+          </span>
+          <span className="text-[9px] font-mono font-bold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/80 px-1.5 py-0.5 rounded border border-teal-200 dark:border-teal-800">
+            Verified
           </span>
         </div>
 
@@ -161,89 +206,113 @@ export const Navbar = () => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
           return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => handleNavClick(item.id)}
-              className={`w-full group flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
-                isActive
-                  ? 'bg-gradient-to-r from-[#1F4E5F] to-[#2C6E8F] text-white shadow-brand border-l-4 border-[#F4B942] pl-2.5'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 hover:border-slate-200/90 border border-transparent hover:translate-x-1'
-              }`}
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${
-                  isActive 
-                    ? 'bg-white/15 text-[#F4B942] border border-white/20' 
-                    : item.highlight 
-                      ? 'bg-amber-50 text-amber-600 border border-amber-200/80' 
-                      : 'bg-slate-100 text-slate-500 border border-slate-200/60'
-                }`}>
-                  <Icon className="w-4 h-4" />
-                </div>
-                <span className="truncate">{item.label}</span>
-              </div>
+            <div key={item.id} className="relative">
+              {/* Framer Motion Physical Sliding Pill on Y-Axis */}
+              {isActive && (
+                <motion.div
+                  layoutId="activeNavPill"
+                  className={`absolute inset-0 rounded-xl pointer-events-none ${
+                    isDark
+                      ? 'bg-gradient-to-r from-teal-500/20 via-cyan-500/15 to-purple-500/20 border border-teal-400/50 shadow-[0_0_20px_rgba(45,212,191,0.25)]'
+                      : 'bg-teal-50/90 border border-teal-300 shadow-sm'
+                  }`}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
 
-              <div className="flex items-center gap-1.5 shrink-0">
-                {item.tag && !isActive && (
-                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${
-                    item.badgeColor 
-                      ? 'bg-amber-50 text-amber-800 border-amber-200/80' 
-                      : item.highlight 
-                        ? 'bg-amber-100 text-amber-800 border-amber-300' 
-                        : 'bg-slate-100 text-slate-500 border-slate-200'
-                  }`}>
-                    {item.tag}
-                  </span>
-                )}
-                {item.badgeCount !== undefined && (
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+              <button
+                type="button"
+                onClick={() => handleNavClick(item.id)}
+                className={`w-full group relative z-10 flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'text-teal-900 dark:text-white font-bold'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/5'
+                }`}
+                data-cursor="pointer"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${
                     isActive 
-                      ? 'bg-[#F4B942] text-slate-950 font-black border-amber-400' 
-                      : 'bg-teal-50 text-teal-800 border-teal-200'
+                      ? 'bg-teal-500/20 text-teal-600 dark:text-[#2DD4BF] border border-teal-400/40 shadow-xs' 
+                      : item.highlight 
+                        ? 'bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/30' 
+                        : 'bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10'
                   }`}>
-                    {item.badgeCount}
-                  </span>
-                )}
-                {isActive && (
-                  <ChevronRight className="w-4 h-4 text-teal-200" />
-                )}
-              </div>
-            </button>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <span className="truncate">{item.label}</span>
+                </div>
+
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {item.tag && !isActive && (
+                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${
+                      item.highlight 
+                        ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30' 
+                        : 'bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/10'
+                    }`}>
+                      {item.tag}
+                    </span>
+                  )}
+                  {item.badgeCount !== undefined && (
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      isActive 
+                        ? 'bg-amber-400 dark:bg-[#FBBF24] text-slate-950 font-black border-amber-400 shadow-xs' 
+                        : 'bg-teal-100 dark:bg-teal-950/80 text-teal-800 dark:text-teal-300 border-teal-200 dark:border-teal-800'
+                    }`}>
+                      {item.badgeCount}
+                    </span>
+                  )}
+                  {isActive && (
+                    <ChevronRight className="w-4 h-4 text-teal-600 dark:text-teal-300" />
+                  )}
+                </div>
+              </button>
+            </div>
           );
         })}
       </div>
 
-      {/* 4. SIDEBAR FOOTER: TELEMETRY & CONTROLS */}
-      <div className="p-3 border-t border-slate-200/80 space-y-2 bg-slate-50/70">
-        {/* Real-time AI Telemetry Pill */}
-        <div className="p-3 rounded-2xl bg-white border-sharp text-[10px] space-y-1.5">
+      {/* 4. SIDEBAR FOOTER: THEME TOGGLE & 3D PULSING AI INFERENCE STATUS */}
+      <div className="p-3 border-t border-slate-200 dark:border-white/10 space-y-2 bg-slate-50/90 dark:bg-slate-950/80">
+        
+        {/* Full Pill Theme Toggle Switcher with Label */}
+        <ThemeToggle variant="pill" showLabel={true} className="w-full justify-between" />
+
+        {/* Real-time AI Inference Engine Online Pill with 3D Pulsing Dot */}
+        <div className="p-3 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px] space-y-1.5 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="font-black text-slate-800 flex items-center gap-1.5">
-              <Cpu className="w-3.5 h-3.5 text-teal-600" />
+            <span className="font-bold text-slate-800 dark:text-white flex items-center gap-1.5">
+              <Cpu className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
               AI Inference Engine
             </span>
-            <span className="flex items-center gap-1 text-emerald-600 font-bold bg-emerald-50 px-2 py-0.2 rounded-full border border-emerald-200">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            
+            {/* 3D Pulsing Dot with expanding concentric waves */}
+            <span className="flex items-center gap-1.5 text-teal-700 dark:text-teal-300 font-mono font-bold bg-teal-50 dark:bg-teal-950/90 px-2 py-0.5 rounded-full border border-teal-200 dark:border-teal-500/40">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500 shadow-[0_0_10px_#2dd4bf]"></span>
+              </span>
               Online
             </span>
           </div>
-          <div className="flex items-center justify-between text-slate-500 font-medium">
-            <span className="font-mono text-[9px] bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">all-MiniLM-L6-v2</span>
-            <span className="text-teal-700 font-semibold">22ms latency</span>
+
+          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 font-mono text-[9px]">
+            <span>MiniLM-L6-v2</span>
+            <span className="text-teal-600 dark:text-teal-400 font-bold">1.2ms Latency</span>
           </div>
         </div>
 
-        {/* Quick Demo / Login Actions */}
+        {/* Quick Multi-Role / Login Actions */}
         <div className="grid grid-cols-2 gap-1.5 pt-1">
           <button
             type="button"
-            onClick={() => handleNavClick('login')}
-            className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-800 bg-amber-100/80 hover:bg-amber-200 text-amber-950 transition-colors border border-amber-300/80 shadow-2xs"
-            title="Launch Demo Personas or Login"
+            onClick={() => setAuthModalOpen(true)}
+            className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-gradient-to-r from-amber-400 to-[#FBBF24] hover:brightness-110 transition-all border border-amber-300 shadow-sm cursor-pointer"
+            title="Switch Persona or Login"
+            data-cursor="pointer"
           >
-            <LogIn className="w-3.5 h-3.5 text-amber-700" />
-            <span>Demo / Login</span>
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Switch Role</span>
           </button>
 
           <button
@@ -253,8 +322,9 @@ export const Navbar = () => {
                 resetStudentState();
               }
             }}
-            className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-rose-600 hover:bg-rose-50 transition-colors border border-dashed border-slate-300 hover:border-rose-300"
+            className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors border border-slate-200 dark:border-white/10 cursor-pointer"
             title="Reset demo data"
+            data-cursor="pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset</span>
@@ -267,263 +337,70 @@ export const Navbar = () => {
 
   return (
     <>
-      {/* ========================================================================= */}
-      {/* DESKTOP VERTICAL SIDEBAR (Persistent Left-Docked on lg: and above)         */}
-      {/* ========================================================================= */}
-      <aside className="hidden lg:flex flex-col w-68 xl:w-72 h-screen sticky top-0 bg-white sidebar-border-right z-30 shrink-0 select-none overflow-hidden">
+      {/* DESKTOP VERTICAL FLOATING FROSTED GLASS SIDEBAR */}
+      <aside className="hidden lg:flex flex-col w-68 xl:w-72 h-screen sticky top-0 bg-white/80 dark:bg-slate-950/60 backdrop-blur-2xl border-r border-slate-200 dark:border-white/10 z-30 shrink-0 select-none overflow-hidden shadow-2xl transition-colors duration-300">
         {renderSidebarContent()}
       </aside>
 
-      {/* ========================================================================= */}
-      {/* MOBILE / TABLET TOP BAR (< lg)                                            */}
-      {/* ========================================================================= */}
-      <div className="lg:hidden sticky top-0 z-40 w-full h-15 bg-white/95 backdrop-blur-md border-b border-slate-200/90 px-4 flex items-center justify-between shadow-xs">
-        
-        {/* Brand */}
+      {/* MOBILE / TABLET TOP BAR */}
+      <div className="lg:hidden sticky top-0 z-40 w-full h-15 bg-white/85 dark:bg-slate-950/85 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 px-4 flex items-center justify-between shadow-sm transition-colors duration-300">
         <div 
           onClick={() => handleNavClick('landing')}
           className="flex items-center gap-2 cursor-pointer"
+          data-cursor="pointer"
         >
-          <div className="w-8 h-8 rounded-lg bg-brand-gradient flex items-center justify-center p-1.5">
-            <img src="/logo.svg" alt="NexStep Logo" className="w-full h-full" />
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-indigo-600 flex items-center justify-center p-1.5 border border-white/20 shadow-xs">
+            <img src="/logo.svg" alt="NexStep Logo" className="w-full h-full dark:invert dark:brightness-200" />
           </div>
-          <span className="text-lg font-black tracking-tight text-[#1F4E5F]">
-            Nex<span className="text-[#F4B942]">Step</span>
+          <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
+            Nex<span className="text-amber-500 dark:text-[#FBBF24]">Step</span>
           </span>
         </div>
 
-        {/* Right Actions */}
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <button 
-            type="button"
-            onClick={() => handleNavClick('login')}
-            className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-amber-100 text-amber-950 text-xs font-bold border border-amber-300 shadow-2xs"
-          >
-            <LogIn className="w-3.5 h-3.5 text-amber-700" />
-            <span>Demo / Login</span>
-          </button>
+          {/* Mobile Theme Switcher */}
+          <ThemeToggle variant="compact" />
 
           <button 
             type="button"
-            onClick={() => setProfileModalOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-teal-50 text-teal-800 text-xs font-semibold border border-teal-200/60"
+            onClick={() => setAuthModalOpen(true)}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-[#FBBF24] text-slate-950 text-xs font-bold border border-amber-300 shadow-xs cursor-pointer"
+            data-cursor="pointer"
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="font-bold">{verifiedCount} Verified</span>
+            <Sparkles className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Role</span>
           </button>
 
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-slate-700 hover:bg-slate-100 rounded-xl"
+            className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl cursor-pointer"
             aria-label="Toggle Menu"
+            data-cursor="pointer"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* MOBILE / TABLET OFF-CANVAS DRAWER (< lg)                                 */}
-      {/* ========================================================================= */}
+      {/* MOBILE DRAWER */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
-          {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-200"
+            className="fixed inset-0 bg-slate-950/70 backdrop-blur-md transition-opacity duration-200"
             onClick={() => setMobileMenuOpen(false)}
           />
-
-          {/* Drawer Panel */}
-          <div className="relative w-72 max-w-[85vw] h-full bg-white shadow-2xl z-10 flex flex-col animate-in slide-in-from-left duration-200">
+          <div className="relative w-72 max-w-[85vw] h-full bg-white dark:bg-slate-950 shadow-2xl z-10 flex flex-col border-r border-slate-200 dark:border-white/10">
             {renderSidebarContent()}
           </div>
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* STUDENT PROFILE & SKILL PASSPORT MODAL                                    */}
-      {/* ========================================================================= */}
-      <Modal
-        isOpen={profileModalOpen}
-        onClose={() => setProfileModalOpen(false)}
-        title="Student Profile & Skill Passport"
-        subtitle="Verified academic credentials & career readiness on NexStep"
-        maxWidth="max-w-xl"
-      >
-        <div className="space-y-4 pt-1">
-          {/* Student Profile Banner */}
-          <div className="p-4 rounded-xl bg-gradient-to-r from-[#1F4E5F]/10 via-[#2C6E8F]/5 to-amber-500/5 border border-teal-900/10 flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-xl bg-brand-gradient text-white font-black text-xl flex items-center justify-center shadow-xs shrink-0">
-              {student?.name?.charAt(0) || 'A'}
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <h4 className="text-base font-bold text-slate-900 truncate">
-                  {student?.name || 'Aarav Sharma'}
-                </h4>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80 shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Verified Student
-                </span>
-              </div>
-              <p className="text-xs text-slate-600 font-medium truncate mt-0.5">
-                {student?.college || 'Delhi Technological University (DTU)'}
-              </p>
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-slate-500 mt-1">
-                <span>{student?.course || 'B.Tech CSE'} (Sem {student?.semester || 5})</span>
-                <span>•</span>
-                <span className="font-semibold text-teal-800">Target: {student?.dream_role || 'Software Developer'}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Metrics 3-Col Bar */}
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <div className="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200/60">
-              <p className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Verified Skills</p>
-              <p className="text-xl font-black text-emerald-600 mt-0.5">{verifiedCount}</p>
-            </div>
-            <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              <p className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Self-Reported</p>
-              <p className="text-xl font-black text-slate-800 mt-0.5">{student?.self_reported_skills?.length || 0}</p>
-            </div>
-            <div className="p-2.5 rounded-xl bg-amber-50/60 border border-amber-200/60">
-              <p className="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Language</p>
-              <p className="text-xs font-bold text-slate-800 mt-1.5 truncate">{student?.language || 'English'}</p>
-            </div>
-          </div>
-
-          {/* Verified Skills Section */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                  Verified Skill Credentials
-                </h5>
-              </div>
-              <span className="text-[10px] text-slate-500 font-medium">Validated by Code Sandbox</span>
-            </div>
-
-            {student?.verified_skills && student.verified_skills.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {student.verified_skills.map((skillId) => (
-                  <div 
-                    key={skillId}
-                    className="p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200 flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-6 h-6 rounded-md bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="truncate">
-                        <p className="text-xs font-bold text-emerald-950 truncate">
-                          {formatSkillName(skillId)}
-                        </p>
-                        <p className="text-[9px] text-emerald-700 font-medium">NexStep Certified</p>
-                      </div>
-                    </div>
-                    <Badge variant="verified" size="sm" icon={false} className="shrink-0 text-[10px] px-2 py-0.2">
-                      Verified
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                <p className="text-xs text-slate-600 font-medium">No skills verified yet.</p>
-                <p className="text-[10px] text-slate-500 mt-0.5">Solve a coding challenge to earn your first certified badge!</p>
-              </div>
-            )}
-          </div>
-
-          {/* Self-Reported Skills Section */}
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <Code2 className="w-3.5 h-3.5 text-slate-500" />
-                <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-                  Self-Reported Skills
-                </h5>
-              </div>
-              <span className="text-[10px] text-slate-400">Claimed in profile</span>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              {student?.self_reported_skills && student.self_reported_skills.length > 0 ? (
-                student.self_reported_skills.map((skill, idx) => (
-                  <span 
-                    key={idx}
-                    className="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-white text-slate-700 border border-slate-200 shadow-2xs flex items-center gap-1"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                    {skill}
-                  </span>
-                ))
-              ) : (
-                <span className="text-xs text-slate-400">None added</span>
-              )}
-            </div>
-          </div>
-
-          {/* Action Links & Buttons */}
-          <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                iconLeft={Layers}
-                onClick={() => {
-                  setProfileModalOpen(false);
-                  handleNavClick('onboarding');
-                }}
-              >
-                Edit Profile
-              </Button>
-              <Button
-                variant="secondary"
-                size="sm"
-                iconLeft={CheckCircle}
-                onClick={() => {
-                  setProfileModalOpen(false);
-                  handleNavClick('verification');
-                }}
-              >
-                Verify Skills
-              </Button>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-slate-500 hover:text-rose-600 text-xs"
-                iconLeft={RotateCcw}
-                onClick={() => {
-                  if (window.confirm('Reset demo profile to initial DTU student state?')) {
-                    resetStudentState();
-                    setProfileModalOpen(false);
-                  }
-                }}
-              >
-                Reset Demo
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                iconRight={ArrowRight}
-                onClick={() => {
-                  setProfileModalOpen(false);
-                  handleNavClick('gap-analysis');
-                }}
-              >
-                View Gaps
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Modal>
+      {/* AUTH & MULTI-ROLE SWITCHER MODAL */}
+      <AuthModal 
+        isOpen={authModalOpen} 
+        onClose={() => setAuthModalOpen(false)} 
+      />
     </>
   );
 };

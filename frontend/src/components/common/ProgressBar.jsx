@@ -27,12 +27,12 @@ export const ProgressBar = ({
   return (
     <div className={`w-full ${className}`}>
       {(showLabel || label) && (
-        <div className="flex justify-between items-center mb-1.5 text-xs font-medium text-slate-600">
+        <div className="flex justify-between items-center mb-1.5 text-xs font-medium text-slate-600 dark:text-slate-400">
           <span>{label || 'Progress'}</span>
-          <span className="font-semibold text-slate-900">{percentage}%</span>
+          <span className="font-semibold text-slate-900 dark:text-slate-100">{percentage}%</span>
         </div>
       )}
-      <div className={`w-full bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/50 ${heightStyles[size]}`}>
+      <div className={`w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-200/50 dark:border-slate-700/50 ${heightStyles[size]}`}>
         <div
           className={`h-full rounded-full transition-all duration-500 ease-out ${fillStyles[variant]}`}
           style={{ width: `${percentage}%` }}
@@ -77,7 +77,7 @@ export const CircularProgress = ({
             stroke="#E2E8F0"
             strokeWidth={strokeWidth}
             fill="transparent"
-            className="opacity-70"
+            className="opacity-70 dark:opacity-15 dark:stroke-slate-700"
           />
           {/* Gradient Definition */}
           <defs>
@@ -121,18 +121,18 @@ export const CircularProgress = ({
         </svg>
 
         <div className="absolute flex flex-col items-center justify-center text-center z-20">
-          <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none">
+          <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
             {percentage}%
           </span>
-          <span className="text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-widest">
+          <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-widest">
             Index
           </span>
         </div>
       </div>
       {(title || subtitle) && (
         <div className="mt-3 text-center">
-          {title && <div className="text-xs sm:text-sm font-black text-slate-900 tracking-tight">{title}</div>}
-          {subtitle && <div className="text-[11px] text-slate-500 mt-0.5">{subtitle}</div>}
+          {title && <div className="text-xs sm:text-sm font-black text-slate-900 dark:text-white tracking-tight">{title}</div>}
+          {subtitle && <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{subtitle}</div>}
         </div>
       )}
     </div>

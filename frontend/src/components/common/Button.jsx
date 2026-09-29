@@ -25,9 +25,9 @@ export const Button = ({
   const variantStyles = {
     primary: "bg-brand-gradient text-white shadow-brand hover:shadow-lg hover:shadow-teal-900/25 hover:brightness-105 focus:ring-[#1F4E5F] border border-teal-500/30",
     accent: "bg-accent-gradient text-slate-950 shadow-accent hover:shadow-xl hover:shadow-amber-500/25 hover:brightness-105 focus:ring-[#F4B942] font-semibold border border-amber-300/60",
-    secondary: "bg-white text-slate-700 border border-slate-200/90 hover:bg-slate-50 hover:border-slate-300 hover:shadow-sm focus:ring-slate-400",
-    outline: "bg-transparent text-[#1F4E5F] border-2 border-[#1F4E5F]/90 hover:bg-[#1F4E5F]/8 hover:border-[#1F4E5F] focus:ring-[#1F4E5F]",
-    ghost: "bg-transparent text-slate-600 hover:text-slate-950 hover:bg-slate-100/90 focus:ring-slate-300",
+    secondary: "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-sm focus:ring-slate-400",
+    outline: "bg-transparent text-[#1F4E5F] dark:text-teal-400 border-2 border-[#1F4E5F]/90 dark:border-teal-500/60 hover:bg-[#1F4E5F]/8 dark:hover:bg-teal-500/10 focus:ring-[#1F4E5F]",
+    ghost: "bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100/90 dark:hover:bg-slate-800/80 focus:ring-slate-300",
     danger: "bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 shadow-sm hover:shadow-rose-600/30"
   };
 

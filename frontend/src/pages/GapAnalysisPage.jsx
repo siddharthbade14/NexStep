@@ -28,6 +28,7 @@ import {
   Award
 } from 'lucide-react';
 import { api } from '../services/api';
+import { Card3D } from '../components/3d/Card3D';
 
 const AVAILABLE_ROLES = [
   { id: 'Software Developer', title: 'Software Developer', icon: Code2, salary: '₹8.5 - 18 LPA', badge: 'High Demand' },
@@ -133,7 +134,7 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
     <div className="space-y-8 py-2 sm:py-4 max-w-6xl mx-auto">
       
       {/* HEADER HERO BANNER */}
-      <div className="bg-brand-dark-gradient text-white rounded-3xl p-6 sm:p-9 shadow-2xl border border-slate-800 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-[#14323D] via-[#1F4E5F] to-[#2C6E8F] dark:bg-brand-dark-gradient text-white rounded-3xl p-6 sm:p-9 shadow-xl dark:shadow-2xl border border-teal-900/30 dark:border-slate-800 relative overflow-hidden transition-colors duration-300">
         {/* Ambient radial lighting */}
         <div className="absolute -right-20 -top-20 w-80 h-80 bg-teal-500/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute right-1/4 -bottom-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -143,11 +144,11 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
             
             {/* Top Telemetry Badges */}
             <div className="flex flex-wrap items-center gap-2.5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/80 backdrop-blur-md text-[11px] font-semibold text-teal-300">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/60 dark:bg-slate-800/80 border border-slate-700/80 backdrop-blur-md text-[11px] font-semibold text-teal-300">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                 <span>AI Embeddings Active (all-MiniLM-L6-v2)</span>
               </div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[11px] font-medium text-slate-300 border border-white/15">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[11px] font-medium text-slate-200 border border-white/15">
                 <GraduationCap className="w-3.5 h-3.5 text-[#F4B942]" />
                 <span>{student.college || 'Delhi Technological University (DTU)'}</span>
               </div>
@@ -155,7 +156,7 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
 
             {/* Main Headline */}
             <div>
-              <div className="text-xs font-bold text-amber-400 tracking-wider uppercase mb-1">
+              <div className="text-xs font-bold text-amber-300 dark:text-amber-400 tracking-wider uppercase mb-1">
                 Semester {student.semester} • {student.course} Career Intelligence
               </div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white">
@@ -163,14 +164,14 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
               </h1>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-sm text-slate-200 dark:text-slate-300 leading-relaxed max-w-xl">
               {data?.role_overview || 'We dynamically cross-reference your university semester curriculum with real recruiter technical screening benchmarks.'}
             </p>
 
             {/* Quick Interactive Target Role Switcher */}
             <div className="pt-2">
-              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Target className="w-3.5 h-3.5 text-teal-400" />
+              <div className="text-[11px] font-bold text-slate-300 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <Target className="w-3.5 h-3.5 text-teal-300 dark:text-teal-400" />
                 <span>Target Career Track</span>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -184,7 +185,7 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
                       className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all hover:scale-105 active:scale-95 ${
                         isCurrent
                           ? 'bg-gradient-to-r from-amber-400 to-[#F4B942] text-slate-950 shadow-md shadow-amber-500/20 ring-2 ring-amber-300'
-                          : 'bg-slate-800/90 text-slate-300 hover:bg-slate-700/90 border border-slate-700'
+                          : 'bg-slate-900/60 dark:bg-slate-800/90 text-slate-200 dark:text-slate-300 hover:bg-slate-800/80 dark:hover:bg-slate-700/90 border border-slate-700'
                       }`}
                     >
                       <Icon className="w-3.5 h-3.5" />
@@ -199,7 +200,7 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
           </div>
 
           {/* Quick Stats Summary Card on Right */}
-          <div className="bg-slate-900/85 backdrop-blur-md rounded-2xl p-5 border border-slate-700/80 min-w-[220px] text-center space-y-3 shadow-xl shrink-0 self-start lg:self-center">
+          <div className="bg-slate-950/80 dark:bg-slate-950/85 backdrop-blur-md rounded-2xl p-5 border border-slate-700/80 min-w-[220px] text-center space-y-3 shadow-xl shrink-0 self-start lg:self-center">
             <div className="icon-3d icon-3d-amber w-12 h-12 rounded-2xl mx-auto flex items-center justify-center">
               <Award className="w-6 h-6 text-slate-950" />
             </div>
@@ -213,7 +214,7 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
             <div className="pt-2 border-t border-slate-800 flex items-center justify-center gap-2">
               <button
                 onClick={handleManualRefresh}
-                className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white transition-colors"
                 title="Refresh Semantic Engine"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-teal-400' : ''}`} />
@@ -224,159 +225,179 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
         </div>
       </div>
 
-      {/* READINESS & METRICS SUMMARY CARDS */}
+      {/* 3D READINESS & METRICS SUMMARY CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         
-        {/* Readiness Score Card */}
-        <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-500/40 transition-all duration-300 flex flex-col items-center justify-center text-center relative overflow-hidden group">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1F4E5F] via-teal-400 to-[#F4B942]"></div>
-          <CircularProgress
-            percentage={readinessPercent}
-            size={110}
-            strokeWidth={10}
-            title="Industry Readiness"
-            subtitle={`${verifiedCount} of ${totalGaps} core skills certified`}
-          />
-          <div className="mt-3">
-            <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-              readinessPercent >= 70
-                ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                : readinessPercent >= 35
-                ? 'bg-teal-100 text-teal-800 border border-teal-300'
-                : 'bg-amber-100 text-amber-900 border border-amber-300'
-            }`}>
-              {readinessPercent >= 70 ? 'Placement Qualified' : readinessPercent >= 35 ? 'Accelerated Learner' : 'Foundational Stage'}
-            </span>
+        {/* 3D Holographic Radar Readiness Score Card */}
+        <Card3D maxTilt={10} scale={1.03} className="h-full">
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white border-2 border-teal-500/50 dark:border-teal-500/50 shadow-md dark:shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden group h-full hud-corner transition-colors duration-300">
+            {/* Ambient Backlight */}
+            <div className="absolute inset-0 bg-gradient-to-b from-teal-500/10 via-transparent to-amber-500/10 pointer-events-none" />
+            
+            {/* 3D Rotating Cyber Radar Rings */}
+            <div className="relative w-28 h-28 flex items-center justify-center my-1 perspective-1000">
+              <div className="absolute inset-0 rounded-full border-2 border-dashed border-teal-500/40 dark:border-teal-400/40 animate-spin-3d-x" />
+              <div className="absolute w-24 h-24 rounded-full border border-amber-500/35 dark:border-amber-400/30 animate-spin-3d-y" />
+              <div className="relative z-10 flex flex-col items-center justify-center">
+                <span className="text-3xl font-black text-amber-600 dark:text-[#F4B942] tracking-tight drop-shadow-xs">
+                  {readinessPercent}%
+                </span>
+                <span className="text-[9px] font-mono text-teal-700 dark:text-teal-300 font-bold uppercase tracking-wider">
+                  Readiness
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-2 text-center">
+              <span className="text-xs text-slate-600 dark:text-slate-300 font-semibold block">
+                {verifiedCount} of {totalGaps} core skills certified
+              </span>
+              <span className={`inline-block mt-2 px-3 py-0.5 rounded-full text-[10px] font-mono font-black uppercase tracking-wider ${
+                readinessPercent >= 70
+                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-500'
+                  : readinessPercent >= 35
+                  ? 'bg-teal-100 text-teal-800 border border-teal-300 dark:bg-teal-950 dark:text-teal-300 dark:border-teal-500'
+                  : 'bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-500'
+              }`}>
+                {readinessPercent >= 70 ? '● Placement Qualified' : readinessPercent >= 35 ? '● Accelerated Learner' : '● Foundational Stage'}
+              </span>
+            </div>
           </div>
-        </div>
+        </Card3D>
 
         {/* Verified Skills Summary Card */}
-        <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-emerald-400/50 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-500"></div>
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-black text-slate-500 uppercase tracking-wider">
-                Certified Assertions
-              </span>
-              <div className="icon-3d icon-3d-emerald w-9 h-9 rounded-xl flex items-center justify-center shadow-xs">
-                <ShieldCheck className="w-4.5 h-4.5 text-white" />
+        <Card3D maxTilt={10} scale={1.03} className="h-full">
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-sm dark:shadow-xl hover:shadow-md hover:border-emerald-400/50 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group h-full">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-500"></div>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  Certified Assertions
+                </span>
+                <div className="icon-3d icon-3d-emerald w-9 h-9 rounded-xl flex items-center justify-center shadow-xs">
+                  <ShieldCheck className="w-4.5 h-4.5 text-white" />
+                </div>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                  {verifiedCount}
+                </span>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  of {totalGaps} requirements verified
+                </span>
               </div>
             </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-slate-900 tracking-tight">
-                {verifiedCount}
-              </span>
-              <span className="text-xs font-semibold text-slate-500">
-                of {totalGaps} requirements verified
-              </span>
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+              {/* Segmented Progress Blocks */}
+              <div className="flex items-center gap-1">
+                {[...Array(totalGaps || 8)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`h-2 flex-1 rounded-full transition-all duration-500 ${
+                      i < verifiedCount 
+                        ? 'bg-emerald-500 shadow-xs' 
+                        : 'bg-slate-200 dark:bg-slate-800'
+                    }`}
+                    title={i < verifiedCount ? `Skill ${i + 1} Verified` : `Skill ${i + 1} Pending`}
+                  />
+                ))}
+              </div>
+              <p className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                <span>{Math.round((verifiedCount / (totalGaps || 1)) * 100)}% verification completed</span>
+              </p>
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-slate-100 space-y-2">
-            {/* Segmented Progress Blocks */}
-            <div className="flex items-center gap-1">
-              {[...Array(totalGaps || 8)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`h-2 flex-1 rounded-full transition-all duration-500 ${
-                    i < verifiedCount 
-                      ? 'bg-emerald-500 shadow-xs' 
-                      : 'bg-slate-200'
-                  }`}
-                  title={i < verifiedCount ? `Skill ${i + 1} Verified` : `Skill ${i + 1} Pending`}
-                />
-              ))}
-            </div>
-            <p className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-              <span>{Math.round((verifiedCount / (totalGaps || 1)) * 100)}% verification completed</span>
-            </p>
-          </div>
-        </div>
+        </Card3D>
 
         {/* University Coverage Card */}
-        <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-500/40 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-[#1F4E5F]"></div>
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-black text-slate-500 uppercase tracking-wider">
-                Curriculum Overlap
-              </span>
-              <div className="icon-3d icon-3d-navy w-9 h-9 rounded-xl flex items-center justify-center shadow-xs">
-                <GraduationCap className="w-4.5 h-4.5 text-white" />
+        <Card3D maxTilt={10} scale={1.03} className="h-full">
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-sm dark:shadow-xl hover:shadow-md hover:border-teal-500/40 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group h-full">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-[#1F4E5F] dark:bg-teal-400"></div>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  Curriculum Overlap
+                </span>
+                <div className="icon-3d icon-3d-navy w-9 h-9 rounded-xl flex items-center justify-center shadow-xs">
+                  <GraduationCap className="w-4.5 h-4.5 text-white" />
+                </div>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                  {coveredSkills.length}
+                </span>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  of {data?.total_role_skills || 8} Syllabus Subjects
+                </span>
               </div>
             </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-slate-900 tracking-tight">
-                {coveredSkills.length}
-              </span>
-              <span className="text-xs font-semibold text-slate-500">
-                of {data?.total_role_skills || 8} Syllabus Subjects
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-1.5">
+              <ProgressBar
+                value={coveredSkills.length}
+                max={data?.total_role_skills || 8}
+                color="teal"
+                size="sm"
+              />
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 block font-medium">
+                Autonomous College Syllabus Synced
               </span>
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
-            <ProgressBar
-              value={coveredSkills.length}
-              max={data?.total_role_skills || 8}
-              color="teal"
-              size="sm"
-            />
-            <span className="text-[11px] text-slate-500 block font-medium">
-              Autonomous College Syllabus Synced
-            </span>
-          </div>
-        </div>
+        </Card3D>
 
         {/* Target Salary Band */}
-        <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-amber-400/60 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-amber-400"></div>
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-black text-slate-500 uppercase tracking-wider">
-                Fresher CTC Benchmark
-              </span>
-              <div className="icon-3d icon-3d-amber w-9 h-9 rounded-xl flex items-center justify-center shadow-xs">
-                <TrendingUp className="w-4.5 h-4.5 text-amber-950" />
+        <Card3D maxTilt={10} scale={1.03} className="h-full">
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-sm dark:shadow-xl hover:shadow-md hover:border-amber-400/60 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group h-full">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-amber-400"></div>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  Fresher CTC Benchmark
+                </span>
+                <div className="icon-3d icon-3d-amber w-9 h-9 rounded-xl flex items-center justify-center shadow-xs">
+                  <TrendingUp className="w-4.5 h-4.5 text-amber-950" />
+                </div>
+              </div>
+              <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                {data?.target_salary_band || '₹8.5 - 18 LPA'}
               </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              {data?.target_salary_band || '₹8.5 - 18 LPA'}
+            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px]">
+              <span className="text-slate-500 dark:text-slate-400 font-medium">Placement Demand:</span>
+              <span className="font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/70 px-2 py-0.5 rounded-lg border border-amber-200 dark:border-amber-500/40">
+                High Volume
+              </span>
             </div>
           </div>
-          <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-            <span className="text-slate-500 font-medium">Placement Demand:</span>
-            <span className="font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
-              High Volume
-            </span>
-          </div>
-        </div>
+        </Card3D>
 
       </div>
 
       {/* CURRICULUM VS INDUSTRY EXPECTATION GAP MATRIX */}
-      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-sm space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+      <div className="bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm dark:shadow-xl space-y-5 transition-colors duration-300">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100 dark:border-slate-800">
           <div>
             <div className="flex items-center gap-2">
               <div className="icon-3d icon-3d-navy w-7 h-7 rounded-lg flex items-center justify-center">
                 <Layers className="w-4 h-4 text-teal-300" />
               </div>
-              <h3 className="text-lg font-black text-slate-900 tracking-tight">
+              <h3 className="text-lg font-black text-slate-900 dark:text-white tracking-tight">
                 Curriculum vs. Industry Expectation Gap Matrix
               </h3>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Differential comparison showing where university curricula stop and industry expectations begin.
             </p>
           </div>
           <div className="flex items-center gap-4 text-xs font-semibold">
             <div className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded bg-slate-300 inline-block" />
-              <span className="text-slate-600">College Syllabi</span>
+              <span className="w-3 h-3 rounded bg-slate-300 dark:bg-slate-600 inline-block" />
+              <span className="text-slate-600 dark:text-slate-300">College Syllabi</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded bg-gradient-to-r from-[#1F4E5F] to-teal-500 inline-block" />
-              <span className="text-teal-900 font-bold">Industry Benchmark</span>
+              <span className="text-teal-800 dark:text-teal-300 font-bold">Industry Benchmark</span>
             </div>
           </div>
         </div>
@@ -417,15 +438,15 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
               notes: 'College teaches 3NF normalization; industry requires query profiling and connection pooling.'
             }
           ].map((item, idx) => (
-            <div key={idx} className="p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-2.5">
+            <div key={idx} className="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800/80 space-y-2.5 transition-colors duration-300">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black text-slate-800 tracking-tight">{item.domain}</span>
+                <span className="text-xs font-black text-slate-900 dark:text-slate-100 tracking-tight">{item.domain}</span>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                   item.status === 'minimal' 
-                    ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                    ? 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-600/40'
                     : item.status === 'critical'
-                    ? 'bg-rose-100 text-rose-800 border-rose-300'
-                    : 'bg-amber-100 text-amber-800 border-amber-300'
+                    ? 'bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-600/40'
+                    : 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-600/40'
                 }`}>
                   {item.gap}
                 </span>
@@ -433,25 +454,25 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
 
               {/* Differential Comparison Bar */}
               <div className="space-y-1">
-                <div className="h-2.5 w-full bg-slate-200/80 rounded-full overflow-hidden flex">
+                <div className="h-2.5 w-full bg-slate-200/80 dark:bg-slate-800 rounded-full overflow-hidden flex">
                   <div 
-                    className="h-full bg-slate-400" 
+                    className="h-full bg-slate-400 dark:bg-slate-600" 
                     style={{ width: `${item.college}%` }}
                     title={`College Coverage: ${item.college}%`}
                   />
                   <div 
-                    className="h-full bg-gradient-to-r from-teal-500 to-[#1F4E5F]" 
+                    className="h-full bg-gradient-to-r from-teal-500 to-[#1F4E5F] dark:from-teal-400 dark:to-teal-600" 
                     style={{ width: `${item.industry - item.college}%` }}
                     title={`Industry Delta: ${item.industry - item.college}%`}
                   />
                 </div>
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                  <span>College: {item.college}%</span>
-                  <span className="text-teal-700 font-bold">Target: {item.industry}%</span>
+                <div className="flex justify-between text-[10px] font-mono">
+                  <span className="text-slate-600 dark:text-slate-400 font-medium">College: {item.college}%</span>
+                  <span className="text-teal-800 dark:text-teal-300 font-bold">Target: {item.industry}%</span>
                 </div>
               </div>
 
-              <p className="text-[11px] text-slate-500 leading-snug">
+              <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-snug">
                 {item.notes}
               </p>
             </div>
@@ -461,34 +482,36 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
 
       {/* HIGHEST ROI RECOMMENDATION ACTION CARD */}
       {nextRecommendedSkill && (
-        <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-amber-500/15 via-teal-500/10 to-amber-500/15 border-2 border-amber-400/80 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 relative overflow-hidden">
-          <div className="flex items-start gap-4">
-            <div className="icon-3d icon-3d-amber w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-md">
-              <Flame className="w-6 h-6 text-slate-950" />
-            </div>
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-amber-400/20 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-1 border border-amber-400/40">
-                <Zap className="w-3 h-3 text-amber-600" />
-                <span>Highest ROI Next Action</span>
+        <Card3D maxTilt={6} scale={1.01}>
+          <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-amber-500/15 via-teal-500/10 to-amber-500/15 dark:from-amber-500/10 dark:via-teal-500/10 dark:to-amber-500/10 border-2 border-amber-400/80 dark:border-amber-500/60 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 relative overflow-hidden hud-corner transition-colors duration-300">
+            <div className="flex items-start gap-4">
+              <div className="icon-3d icon-3d-amber w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-md">
+                <Flame className="w-6 h-6 text-slate-950" />
               </div>
-              <h4 className="text-base font-black text-slate-900 tracking-tight">
-                Recommended Next Target: {nextRecommendedSkill.name}
-              </h4>
-              <p className="text-xs text-slate-600 mt-0.5 max-w-xl leading-relaxed">
-                Closing this priority requirement will advance your placement readiness score to <strong className="text-teal-800 font-bold">{Math.min(100, readinessPercent + 15)}%</strong> and qualify you for active internship applications.
-              </p>
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-amber-400/20 dark:bg-amber-400/15 text-amber-900 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider mb-1 border border-amber-400/40">
+                  <Zap className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                  <span>Highest ROI Next Action</span>
+                </div>
+                <h4 className="text-base font-black text-slate-900 dark:text-white tracking-tight">
+                  Recommended Next Target: {nextRecommendedSkill.name}
+                </h4>
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 max-w-xl leading-relaxed">
+                  Closing this priority requirement will advance your placement readiness score to <strong className="text-teal-800 dark:text-teal-300 font-bold">{Math.min(100, readinessPercent + 15)}%</strong> and qualify you for active internship applications.
+                </p>
+              </div>
             </div>
+            <Button
+              variant="accent"
+              size="md"
+              onClick={() => handleVerifySkill(nextRecommendedSkill.id)}
+              iconRight={ArrowRight}
+              className="text-xs font-bold text-slate-950 shadow-accent shrink-0 px-6 hover:scale-105 active:scale-95"
+            >
+              Launch Challenge
+            </Button>
           </div>
-          <Button
-            variant="accent"
-            size="md"
-            onClick={() => handleVerifySkill(nextRecommendedSkill.id)}
-            iconRight={ArrowRight}
-            className="text-xs font-bold text-slate-950 shadow-accent shrink-0 px-6 hover:scale-105 active:scale-95"
-          >
-            Launch Challenge
-          </Button>
-        </div>
+        </Card3D>
       )}
 
       {/* FILTER BUTTONS & SEARCH TOOLBAR */}
@@ -499,7 +522,7 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 active:scale-95 ${
               filter === 'all_gaps'
                 ? 'bg-gradient-to-r from-[#1F4E5F] to-[#2C6E8F] text-white shadow-md shadow-[#1F4E5F]/20'
-                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200/90'
+                : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800'
             }`}
           >
             Curriculum Gaps ({gapSkills.length})
@@ -509,7 +532,7 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 active:scale-95 ${
               filter === 'verified'
                 ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-500/20'
-                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200/90'
+                : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800'
             }`}
           >
             Verified Certified ({verifiedCount})
@@ -518,8 +541,8 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
             onClick={() => setFilter('covered')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 active:scale-95 ${
               filter === 'covered'
-                ? 'bg-[#1F4E5F] text-white shadow-xs'
-                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200/90'
+                ? 'bg-[#1F4E5F] dark:bg-teal-600 text-white shadow-xs'
+                : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800'
             }`}
           >
             University Covered ({coveredSkills.length})
@@ -528,8 +551,8 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-105 active:scale-95 ${
               filter === 'all'
-                ? 'bg-slate-900 text-white shadow-xs'
-                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200/90'
+                ? 'bg-slate-900 dark:bg-slate-800 text-white shadow-xs'
+                : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800'
             }`}
           >
             All Role Skills ({data?.total_role_skills || 8})
@@ -543,21 +566,21 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search skills by keyword..."
-            className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200/90 text-xs font-medium text-slate-800 bg-white shadow-2xs focus:ring-2 focus:ring-[#1F4E5F] focus:border-transparent transition-all"
+            className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200/90 dark:border-slate-800 text-xs font-medium text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 bg-white dark:bg-slate-900 shadow-2xs focus:ring-2 focus:ring-[#1F4E5F] dark:focus:ring-teal-400 focus:border-transparent transition-all"
           />
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+          <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3 top-2.5" />
         </div>
       </div>
 
       {/* RANKED GAP SKILLS LIST WITH 3D ACCENTS */}
       <div className="space-y-4">
         {filteredSkills().length === 0 ? (
-          <div className="p-12 rounded-3xl bg-white border border-slate-200 text-center space-y-3">
+          <div className="p-12 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center space-y-3 transition-colors duration-300">
             <div className="icon-3d icon-3d-amber w-12 h-12 rounded-2xl mx-auto flex items-center justify-center">
               <Search className="w-5 h-5 text-slate-950" />
             </div>
-            <h4 className="text-base font-black text-slate-900">No skills match your search query</h4>
-            <p className="text-xs text-slate-500">Try clearing the search box or selecting a different tab.</p>
+            <h4 className="text-base font-black text-slate-900 dark:text-white">No skills match your search query</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Try clearing the search box or selecting a different tab.</p>
             <Button variant="secondary" size="sm" onClick={() => setSearchQuery('')}>Clear Search</Button>
           </div>
         ) : (
@@ -575,12 +598,12 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
             return (
               <div
                 key={skill.id}
-                className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 relative overflow-hidden bg-white hover:-translate-y-0.5 ${
+                className={`p-6 sm:p-7 rounded-3xl transition-all duration-300 relative overflow-hidden bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 hover:-translate-y-0.5 ${
                   isVerified
                     ? 'border-sharp-teal shadow-md hover:border-teal-500 hover:shadow-xl'
                     : isGap
                     ? 'border-sharp-amber shadow-sm hover:border-amber-400 hover:shadow-lg'
-                    : 'border-sharp shadow-xs hover:border-slate-300'
+                    : 'border-sharp shadow-xs hover:border-slate-300 dark:hover:border-slate-700'
                 }`}
               >
                 {/* Specular top sheen line */}
@@ -622,51 +645,51 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
                           </Badge>
                         )}
 
-                        <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">
+                        <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700">
                           {skill.category}
                         </span>
 
-                        <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200">
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700">
                           <span className={`w-2 h-2 rounded-full ${diffDotClass}`} />
                           <span>{skill.difficulty}</span>
                         </span>
 
                         {skill.similarity_score && (
-                          <span className="text-[11px] font-mono font-bold text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-200 shadow-2xs">
+                          <span className="text-[11px] font-mono font-bold text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/80 px-2.5 py-0.5 rounded-lg border border-teal-200 dark:border-teal-700/60 shadow-2xs">
                             {Math.round(skill.similarity_score * 100)}% Cosine Match
                           </span>
                         )}
                       </div>
 
                       <div>
-                        <h3 className="text-lg font-black text-slate-900 flex items-center gap-2 tracking-tight">
+                        <h3 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2 tracking-tight">
                           <span>{skill.name}</span>
-                          {isVerified && <CheckCircle2 className="w-5 h-5 text-teal-600 inline shrink-0" />}
+                          {isVerified && <CheckCircle2 className="w-5 h-5 text-teal-600 dark:text-teal-400 inline shrink-0" />}
                         </h3>
-                        <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                          <strong className="text-slate-800">Recruiter Evaluation Intent: </strong>
+                        <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                          <strong className="text-slate-800 dark:text-slate-200">Recruiter Evaluation Intent: </strong>
                           {skill.industry_relevance}
                         </p>
                       </div>
 
                       {/* Dual-Tone Contrast Boxes: College Theory vs Industry Depth */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-                        <div className="p-3 rounded-2xl bg-slate-50/90 border border-slate-200 text-xs space-y-1">
-                          <div className="flex items-center gap-1.5 text-slate-600 font-bold text-[10px] uppercase tracking-wider">
-                            <span className="w-2 h-2 rounded-full bg-slate-400" />
+                        <div className="p-3 rounded-2xl bg-slate-50/90 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-xs space-y-1 transition-colors duration-300">
+                          <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 font-bold text-[10px] uppercase tracking-wider">
+                            <span className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-500" />
                             <span>College Syllabi Scope</span>
                           </div>
-                          <p className="text-slate-700 font-medium text-[11px] leading-snug">
+                          <p className="text-slate-700 dark:text-slate-300 font-medium text-[11px] leading-snug">
                             {skill.curriculum_match_subject || 'Theory lectures & semester end exam'}
                           </p>
                         </div>
 
-                        <div className="p-3 rounded-2xl bg-teal-50/60 border border-teal-200/90 text-xs space-y-1">
-                          <div className="flex items-center gap-1.5 text-teal-800 font-bold text-[10px] uppercase tracking-wider">
+                        <div className="p-3 rounded-2xl bg-teal-50/70 dark:bg-teal-950/50 border border-teal-200/90 dark:border-teal-700/60 text-xs space-y-1 transition-colors duration-300">
+                          <div className="flex items-center gap-1.5 text-teal-800 dark:text-teal-300 font-bold text-[10px] uppercase tracking-wider">
                             <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
                             <span>Recruiter Practical Test</span>
                           </div>
-                          <p className="text-teal-950 font-semibold text-[11px] leading-snug">
+                          <p className="text-teal-950 dark:text-teal-200 font-semibold text-[11px] leading-snug">
                             {skill.expected_depth}
                           </p>
                         </div>
@@ -678,13 +701,13 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
                   <div className="flex flex-row lg:flex-col items-center lg:items-end gap-2.5 min-w-[210px] shrink-0">
                     {isVerified ? (
                       <div className="w-full text-center lg:text-right space-y-1">
-                        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-100 px-4 py-2 rounded-xl border border-emerald-300 shadow-2xs">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 px-4 py-2 rounded-xl border border-emerald-300 dark:border-emerald-700/60 shadow-2xs">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                           <span>Certification Active</span>
                         </div>
                         <button
                           onClick={() => handleVerifySkill(skill.id)}
-                          className="block text-[11px] font-semibold text-slate-500 hover:text-slate-900 mt-1.5 transition-colors underline"
+                          className="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white mt-1.5 transition-colors underline"
                         >
                           Re-evaluate Code Solution
                         </button>
@@ -706,7 +729,7 @@ export const GapAnalysisPage = ({ onSelectSkillToVerify }) => {
                           size="sm"
                           onClick={() => handleGoToResources(skill.id)}
                           iconLeft={BookOpen}
-                          className="w-full text-xs hover:border-teal-400 text-slate-700"
+                          className="w-full text-xs hover:border-teal-400"
                         >
                           Free Learning Guide
                         </Button>

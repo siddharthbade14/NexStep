@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StudentProvider, useStudent } from './context/StudentContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
 import { PageContainer } from './components/layout/PageContainer';
@@ -11,9 +12,14 @@ import { ResourcesPage } from './pages/ResourcesPage';
 import { RoadmapPage } from './pages/RoadmapPage';
 import { OpportunitiesPage } from './pages/OpportunitiesPage';
 import { LoginPage } from './pages/LoginPage';
+import { TpoDashboardPage } from './pages/TpoDashboardPage';
+import { RecruiterPortalPage } from './pages/RecruiterPortalPage';
+import { CustomCursor } from './components/3d/CustomCursor';
+import { SpatialBackground3D } from './components/3d/SpatialBackground3D';
 
 const AppContent = () => {
   const { activeTab, setActiveTab } = useStudent();
+  const { isDark } = useTheme();
   const [selectedSkillToVerify, setSelectedSkillToVerify] = useState(null);
 
   const handleSelectSkillToVerify = (skillId) => {
@@ -28,6 +34,10 @@ const AppContent = () => {
         return <LandingPage />;
       case 'login':
         return <LoginPage />;
+      case 'tpo-dashboard':
+        return <TpoDashboardPage />;
+      case 'recruiter-portal':
+        return <RecruiterPortalPage />;
       case 'onboarding':
         return <OnboardingPage />;
       case 'gap-analysis':
@@ -46,9 +56,15 @@ const AppContent = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-[#F8FAFC] text-slate-900 bg-grid-pattern selection:bg-[#1F4E5F] selection:text-white">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[#F8FAFC] dark:bg-[#0B1120] text-slate-900 dark:text-slate-100 selection:bg-[#2DD4BF] selection:text-slate-950 font-sans relative overflow-x-hidden transition-colors duration-300">
+      {/* Global Interactive 3D Cursor */}
+      <CustomCursor />
+      
+      {/* Live React Three Fiber 3D Background Canvas */}
+      <SpatialBackground3D />
+
       <Navbar />
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-x-hidden">
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-x-hidden relative z-10">
         <div className="flex-1">
           <PageContainer>
             {renderActiveScreen()}
@@ -62,8 +78,10 @@ const AppContent = () => {
 
 export default function App() {
   return (
-    <StudentProvider>
-      <AppContent />
-    </StudentProvider>
+    <ThemeProvider>
+      <StudentProvider>
+        <AppContent />
+      </StudentProvider>
+    </ThemeProvider>
   );
 }
