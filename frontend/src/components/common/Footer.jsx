@@ -36,9 +36,9 @@ export const Footer = () => {
 
           {/* Quick Platform Links */}
           <div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-white tracking-wider uppercase mb-4">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4">
               Platform
-            </h4>
+            </h3>
             <ul className="space-y-2.5 text-xs text-slate-500 dark:text-slate-400">
               <li>
                 <button onClick={() => handleNav('landing')} className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer" data-cursor="pointer">
@@ -65,9 +65,9 @@ export const Footer = () => {
 
           {/* Career & Resources */}
           <div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-white tracking-wider uppercase mb-4">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4">
               Guidance & Roadmaps
-            </h4>
+            </h3>
             <ul className="space-y-2.5 text-xs text-slate-500 dark:text-slate-400">
               <li>
                 <button onClick={() => handleNav('resources')} className="hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer" data-cursor="pointer">
@@ -92,12 +92,12 @@ export const Footer = () => {
 
           {/* Social Impact & Standards */}
           <div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-white tracking-wider uppercase mb-4">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4">
               Bharat Impact
-            </h4>
+            </h3>
             <div className="p-3.5 rounded-xl bg-white dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-xs text-slate-600 dark:text-slate-300 space-y-2 shadow-2xs">
               <p className="font-bold text-slate-900 dark:text-white">Tier 2 & 3 College Focus</p>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                 Bridging the syllabus gap between tier-2/3 state university curriculums and high-paying tech industry expectations.
               </p>
               <div className="text-[11px] text-teal-700 dark:text-teal-300 font-semibold flex items-center gap-1.5 pt-1">

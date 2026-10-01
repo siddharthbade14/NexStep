@@ -175,11 +175,11 @@ export const LandingPage = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
             </span>
-            <span className="text-[11px] font-mono tracking-wider text-teal-300 font-bold uppercase">
+            <span className="text-xs font-mono tracking-wide text-teal-300 font-bold uppercase">
               Autonomous Curriculum Verification
             </span>
             <span className="text-slate-600 hidden sm:inline">|</span>
-            <span className="text-[10px] font-mono text-[#FBBF24] hidden sm:inline-block font-semibold">
+            <span className="text-xs font-mono text-amber-400 hidden sm:inline-block font-semibold">
               AICTE & Industry Mapped
             </span>
           </div>
@@ -193,14 +193,14 @@ export const LandingPage = () => {
             <strong className="text-slate-900 dark:text-white font-bold"> NexStep</strong> uses semantic AI embeddings to mathematically calculate your syllabus gap, tests your hands-on code in a sandboxed IDE, and matches you with verified internships.
           </p>
 
-          {/* Hero CTAs with Tactile 3D Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+          {/* Hero CTAs with Clear Visual Hierarchy */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
             <TactileButton3D
               variant="primary"
               size="lg"
               onClick={handleStart}
               iconRight={ArrowRight}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto shadow-accent font-black"
             >
               Analyze My College Syllabus
             </TactileButton3D>
@@ -210,23 +210,22 @@ export const LandingPage = () => {
               size="lg"
               onClick={handleExploreDashboard}
               iconLeft={Terminal}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto font-bold"
             >
               Explore Live Gap Dashboard
             </TactileButton3D>
 
-            <TactileButton3D
-              variant="secondary"
-              size="lg"
+            <button
+              type="button"
               onClick={() => {
                 setActiveTab('login');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              iconLeft={LogIn}
-              className="w-full sm:w-auto text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-500/30"
+              className="w-full sm:w-auto px-4 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer flex items-center justify-center gap-1.5"
             >
-              🚀 Demo Account & Login
-            </TactileButton3D>
+              <LogIn className="w-3.5 h-3.5 text-amber-500" />
+              <span>Or launch Demo Account →</span>
+            </button>
           </div>
 
         </div>
@@ -246,16 +245,16 @@ export const LandingPage = () => {
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                   Live Holographic Telemetry Core
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-snug">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-snug">
                   Cryptographic Skill Validation Core
-                </h3>
+                </h2>
                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
                   Real-time visualization of AST code sandbox isolation, HMAC-SHA256 signature verification, and multi-tenant AICTE syllabus audit.
                 </p>
-                <div className="pt-2 flex flex-wrap items-center gap-2.5 text-[10px] font-mono">
-                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-teal-700/60 text-slate-700 dark:text-teal-300 shadow-2xs">LATENCY: 1.2ms</span>
-                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-amber-200 dark:border-amber-700/60 text-amber-700 dark:text-amber-300 shadow-2xs">SANDBOX: ISOLATED</span>
-                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-emerald-200 dark:border-emerald-700/60 text-emerald-700 dark:text-emerald-300 shadow-2xs">PROOFS: SHA-256</span>
+                <div className="pt-2 flex flex-wrap items-center gap-2.5 text-xs font-mono">
+                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-teal-700/60 text-slate-700 dark:text-teal-300 shadow-2xs">Latency: 1.2ms</span>
+                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-amber-200 dark:border-amber-700/60 text-amber-700 dark:text-amber-300 shadow-2xs font-medium">Sandbox: Isolated</span>
+                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-emerald-200 dark:border-emerald-700/60 text-emerald-700 dark:text-emerald-300 shadow-2xs">Proofs: SHA-256</span>
                 </div>
               </div>
 
@@ -313,9 +312,9 @@ export const LandingPage = () => {
                       </span>
                       <GraduationCap className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                     </div>
-                    <h4 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
+                    <h3 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
                       University Syllabus
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                       Ingests your university curriculum (SPPU, AKTU, VTU) across B.Tech Sem 1–8.
                     </p>
@@ -337,9 +336,9 @@ export const LandingPage = () => {
                       </span>
                       <Cpu className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                     </div>
-                    <h4 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
+                    <h3 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
                       AI Semantic Gap
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                       <code className="text-teal-700 dark:text-teal-300 font-mono text-[11px]">all-MiniLM-L6-v2</code> compares syllabus vectors against 500+ tech job descriptions.
                     </p>
@@ -361,9 +360,9 @@ export const LandingPage = () => {
                       </span>
                       <Terminal className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                     </div>
-                    <h4 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
+                    <h3 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
                       Sandbox Code IDE
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                       Student writes real code in an isolated runner. Must pass 3 test assertions to earn verified credentials.
                     </p>
@@ -385,9 +384,9 @@ export const LandingPage = () => {
                       </span>
                       <Briefcase className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                     </div>
-                    <h4 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
+                    <h3 className="text-sm font-black text-slate-900 dark:text-white tracking-tight">
                       Recruiter Match
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                       Direct pipeline to top startup internships (Swiggy, CRED, Zerodha) with transparent hiring match criteria.
                     </p>
@@ -560,16 +559,16 @@ export const LandingPage = () => {
 
                     <div className="space-y-2 mt-2.5">
                       {currentTrackData.aiGaps.map((gap, idx) => (
-                        <div key={idx} className="p-2.5 rounded-xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-500/30 text-xs">
-                          <div className="flex items-center justify-between">
-                            <span className="font-bold text-slate-900 dark:text-amber-100 truncate">{gap.name}</span>
-                            <span className="text-[10px] font-black text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 px-1.5 py-0.5 rounded border border-rose-200 dark:border-rose-500/40 shrink-0">
+                        <div key={idx} className="p-2.5 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 text-xs shadow-2xs">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="font-bold text-slate-800 dark:text-slate-100 leading-snug break-words">{gap.name}</span>
+                            <span className="text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded-md border border-rose-200 dark:border-rose-900/40 shrink-0">
                               {gap.delta}
                             </span>
                           </div>
-                          <div className="flex items-center justify-between text-[10px] text-amber-800 dark:text-amber-300 mt-1">
+                          <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 mt-1 pt-1 border-t border-slate-100 dark:border-white/5">
                             <span>Recruiter Expectation</span>
-                            <span className="font-mono font-bold">Cosine: {gap.score}</span>
+                            <span className="font-mono font-bold text-teal-600 dark:text-teal-400">Cosine: {gap.score}</span>
                           </div>
                         </div>
                       ))}
@@ -800,50 +799,48 @@ export const LandingPage = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Traditional Path Card */}
-          <div className="p-6 rounded-3xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-500/30 space-y-4">
-            <div className="flex items-center gap-2 text-rose-800 dark:text-rose-300 font-black text-sm uppercase tracking-wider">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e]" />
-              <span>The Broken Traditional Way</span>
-            </div>
-            <ul className="space-y-3 text-xs text-slate-700 dark:text-slate-300">
-              <li className="flex items-start gap-2.5">
-                <span className="text-rose-500 dark:text-rose-400 font-bold text-base leading-none">✕</span>
-                <span><strong className="text-slate-900 dark:text-white">Unverified Resumes:</strong> Students list buzzwords (Docker, AWS) without verifiable code evidence.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-rose-500 dark:text-rose-400 font-bold text-base leading-none">✕</span>
-                <span><strong className="text-slate-900 dark:text-white">Syllabus Blindspot:</strong> Colleges assume students know modern async APIs; students assume textbooks are enough.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-rose-500 dark:text-rose-400 font-bold text-base leading-none">✕</span>
-                <span><strong className="text-slate-900 dark:text-white">Mass Recruiter Trap:</strong> 0 practical proof forces graduates into ₹3.5 LPA mass recruiter service companies.</span>
-              </li>
-            </ul>
-          </div>
+        {/* Paired Horizontally Aligned Comparison Rows */}
+        <div className="space-y-3.5">
+          {[
+            {
+              problemTitle: "Unverified Resumes",
+              problemDesc: "Students list buzzwords (Docker, AWS) without verifiable code evidence.",
+              solutionTitle: "Proof-of-Competence",
+              solutionDesc: "Every skill badge is backed by passed test assertions in our isolated sandbox."
+            },
+            {
+              problemTitle: "Syllabus Blindspot",
+              problemDesc: "Colleges assume students know modern async APIs; students assume textbooks are enough.",
+              solutionTitle: "Exact AI Gap Isolation",
+              solutionDesc: "Mathematical semantic matching reveals precisely what to learn each semester."
+            },
+            {
+              problemTitle: "Mass Recruiter Trap",
+              problemDesc: "0 practical proof forces graduates into ₹3.5 LPA mass recruiter service companies.",
+              solutionTitle: "Direct High-CTC Internships",
+              solutionDesc: "Direct qualification matching for ₹35,000–₹50,000/mo high-growth startup roles."
+            }
+          ].map((item, idx) => (
+            <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
+              {/* Problem Cell */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-500/30 flex items-start gap-3 text-xs text-slate-700 dark:text-slate-300">
+                <span className="text-rose-500 font-bold text-sm leading-none shrink-0 mt-0.5">✕</span>
+                <p className="leading-relaxed">
+                  <strong className="text-slate-900 dark:text-white font-bold">{item.problemTitle}: </strong>
+                  {item.problemDesc}
+                </p>
+              </div>
 
-          {/* NexStep Path Card */}
-          <div className="p-6 rounded-3xl bg-teal-50/70 dark:bg-teal-950/20 border-2 border-teal-400 dark:border-teal-500/40 shadow-md dark:shadow-[0_0_30px_rgba(45,212,191,0.2)] space-y-4">
-            <div className="flex items-center gap-2 text-teal-800 dark:text-teal-300 font-black text-sm uppercase tracking-wider">
-              <span className="w-2.5 h-2.5 rounded-full bg-teal-500 dark:bg-teal-400 shadow-[0_0_8px_#2dd4bf] animate-pulse" />
-              <span>The NexStep Verified Pipeline</span>
+              {/* Solution Cell */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-teal-50/70 dark:bg-teal-950/20 border border-teal-300 dark:border-teal-500/40 shadow-xs flex items-start gap-3 text-xs text-slate-700 dark:text-slate-300">
+                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
+                <p className="leading-relaxed">
+                  <strong className="text-slate-900 dark:text-white font-bold">{item.solutionTitle}: </strong>
+                  {item.solutionDesc}
+                </p>
+              </div>
             </div>
-            <ul className="space-y-3 text-xs text-slate-700 dark:text-slate-300">
-              <li className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
-                <span><strong className="text-slate-900 dark:text-white">Proof-of-Competence:</strong> Every skill badge is backed by passed test assertions in our isolated Python sandbox.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
-                <span><strong className="text-slate-900 dark:text-white">Exact AI Gap Isolation:</strong> Mathematical semantic matching reveals precisely what to learn each semester.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
-                <span><strong className="text-slate-900 dark:text-white">Direct High-CTC Internships:</strong> Direct qualification matching for ₹35,000–₹50,000/mo high-growth startup roles.</span>
-              </li>
-            </ul>
-          </div>
+          ))}
         </div>
       </section>
 
